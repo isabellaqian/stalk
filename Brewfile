@@ -1,0 +1,6 @@
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/core"
+brew "apache-spark"
+brew "freeglut"
+brew "maven"
