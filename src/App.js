@@ -5,7 +5,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import Landing from "./landing.js";
 //trying out a date-picker (@s-palakur)
-import DatePicker from "react-datepicker/dist/react-datepicker";
+import DatePicker from "react-datepicker";
 
 const localizer = momentLocalizer(moment);
 
