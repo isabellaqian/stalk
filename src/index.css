@@ -11,3 +11,75 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+body {
+  font-size: 14px;
+}
+
+.bg {
+  color: #fff;
+}
+.container {
+  padding-left:10%;
+  padding-right: 10%;
+  display: flex;
+  align-items: center;
+  /* flex-direction: row; */
+}
+.hero {
+  /* width: 70%; */
+  margin: 50px;
+}
+.landing_text {
+  width: 18%;
+  color: rgba(0,0,0,1);
+  /* position: absolute; */
+  /* top: 215px;
+  left: 150px; */
+  font-family: Oxygen Mono;
+  font-weight: Regular;
+  font-size: 32px;
+}
+.nav_bar {
+  padding: 10px 30px 30px 10px;
+  justify-content: center;
+}
+.logo {
+  padding-left: 10px;
+}
+
+.button_accent {
+  margin: 10px;
+  float: right;
+  color: rgb(255, 255, 255);
+  font-family: Oxygen;
+  font-weight: Regular;
+  font-size: 20px;
+  text-align: relative;
+  border: 2px solid rgba(224, 89, 39, 1);
+  border-radius: 23px;
+  background: rgba(224, 89, 39, 1);
+  width: 150px;
+  height: 50px;
+  cursor: pointer;
+}
+.button_accent:hover, button_accent:active {
+  background: rgb(207, 83, 38);
+  border: 2px solid rgb(207, 83, 38);
+}
+.button_white {
+  cursor: pointer;
+  margin: 10px;
+  float: right;
+  color: rgba(49, 54, 86, 1);
+  font-family: Oxygen;
+  font-weight: Regular;
+  font-size: 20px;
+  text-align: relative;
+  border: none;
+  /* border: 2px solid rgba(224, 89, 39, 1); */
+  border-radius: 23px;
+  background:rgba(255,255,255,1);
+  width: 100px;
+  height: 50px;
+}
