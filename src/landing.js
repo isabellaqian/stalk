@@ -1,4 +1,5 @@
 import React from "react";
+import { logInWithGoogle, handleClick } from "./Firebase";
 import calendar_screenshot from "./images/calendar_screenshot.png";
 import logo from "./images/logo.png";
 export default function landing() {
@@ -16,13 +17,10 @@ export default function landing() {
       </head>
       <div class="nav_bar">
         <img src={logo} class="logo" />
-        <button
-          class="button_accent"
-          onClick={console.log("clicked on sign up")}
-        >
+        <button class="button_accent" onClick={logInWithGoogle}>
           Sign up now
         </button>
-        <button class="button_white" onClick={console.log("clicked on login")}>
+        <button class="button_white" onClick={logInWithGoogle}>
           Log in
         </button>
       </div>

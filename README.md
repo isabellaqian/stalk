@@ -8,6 +8,18 @@ In the project directory, you can run:
 
 ### `npm start`
 
+Other things that you need to install: \
+
+### `npm install firebase`
+
+### `npm install react-date-picker`
+
+This is for the date picker option for manually creating events. 
+
+### `npm install moment react-big-calendar`
+
+This is for calendar creation.
+
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
