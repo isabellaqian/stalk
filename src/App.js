@@ -3,7 +3,8 @@ import "./App.css";
 import { handleClick } from "./Firebase";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
-import Landing from "./landing.js";
+import Landing from "./Landing.js";
+import CreateEvent from "./CreateEvent.js";
 //trying out a date-picker (@s-palakur)
 import DatePicker from "react-datepicker";
 
@@ -17,6 +18,8 @@ function App() {
   return (
     <div>
       <Landing />
+      <CreateEvent />
+
       <ul className="header">
         <h2>Enter your calendar event below!</h2>
         <form>

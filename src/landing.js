@@ -2,7 +2,7 @@ import React from "react";
 import { logInWithGoogle, handleClick } from "./Firebase";
 import calendar_screenshot from "./images/calendar_screenshot.png";
 import logo from "./images/logo.png";
-export default function landing() {
+export default function Landing() {
   return (
     <div>
       <head>
