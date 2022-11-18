@@ -30,10 +30,11 @@ function App() {
             value={eventTitle}
             onChange={(a) => setTitle(a.target.value)} //constantly updates the state
           />
+          <br/>
           <label>Event date:</label>
           <DatePicker onChange={onChange} value={date} />
           <button onClick={handleClick(eventTitle, date)}>Create event!</button>
-        </form>
+        </form> 
       </ul>
       <div className="content">
         <Calendar
