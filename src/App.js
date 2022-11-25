@@ -23,7 +23,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/temp" element={<CreateEvent />} />
           <Route path="/temp2" element={<CreateEvent2 />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<CreateEvent2 />} />
         </Routes>
       </AuthContextProvider>
     </div>
