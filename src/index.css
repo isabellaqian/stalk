@@ -1,5 +1,7 @@
-body {
-  margin: 0;
+@import url('https://fonts.googleapis.com/css?family=Oxygen+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Oxygen&display=swap');
+
+.body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -22,16 +24,16 @@ body {
 .container {
   padding-left:10%;
   padding-right: 10%;
-  display: flex;
   align-items: center;
-  /* flex-direction: row; */
+}
+.items {
+  padding-top: 5%;
 }
 .hero {
   /* width: 70%; */
   margin: 50px;
 }
-.landing_text {
-  width: 18%;
+.h3 {
   color: rgba(0,0,0,1);
   /* position: absolute; */
   /* top: 215px;
@@ -47,10 +49,12 @@ body {
 .logo {
   padding-left: 10px;
 }
-
+.float_right {
+float: right;
+}
 .button_accent {
   margin: 10px;
-  float: right;
+  
   color: rgb(255, 255, 255);
   font-family: Oxygen;
   font-weight: Regular;
@@ -70,7 +74,7 @@ body {
 .button_white {
   cursor: pointer;
   margin: 10px;
-  float: right;
+
   color: rgba(49, 54, 86, 1);
   font-family: Oxygen;
   font-weight: Regular;

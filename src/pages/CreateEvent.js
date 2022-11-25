@@ -8,6 +8,7 @@ export default function CreateEvent() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("submitted");
+    console.log(summary, description, start, end);
   };
 
   return (

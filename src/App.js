@@ -1,50 +1,31 @@
-import React, { Component, useState } from "react";
+import React from "react";
 import "./App.css";
 import { handleClick } from "./Firebase";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
-import Landing from "./Landing.js";
-import CreateEvent from "./CreateEvent.js";
-//trying out a date-picker (@s-palakur)
-import DatePicker from "react-datepicker";
+import Landing from "./pages/Landing.js";
+import Navbar from "./components/Navbar";
+import Signin from "./components/Signin";
+import CreateEvent from "./pages/CreateEvent.js";
+import CreateEvent2 from "./pages/CreateEvent2.js";
+import Dashboard from "./pages/Dashboard";
 
-const localizer = momentLocalizer(moment);
+import { AuthContextProvider } from "./components/AuthContext";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   //creating objects with state to represent event info
-  const [eventTitle, setTitle] = useState("");
-  const [date, onChange] = useState(new Date());
 
   return (
     <div>
-      <Landing />
-      <CreateEvent />
-
-      <ul className="header">
-        <h2>Enter your calendar event below!</h2>
-        <form>
-          <label>Event name:</label>
-          <input
-            type="text"
-            required
-            value={eventTitle}
-            onChange={(a) => setTitle(a.target.value)} //constantly updates the state
-          />
-          <br/>
-          <label>Event date:</label>
-          <DatePicker onChange={onChange} value={date} />
-          <button onClick={handleClick(eventTitle, date)}>Create event!</button>
-        </form> 
-      </ul>
-      <div className="content">
-        <Calendar
-          localizer={localizer}
-          events={[]}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 500 }}
-        />
-      </div>
+      <AuthContextProvider>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/temp" element={<CreateEvent />} />
+          <Route path="/temp2" element={<CreateEvent2 />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </AuthContextProvider>
     </div>
   );
 }
