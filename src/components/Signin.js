@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { UserAuth } from "./AuthContext";
-import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
-  const { googleSignIn, user } = UserAuth();
-  const navigate = useNavigate();
+  const { googleSignIn } = UserAuth();
 
   const handleSignIn = async () => {
     try {
@@ -13,13 +11,6 @@ const Signin = () => {
       console.log(error);
     }
   };
-
-  // show dashboard if the user is logged in
-  useEffect(() => {
-    if (user != null) {
-      navigate("/dashboard");
-    }
-  }, []);
 
   return (
     <div>

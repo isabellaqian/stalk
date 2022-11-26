@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import arrow from "../images/left_arrow.png";
 import Multiselect from 'multiselect-react-dropdown';
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import moment from "moment";
+const localizer = momentLocalizer(moment);
 
 const Meet = () => {
 
@@ -35,6 +38,15 @@ const Meet = () => {
           options={friendsList}
           selectedValues={selectedFriends}
           placeholder="Select friends!"
+        />
+      </div>
+      <div className="content cal">
+        <Calendar
+          localizer={localizer}
+          // events={}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 500 }}
         />
       </div>    
     </div>
