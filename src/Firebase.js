@@ -3,14 +3,14 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-
 //Configuring Realtime Firebase database(@s-palakur)
 import { getDatabase, ref, set } from "firebase/database";
 
 // imports for firestore
-import { getFirestore, doc, setDoc, getDoc} from 'firebase/firestore'
+import { getFirestore, doc, setDoc, getDoc, collection, addDoc} from 'firebase/firestore'
 
 import { onAuthStateChanged } from "firebase/auth";
+import {React} from "react";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -32,16 +32,23 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+//creating a reference to getFirestore
+export const db = getFirestore()
 
+//adding a way to get the user.id @s-palakur 
+var url;
 
 // firestore to store user info into database when logging in (@amy-al)
 // TODO: using query to double check if user exists to update data etc.
+
+
 export function writeUserDoc() {
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
     if (user){
       const firestore = getFirestore();
       const userCollection = doc(firestore, 'userCollection/' + user.uid) // specifying the path insied firestore to store the doc and collection
+      url = user.uid;
 
       const docData = { // userid that's stored in user-doc
         user: user.uid,
@@ -53,6 +60,20 @@ export function writeUserDoc() {
     }
   });
 }
+export function getID() {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (user !== null) {
+    const uid = user.uid;
+    console.log("Printing ID from Firebase" + user.uid)
+    return user.uid;
+  }
+}
+
+//making a function to see if the user is signed in! @s-palakur
+
+
+
 
 // const provider = new GoogleAuthProvider();
 const database = getDatabase();
@@ -94,11 +115,3 @@ const database = getDatabase();
 //   };
 // };
 
-export function handleClick(t, d) {
-  const db = getDatabase(); //still have to figure out how to pass in the email
-  //make it mandatory to sign in
-  set(ref(db), {
-    Title: t,
-    Date: d,
-  });
-}
