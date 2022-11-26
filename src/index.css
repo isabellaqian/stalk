@@ -110,3 +110,7 @@ float: right;
   font-weight: Regular;
   font-size: 10px;
 }
+
+.inputbox {
+  width: 70%;
+}

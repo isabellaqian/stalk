@@ -1,7 +1,6 @@
 import React from "react";
 import { UserAuth } from "../components/AuthContext";
 import { Link } from "react-router-dom";
-import CreateEvent2 from "./CreateEvent2";
 import CreateEvent from "./CreateEvent";
 
 export const Dashboard = () => {
@@ -31,7 +30,7 @@ export const Dashboard = () => {
         <h1>Set your personal calendar below!</h1>
       </div>
       <div className="cal">
-        <CreateEvent2/>
+        <CreateEvent/>
       </div>
     </div>
     </div>

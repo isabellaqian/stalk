@@ -68,4 +68,9 @@ export function handleClick(t, d) {
     Title: t,
     Date: d,
   });
+
+  //added following code to display on calendar, not sure if it should go here? (@alexavanh)
+  return {
+    
+  }
 }
