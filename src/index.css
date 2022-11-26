@@ -90,3 +90,23 @@ float: right;
   /* width: 100px; */
   /* height: 50px; */
 }
+
+/*for set your personal calendar*/
+.setcal {
+  position: absolute;
+  left: 515px;
+  padding-top: 20px;
+  font-family: Oxygen Mono;
+  font-weight: Regular;
+  font-size: 13px;
+}
+
+.cal {
+  position: absolute;
+  width: 95%;
+  left: 33px;
+  top: 310px;
+  font-family: Oxygen Mono;
+  font-weight: Regular;
+  font-size: 10px;
+}

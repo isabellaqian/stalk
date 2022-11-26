@@ -25,7 +25,7 @@ const Navbar = () => {
       {user?.displayName ? (
         <button className="button_white float_right" onClick={handleSignOut}>
           Logout
-        </button>
+        </button>     
       ) : (
         <Signin />
       )}

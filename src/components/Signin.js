@@ -13,6 +13,7 @@ const Signin = () => {
       console.log(error);
     }
   };
+
   // show dashboard if the user is logged in
   useEffect(() => {
     if (user != null) {

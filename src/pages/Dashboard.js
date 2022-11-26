@@ -1,6 +1,8 @@
 import React from "react";
 import { UserAuth } from "../components/AuthContext";
 import { Link } from "react-router-dom";
+import CreateEvent2 from "./CreateEvent2";
+import CreateEvent from "./CreateEvent";
 
 export const Dashboard = () => {
   const { user } = UserAuth();
@@ -9,6 +11,7 @@ export const Dashboard = () => {
   };
   return (
     //izzy TODO: make meet add friends button cenetered
+    <div>
     <div className="container">
       <div className="h3">Welcome, {user?.displayName}</div>
       <div className="items">
@@ -21,6 +24,16 @@ export const Dashboard = () => {
           <button className="button_white">Add friends</button>
         </Link>
       </div>
+    </div>
+
+    <div>
+      <div className="setcal"> 
+        <h1>Set your personal calendar below!</h1>
+      </div>
+      <div className="cal">
+        <CreateEvent2/>
+      </div>
+    </div>
     </div>
   );
 };

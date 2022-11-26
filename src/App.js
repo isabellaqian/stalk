@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import { handleClick } from "./Firebase";
 import Landing from "./pages/Landing.js";
 import Navbar from "./components/Navbar";
 import Signin from "./components/Signin";
@@ -8,8 +9,10 @@ import CreateEvent2 from "./pages/CreateEvent2.js";
 import Dashboard from "./pages/Dashboard";
 import Meet from "./pages/Meet";
 import AddFriends from "./pages/AddFriends";
+
 import { AuthContextProvider } from "./components/AuthContext";
 import { Route, Routes } from "react-router-dom";
+
 
 function App() {
   //creating objects with state to represent event info
