@@ -4,11 +4,17 @@ import DatePicker from "react-datepicker";
 //trying out a date-picker (@s-palakur)
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
+
+// import { UserAuth } from "../components/AuthContext"
+
 const localizer = momentLocalizer(moment);
+// const user = auth.currentUser;
+
 
 const CreateEvent2 = () => {
   const [eventTitle, setTitle] = useState("");
   const [date, onChange] = useState(new Date());
+
   return (
     <div>
       <ul className="header">
