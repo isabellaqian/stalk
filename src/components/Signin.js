@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { UserAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
 
+import { writeUserDoc } from "../Firebase"
+
 const Signin = () => {
   const { googleSignIn, user } = UserAuth();
   const navigate = useNavigate();
@@ -17,6 +19,7 @@ const Signin = () => {
   useEffect(() => {
     if (user != null) {
       navigate("/dashboard");
+      writeUserDoc()
     }
   }, []);
 

@@ -8,7 +8,9 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 
 // imports for firestore
-import {getFirestore, doc, setDoc} from 'firebase/firestore'
+import { getFirestore, doc, setDoc, getDoc} from 'firebase/firestore'
+
+import { onAuthStateChanged } from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -31,20 +33,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
-// Initialize firestore (@amy-al)
-const firestore = getFirestore();
-const userCollection = doc(firestore, 'userCollection/user-doc') // specifying the path insied firestore to store the doc and collection
 
-// a temporary test funciton that creates a usercollection with a userdoc with userid in the userdoc 
+// firestore to store user info into database when logging in (@amy-al)
+// TODO: using query to double check if user exists to update data etc.
 export function writeUserDoc() {
-  const docData = { // userid that's stored in user-doc
-    user: "userid",
-  };
-  setDoc(userCollection, docData)
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user){
+      const firestore = getFirestore();
+      const userCollection = doc(firestore, 'userCollection/' + user.uid) // specifying the path insied firestore to store the doc and collection
+
+      const docData = { // userid that's stored in user-doc
+        user: user.uid,
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL
+      };
+      setDoc(userCollection, docData)
+    }
+  });
 }
-
-// in other .js files can import { writeUserDoc } from "./Firebase" and then use writeUserDoc()
-
 
 // const provider = new GoogleAuthProvider();
 const database = getDatabase();
