@@ -5,6 +5,7 @@ import moment from "moment";
 const localizer = momentLocalizer(moment);
 
 export default function CreateEvent() {
+  const [personalEvents, setPersonalEvents] = useState([]);
   const [eventTitle, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [description, setDescription] = useState("");
@@ -13,15 +14,25 @@ export default function CreateEvent() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleClick(eventTitle, start);
-    //now need to display events on calendar
-    // return {
+    handleClick(eventTitle, start); //we may want to store more info than just title and start date in database (@alexavanh)
+    const myEvent = {
+      title: eventTitle,
+      start: Date.parse(start),
+      end: Date.parse(end)
+    };
+    setPersonalEvents(personalEvents.concat([ myEvent ]));
+  }
 
-    // }
+  function clear() {
+    setTitle("");
+    setSummary("");
+    setDescription("");
+    setStart("");
+    setEnd("");
   }
 
   //make sure the event title and start/end dates are inputted or else you can't create the event (@alexavanh)
-  const isFormDisabled = eventTitle.trim().length === 0 || start.trim().length === 0 || end.trim().length === 0;
+  const isFormDisabled = (eventTitle.trim().length === 0 || start.trim().length === 0 || end.trim().length === 0) || (moment(end).isBefore(start));
 
   return (
     <div>
@@ -69,12 +80,13 @@ export default function CreateEvent() {
             onChange={(e) => setEnd(e.target.value)}
           />
           <button onClick={handleSubmit} disabled={isFormDisabled}>Create event!</button>
+          <button onClick={clear}>Clear</button>
         </form>
       </ul>
       <div className="content">
         <Calendar
           localizer={localizer}
-          events={[]}
+          events={personalEvents}
           startAccessor="start"
           endAccessor="end"
           style={{ height: 500 }}
