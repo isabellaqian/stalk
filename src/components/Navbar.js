@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { UserAuth } from "./AuthContext";
 import logo from "../images/logo.png";
 import Signin from "./Signin";
-import { Navigate } from "react-big-calendar";
 
 // import "../index.css"; don't know if I need this line?
 
@@ -28,9 +27,6 @@ const Navbar = () => {
           Logout
         </button>
       ) : (
-        // <Link to="/signin">
-        //   <button className="button_accent">Sign in</button>
-        // </Link>
         <Signin />
       )}
     </div>
