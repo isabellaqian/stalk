@@ -7,8 +7,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 
 // imports for firestore
-import { getFirestore, doc, setDoc, getDoc, collection, addDoc} from 'firebase/firestore'
-
+import { getFirestore, doc, setDoc, Timestamp, getDoc, collection, addDoc} from 'firebase/firestore'
 import { onAuthStateChanged } from "firebase/auth";
 import {React} from "react";
 
@@ -41,6 +40,32 @@ var url;
 // firestore to store user info into database when logging in (@amy-al)
 // TODO: using query to double check if user exists to update data etc.
 
+function getID() {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (user !== null) {
+    const uid = user.uid;
+    console.log("Printing ID from Firebase" + user.uid)
+    return user.uid;
+  }
+}
+
+export async function addEvent(title, summary, desc, start_d, end_d, personal) {
+  const eventsCollection = collection(db, 'userCollection/' + getID() + '/events')
+  //Using the add() method to add random documents with the Title and Date stored
+  const docRef = addDoc(eventsCollection, {
+    Title: title,
+    Summary: summary,
+    Description: desc,
+    Start: Timestamp.fromDate(new Date(start_d)),
+    End: Timestamp.fromDate(new Date(end_d)),
+    Personal: personal, 
+  }).catch(err => {
+    //This function catches any error that occurs during the creation of the document
+    console.log("Error: " + err.message)
+  })
+  console.log("Document written with ID: ", docRef.id);
+}
 
 export function writeUserDoc() {
   const auth = getAuth();
@@ -60,15 +85,7 @@ export function writeUserDoc() {
     }
   });
 }
-export function getID() {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  if (user !== null) {
-    const uid = user.uid;
-    console.log("Printing ID from Firebase" + user.uid)
-    return user.uid;
-  }
-}
+
 
 //making a function to see if the user is signed in! @s-palakur
 

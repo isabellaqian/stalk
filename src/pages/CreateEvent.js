@@ -1,6 +1,6 @@
 import React, { Component, useState } from "react";
-import { handleClick } from "../Firebase";
 import { Calendar, momentLocalizer } from "react-big-calendar";
+import { addEvent } from "../Firebase";
 import moment from "moment";
 const localizer = momentLocalizer(moment);
 
@@ -14,7 +14,9 @@ export default function CreateEvent() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleClick(eventTitle, start); //we may want to store more info than just title and start date in database (@alexavanh)
+   //we may want to store more info than just title and start date in database (@alexavanh)
+   //adding new entries to store new incoming data @s-palakur
+   addEvent(eventTitle, summary, description, start, end, personalEvents)
     const myEvent = {
       title: eventTitle,
       start: Date.parse(start),
