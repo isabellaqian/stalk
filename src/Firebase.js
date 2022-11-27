@@ -7,9 +7,8 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 
 // imports for firestore
-import { getFirestore, doc, setDoc, Timestamp, getDoc, collection, addDoc, updateDoc} from 'firebase/firestore'
+import { getFirestore, doc, setDoc, Timestamp, collection, addDoc, updateDoc } from 'firebase/firestore'
 import { onAuthStateChanged } from "firebase/auth";
-import {React} from "react";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -32,7 +31,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 //creating a reference to getFirestore
-export const db = getFirestore()
 
 //adding a way to get the user.id @s-palakur 
 var url;
@@ -40,6 +38,13 @@ var url;
 // firestore to store user info into database when logging in (@amy-al)
 // TODO: using query to double check if user exists to update data etc.
 
+//moved some constants outside functions for fun @s-palakur
+const friendArray = [];
+const firestore = getFirestore(); //basically db
+//userCollection - gets you the path of the current user's document
+export const userCollection = doc(firestore, 'userCollection/' + getID())
+
+//function to see if the user is signed in so we can retrieve email id @s-palakur
 function getID() {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -49,7 +54,7 @@ function getID() {
 }
 
 export async function addEvent(title, summary, desc, start_d, end_d) {
-  const eventsCollection = collection(db, 'userCollection/' + getID() + '/events')
+  const eventsCollection = collection(firestore, 'userCollection/' + getID() + '/events')
   //Using the add() method to add random documents with the Title and Date stored
   const docRef = addDoc(eventsCollection, {
     Title: title,
@@ -64,15 +69,10 @@ export async function addEvent(title, summary, desc, start_d, end_d) {
   console.log("Document written with ID: ", docRef.id);
 }
 
-const friendArray = [];
-
 export function writeUserDoc() {
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
-    if (user){
-      const firestore = getFirestore();
-      const userCollection = doc(firestore, 'userCollection/' + user.email) // specifying the path insied firestore to store the doc and collection
-
+    if (user) {
       const docData = { // userid that's stored in user-doc
         user: user.uid,
         name: user.displayName,
@@ -86,20 +86,11 @@ export function writeUserDoc() {
 }
 
 export async function addFriend(friendID) {
-
-  const firestore = getFirestore();
-  const userCollection = doc(firestore, 'userCollection/' + getID()) // specifying the path insied firestore to store the doc and collection
   //add new friend's email to const friendArray
   friendArray.push(friendID)
   //update "friends" field of docData to newFriendList (@emily-coding-kim)
   updateDoc(userCollection, { friends: friendArray })
 }
-
-
-
-//making a function to see if the user is signed in! @s-palakur
-
-
 
 
 // const provider = new GoogleAuthProvider();
