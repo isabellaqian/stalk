@@ -45,12 +45,12 @@ function getID() {
   const user = auth.currentUser;
   if (user !== null) {
     const uid = user.uid;
-    console.log("Printing ID from Firebase" + user.uid)
-    return user.uid;
+    console.log("Printing user ID from Firebase " + uid)
+    return uid;
   }
 }
 
-export async function addEvent(title, summary, desc, start_d, end_d, personal) {
+export async function addEvent(title, summary, desc, start_d, end_d) {
   const eventsCollection = collection(db, 'userCollection/' + getID() + '/events')
   //Using the add() method to add random documents with the Title and Date stored
   const docRef = addDoc(eventsCollection, {
@@ -59,7 +59,6 @@ export async function addEvent(title, summary, desc, start_d, end_d, personal) {
     Description: desc,
     Start: Timestamp.fromDate(new Date(start_d)),
     End: Timestamp.fromDate(new Date(end_d)),
-    Personal: personal, 
   }).catch(err => {
     //This function catches any error that occurs during the creation of the document
     console.log("Error: " + err.message)

@@ -7,17 +7,17 @@ import moment from "moment";
 const localizer = momentLocalizer(moment);
 
 const Meet = () => {
-
-  //realisitcally, we need to get the user's friend list from the database (@alexavanh)
+  //realistically, we need to get the user's friend list from the database (@alexavanh)
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [begin, setBegin] = useState("");
   const [end, setEnd] = useState("");
   const friendsList = ["Alexa", "Izzy", "Swetha", "Amy", "Emily"];
+
   const handleSelect = (selectedList, selectedItem) => {
     setSelectedFriends(selectedList);
   };
 
-  const isFormDisabled = begin.trim().length === 0 || end.trim().length === 0 || (moment(end).isBefore(begin));
+  const isFormDisabled = begin.trim().length === 0 || end.trim().length === 0 || (moment(end).isBefore(begin)) || (moment(end).diff(moment(begin), 'days') > 7);
 
   function handleSubmit() {
     //need to get friends' and user's calendars within the begin and end dates and compare them
@@ -54,7 +54,7 @@ const Meet = () => {
         />
       </div>
       <div className="smallerh3 padding2">
-        <h1>Choose the date and time to meet</h1>
+        <h1>Choose the date and time range to meet</h1>
       </div>
       <div className="smallerh3 rangepickerpos">
         <form>

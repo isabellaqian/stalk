@@ -146,3 +146,25 @@ float: right;
   position: relative;
   left: 33px;
 }
+
+.addfriendsinput {
+  width: 35%;
+}
+
+#create-event-table {
+  width: 500px;
+  font-size: 14px;
+}
+
+#create-event-table > thead > tr > th {
+  font-size: 18px;
+  text-align: center;
+}
+
+#create-event-table tbody > tr > th {
+  text-align: right;
+}
+
+#create-event-table input {
+  width: 100%;
+}
