@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import arrow from "../images/left_arrow.png";
+import { addFriend } from "../Firebase";
 
 import "./pages.css";
 
 const AddFriends = () => {
   const [emails, setEmails] = useState("");
   const [error, setError] = useState(null);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setEmails(e.target.value);
+    //taking in email input: friends email
+    addFriend(emails)
+    console.log(emails)
+  }
 
   function isValidEmail(email) {
       return /\S+@\S+\.\S+/.test(email);
@@ -21,8 +30,6 @@ const AddFriends = () => {
 
     setEmails(e.target.value);
   };
-
-  const handleSubmit = () => {};
 
   return (
     <div className="container">
@@ -42,7 +49,7 @@ const AddFriends = () => {
           onChange={handleChange}
         />
         {error && <h2 style={{color: 'red'}}>{error}</h2>}
-        <button className="button_accent" type="submit">
+        <button className="button_accent" type="submit" onclick={handleSubmit}>
           Add
         </button>
       </form>

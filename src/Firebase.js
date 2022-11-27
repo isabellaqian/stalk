@@ -7,7 +7,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 
 // imports for firestore
-import { getFirestore, doc, setDoc, Timestamp, getDoc, collection, addDoc} from 'firebase/firestore'
+import { getFirestore, doc, setDoc, Timestamp, getDoc, collection, addDoc, updateDoc} from 'firebase/firestore'
 import { onAuthStateChanged } from "firebase/auth";
 import {React} from "react";
 
@@ -43,10 +43,8 @@ var url;
 function getID() {
   const auth = getAuth();
   const user = auth.currentUser;
-  if (user !== null) {
-    const uid = user.uid;
-    console.log("Printing user ID from Firebase " + uid)
-    return uid;
+  if (user != null) {
+    return user.email;
   }
 }
 
@@ -66,24 +64,37 @@ export async function addEvent(title, summary, desc, start_d, end_d) {
   console.log("Document written with ID: ", docRef.id);
 }
 
+const friendArray = [];
+
 export function writeUserDoc() {
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
     if (user){
       const firestore = getFirestore();
-      const userCollection = doc(firestore, 'userCollection/' + user.uid) // specifying the path insied firestore to store the doc and collection
-      url = user.uid;
+      const userCollection = doc(firestore, 'userCollection/' + user.email) // specifying the path insied firestore to store the doc and collection
 
       const docData = { // userid that's stored in user-doc
         user: user.uid,
         name: user.displayName,
         email: user.email,
-        photoURL: user.photoURL
+        photoURL: user.photoURL,
+        friends: friendArray
       };
       setDoc(userCollection, docData)
     }
   });
 }
+
+export async function addFriend(friendID) {
+
+  const firestore = getFirestore();
+  const userCollection = doc(firestore, 'userCollection/' + getID()) // specifying the path insied firestore to store the doc and collection
+  //add new friend's email to const friendArray
+  friendArray.push(friendID)
+  //update "friends" field of docData to newFriendList (@emily-coding-kim)
+  updateDoc(userCollection, { friends: friendArray })
+}
+
 
 
 //making a function to see if the user is signed in! @s-palakur
