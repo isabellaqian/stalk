@@ -1,26 +1,39 @@
 import React from "react";
+import { UserAuth } from "../components/AuthContext";
+import { Link } from "react-router-dom";
+import CreateEvent from "./CreateEvent";
 
 export const Dashboard = () => {
-  return <h1>Hello this is dashboard</h1>;
+  const { user } = UserAuth();
+  const style = {
+    display: "inline-block",
+  };
+  return (
+    //izzy TODO: make meet add friends button cenetered
+    <div>
+    <div className="container">
+      <div className="h3">Welcome, {user?.displayName}</div>
+      <div className="items">
+        <Link to="/meet">
+          <button className="button_accent" style={style}>
+            Meet
+          </button>
+        </Link>
+        <Link to="/addfriends">
+          <button className="button_white">Add friends</button>
+        </Link>
+      </div>
+    </div>
+
+    <div>
+      <div className="setcal"> 
+        <h1>Set your personal calendar below!</h1>
+      </div>
+      <div className="cal">
+        <CreateEvent/>
+      </div>
+    </div>
+    </div>
+  );
 };
-
-// make sure that user is signed in to access the dashboard
-
-// import { getAuth, onAuthStateChanged } from "firebase/auth";
-
-// const auth = getAuth();
-// onAuthStateChanged(auth, (user) => {
-//   if (user) {
-//     // User is signed in, see docs for a list of available properties
-//     // https://firebase.google.com/docs/reference/js/firebase.User
-//     const uid = user.uid;
-//     // ...
-//   } else {
-//     // User is signed out
-//     // ...
-//   }
-// });
-
 export default Dashboard;
-
-

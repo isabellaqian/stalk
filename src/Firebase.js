@@ -78,13 +78,6 @@ export function getID() {
 // const provider = new GoogleAuthProvider();
 const database = getDatabase();
 
-// add scopes for Calendar API (what we want to access from user's Google Account)
-// provider.addScope("https://www.googleapis.com/auth/calendar");
-// provider.addScope("https://www.googleapis.com/auth/calendar.events");
-// provider.addScope("https://www.googleapis.com/auth/calendar.events.readonly");
-// provider.addScope("https://www.googleapis.com/auth/calendar.readonly"); // commenter @amy-al: need to check whether need readonly scopes when already have editing scopes
-// provider.addScope("https://www.googleapis.com/auth/calendar.settings.readonly");
-
 // export const logInWithGoogle = () => {
 //   signInWithPopup(auth, provider)
 //     .then((result) => {

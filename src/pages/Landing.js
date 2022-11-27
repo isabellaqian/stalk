@@ -1,6 +1,8 @@
 import React from "react";
 import calendar_screenshot from "../images/calendar_screenshot.png";
 import { handleClick } from "../Firebase";
+import Signin from "../components/Signin";
+import Navbar from "../components/Navbar";
 
 export default function Landing() {
   return (
