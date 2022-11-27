@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { UserAuth } from "./AuthContext";
 import logo from "../images/logo.png";
 import Signin from "./Signin";
+import { useNavigate } from "react-router-dom";
+import { isEmpty } from 'lodash';
 
 // import "../index.css"; don't know if I need this line?
 
 const Navbar = () => {
   const { user, logOut } = UserAuth();
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     try {
@@ -17,15 +20,23 @@ const Navbar = () => {
     }
   };
 
+  useEffect(() => {
+    if (user != null && !isEmpty(user)) {
+      navigate("/dashboard");
+    }
+  }, [user]);
+
   return (
     <div className="nav_bar">
       <Link to="/">
         <img src={logo} className="logo" />
       </Link>
       {user?.displayName ? (
+        <Link to="/">
         <button className="button_white float_right" onClick={handleSignOut}>
           Logout
-        </button>     
+        </button>
+        </Link>     
       ) : (
         <Signin />
       )}

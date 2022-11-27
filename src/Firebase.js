@@ -3,9 +3,13 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-
 //Configuring Realtime Firebase database(@s-palakur)
 import { getDatabase, ref, set } from "firebase/database";
+
+// imports for firestore
+import { getFirestore, doc, setDoc, Timestamp, getDoc, collection, addDoc} from 'firebase/firestore'
+import { onAuthStateChanged } from "firebase/auth";
+import {React} from "react";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -27,6 +31,66 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+//creating a reference to getFirestore
+export const db = getFirestore()
+
+//adding a way to get the user.id @s-palakur 
+var url;
+
+// firestore to store user info into database when logging in (@amy-al)
+// TODO: using query to double check if user exists to update data etc.
+
+function getID() {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (user !== null) {
+    const uid = user.uid;
+    console.log("Printing ID from Firebase" + user.uid)
+    return user.uid;
+  }
+}
+
+export async function addEvent(title, summary, desc, start_d, end_d, personal) {
+  const eventsCollection = collection(db, 'userCollection/' + getID() + '/events')
+  //Using the add() method to add random documents with the Title and Date stored
+  const docRef = addDoc(eventsCollection, {
+    Title: title,
+    Summary: summary,
+    Description: desc,
+    Start: Timestamp.fromDate(new Date(start_d)),
+    End: Timestamp.fromDate(new Date(end_d)),
+    Personal: personal, 
+  }).catch(err => {
+    //This function catches any error that occurs during the creation of the document
+    console.log("Error: " + err.message)
+  })
+  console.log("Document written with ID: ", docRef.id);
+}
+
+export function writeUserDoc() {
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user){
+      const firestore = getFirestore();
+      const userCollection = doc(firestore, 'userCollection/' + user.uid) // specifying the path insied firestore to store the doc and collection
+      url = user.uid;
+
+      const docData = { // userid that's stored in user-doc
+        user: user.uid,
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL
+      };
+      setDoc(userCollection, docData)
+    }
+  });
+}
+
+
+//making a function to see if the user is signed in! @s-palakur
+
+
+
 
 // const provider = new GoogleAuthProvider();
 const database = getDatabase();
@@ -61,16 +125,3 @@ const database = getDatabase();
 //   };
 // };
 
-export function handleClick(t, d) {
-  const db = getDatabase(); //still have to figure out how to pass in the email
-  //make it mandatory to sign in
-  set(ref(db), {
-    Title: t,
-    Date: d,
-  });
-
-  //added following code to display on calendar, not sure if it should go here? (@alexavanh)
-  return {
-    
-  }
-}
