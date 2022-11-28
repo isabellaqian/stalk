@@ -40,9 +40,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 //creating a reference to getFirestore
-export const db = getFirestore();
-//adding a way to get the user.id @s-palakur
-var url;
 
 // firestore to store user info into database when logging in (@amy-al)
 // TODO: using query to double check if user exists to update data etc.
@@ -60,7 +57,7 @@ function getID() {
 
 //moved some constants outside functions for fun @s-palakur
 const friendArray = [];
-const firestore = getFirestore(); //basically db
+export const firestore = getFirestore(); //basically db
 export const userCollection = doc(firestore, "userCollection/" + getID());
 
 export async function addEvent(title, summary, desc, start_d, end_d) {
@@ -71,13 +68,9 @@ export async function addEvent(title, summary, desc, start_d, end_d) {
   //Using the add() method to add random documents with the Title and Date stored
   const docRef = addDoc(eventsCollection, {
     Title: title,
-    // Summary: summary,
     Description: desc,
-    // Start0: Timestamp.fromDate(new Date(start_d)),
-    // End0: Timestamp.fromDate(new Date(end_d)),
     Start: start_d,
     End: end_d,
-    // Personal: personal,
   }).catch((err) => {
     //This function catches any error that occurs during the creation of the document
     console.log("Error: " + err.message);

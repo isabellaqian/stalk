@@ -1,7 +1,7 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import { doc, collection, onSnapshot } from "firebase/firestore";
-import { addEvent, db } from "../Firebase";
+import { collection, onSnapshot } from "firebase/firestore";
+import { addEvent, firestore } from "../Firebase";
 import moment from "moment";
 import { UserAuth } from "../components/AuthContext";
 
@@ -25,21 +25,24 @@ export default function CreateEvent() {
     if (!user) {
       return;
     }
-    const tempEvents = [];
-    const fbEvents = collection(db, "userCollection/" + user.email + "/events");
-    const unsubscribe = onSnapshot(fbEvents, (querySnapshot) => {
-      console.log(querySnapshot);
-      querySnapshot.forEach((doc) => {
-        // console.log(doc);
-
+    // const tempEvents = [];
+    const fbEvents = collection(
+      firestore,
+      "userCollection/" + user.email + "/events"
+    );
+    const unsubscribe = onSnapshot(fbEvents, (snap) => {
+      // console.log(snap);
+      const tempEvents = [];
+      snap.forEach((doc) => {
         const d = doc.data();
         tempEvents.push({
           title: d.Title,
-          start: Date.parse(d.Start),
-          end: Date.parse(d.End),
+          start: d.Start,
+          end: d.End,
         });
       });
-      setPersonalEvents(tempEvents);
+      console.log("tempEvents ", tempEvents);
+      setPersonalEvents(Array.from(tempEvents));
       console.log("updated personalEvents ", personalEvents);
     });
 
@@ -51,24 +54,7 @@ export default function CreateEvent() {
     e.preventDefault();
     //adding new entries to store new incoming data in firestore database @s-palakur
     addEvent(eventTitle, summary, description, start, end);
-    const myEvent = {
-      title: eventTitle,
-      start: Date.parse(start),
-      end: Date.parse(end),
-    };
-    // setPersonalEvents(personalEvents.concat([myEvent]));
   }
-
-  //want event data to persist on calendar @alexavanh
-  // useEffect(() => {
-  //   addEvent(eventTitle, summary, description, start, end)
-  //   const myEvent = {
-  //     title: eventTitle,
-  //     start: Date.parse(start),
-  //     end: Date.parse(end)
-  //   };
-  //   setPersonalEvents(personalEvents.concat([ myEvent ]));
-  // }, [personalEvents])
 
   function clear() {
     setTitle("");
