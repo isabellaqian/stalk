@@ -31,14 +31,12 @@ const Meet = () => {
   }
 
   return (
-    <div>
-      <div className="container">
-        <div style={{ display: "flex" }}>
-          <Link to="/dashboard">
-            <img src={arrow} />
-          </Link>
-          <div className="h3">Meet with your friends!</div>
-        </div>
+    <div className="container">
+      <div style={{ display: "flex" }}>
+        <Link to="/dashboard">
+          <img src={arrow} />
+        </Link>
+        <div className="h3">Meet with your friends!</div>
       </div>
       <div className="smallerh3 padding">
         <h1>Choose friends to meet up with!</h1>
@@ -54,47 +52,47 @@ const Meet = () => {
           selectedValues={selectedFriends}
           placeholder="Select friends!"
         />
-      </div>
-      <div className="smallerh3 padding2">
-        <h1>Choose the date and time to meet</h1>
-      </div>
-      <div className="smallerh3 rangepickerpos">
-        <form>
-          <label htmlFor="start">Start date time:</label>
-          <input
-            type="datetime-local"
-            id="start"
-            value={begin}
-            onChange={(e) => setBegin(e.target.value)}
+        <div className="smallerh3 padding2">
+          <h1>Choose the date and time to meet</h1>
+        </div>
+        <div className="smallerh3 rangepickerpos">
+          <form>
+            <label htmlFor="start">Start date time:</label>
+            <input
+              type="datetime-local"
+              id="start"
+              value={begin}
+              onChange={(e) => setBegin(e.target.value)}
+            />
+            <br />
+            <label htmlFor="end">End date time:</label>
+            <input
+              type="datetime-local"
+              id="end"
+              value={end}
+              onChange={(e) => setEnd(e.target.value)}
+            />
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={isFormDisabled}
+            >
+              Submit
+            </button>
+            <button type="button" onClick={clear}>
+              Clear
+            </button>
+          </form>
+        </div>
+        <div className="content calpos">
+          <Calendar
+            localizer={localizer}
+            // events={}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: 500 }}
           />
-          <br />
-          <label htmlFor="end">End date time:</label>
-          <input
-            type="datetime-local"
-            id="end"
-            value={end}
-            onChange={(e) => setEnd(e.target.value)}
-          />
-          <button
-            type="button"
-            onClick={handleSubmit}
-            disabled={isFormDisabled}
-          >
-            Submit
-          </button>
-          <button type="button" onClick={clear}>
-            Clear
-          </button>
-        </form>
-      </div>
-      <div className="content calpos">
-        <Calendar
-          localizer={localizer}
-          // events={}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 500 }}
-        />
+        </div>
       </div>
     </div>
   );
