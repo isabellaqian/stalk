@@ -11,14 +11,19 @@ const AddFriends = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setEmails(e.target.value);
-    //taking in email input: friends email
-    addFriend(emails)
-    console.log(emails)
+    if (isValidEmail(emails)) {
+          console.log("email is valid");
+          setEmails(e.target.value);
+          //taking in email input: friends email
+          addFriend(emails);
+          console.log(emails);
+          return;
+    }
+    console.log("email is invalid");
   }
 
   function isValidEmail(email) {
-      return /\S+@\S+\.\S+/.test(email);
+    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
   }
 
   const handleChange = e => {
@@ -45,14 +50,14 @@ const AddFriends = () => {
           type="text"
           id="emails"
           value={emails}
-          placeholder="Enter your friend's email (only one email)"
+          placeholder="Enter your friend's email (only one email at a time)"
           onChange={handleChange}
         />
-        {error && <h2 style={{color: 'red'}}>{error}</h2>}
-        <button className="button_accent" type="submit" onclick={handleSubmit}>
-          Add
-        </button>
       </form>
+      {error && <h2 style={{color: 'red'}}>{error}</h2>}
+      <button className="button_accent" type="submit" onClick={handleSubmit}>
+        Add
+      </button>
     </div>
   );
 };
