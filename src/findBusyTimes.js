@@ -1,6 +1,19 @@
+// for merging the start and end arrays into one 2D array
+function mergeArrays(startArrays, endArrays) {
+    const startTimes = []
+    const endTimes = []
+    for(let i = 0; i < startArrays.length; i++){
+      startTimes = startTimes.concat(startArrays[i])
+      endTimes = endTimes.concat(endArrays[i])
+      // pushing might be more efficient? idk
+    }
+    return(startTimes, endTimes)
+  } 
+
 // takes in array that has all the events where eventsArray[0] is the start time and eventsArray[1] is the end time
 // returns an array of same format called busyEvents
 function findBusyTimes(eventsArray) {
+    // should call mergeArrays --> TODO
     eventsArray = eventsArray.sort((a, b) => a[0] - b[0]); // change to object compare function + add sorting so that it sorts the start times and end times when two start times are equalsorting so that it sorts the start times and end times when two start times are equal
     console.table(eventsArray)
     const eventsVisited = new Array(eventsArray.length); // all undefined
