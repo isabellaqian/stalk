@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import arrow from "../images/left_arrow.png";
-import { addFriend, firestore } from "../Firebase";
-import { collection, query, where, onSnapshot } from 'firebase/firestore'
+import { addFriend, firestore, getID } from "../Firebase";
+import { collection, onSnapshot, doc  } from 'firebase/firestore'
 
 import "./pages.css";
 
@@ -10,6 +10,8 @@ const AddFriends = () => {
   const [emails, setEmails] = useState("");
   const [error, setError] = useState(null);
   const [userArr, setUserArr] = useState([]);
+  const [friendArr, setFriendArr] = useState([]);
+
 
   //Sets userArr to an array of all user emails (@emily)
   useEffect(() => {
@@ -25,6 +27,17 @@ const AddFriends = () => {
       setUserArr(users);
       console.log("All users: ", users.join(", "));
     });
+
+    const friendsArrFirestore = [];
+    const unsub = onSnapshot(doc(firestore, 'userCollection/' + getID()), (doc) => {
+      const tempArr = doc.data().friends;
+      for (let i = 0; i < tempArr.length; i++)
+      {
+        friendsArrFirestore.push(tempArr[i]);
+        //setting it with added helper function
+      }
+      setFriendArr(friendsArrFirestore);
+    });
   }, []);
 
   //Returns true if potential friend email input by user is the email of a current user in userArr array (@emily)
@@ -37,13 +50,25 @@ const AddFriends = () => {
     return false;
   }
 
+  function checkFriend(email) {
+    for( let i = 0; i < friendArr.length; i++) {
+      if(email === friendArr[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     if (isValidEmail(emails)) {
       console.log("email is valid");
       setEmails(e.target.value);
 
-      if(checkValidUser(emails)) {
+      const usercheck = checkValidUser(emails);
+      const friendcheck = checkFriend(emails);
+
+      if(usercheck && friendcheck) {
         console.log("user is valid");
         //taking in email input: friends email
         addFriend(emails)
@@ -51,9 +76,12 @@ const AddFriends = () => {
         console.log("You added: ", emails)
         return;
       }
-      else {
+      else if(!usercheck) {
         console.log("user is invalid");
         setError("Not a vaid user!");
+      }else {
+        console.log("This person is already your friend.");
+        setError("They're already your friend!");
       }
     } else { console.log("email is invalid"); }
   }
