@@ -60,7 +60,7 @@ const friendArray = [];
 export const firestore = getFirestore(); //basically db
 export const userCollection = doc(firestore, "userCollection/" + getID());
 
-export async function addEvent(title, summary, desc, start_d, end_d) {
+export async function addEvent(title, desc, start_d, end_d) {
   const eventsCollection = collection(
     firestore,
     "userCollection/" + getID() + "/events"
@@ -69,8 +69,8 @@ export async function addEvent(title, summary, desc, start_d, end_d) {
   const docRef = addDoc(eventsCollection, {
     Title: title,
     Description: desc,
-    Start: start_d,
-    End: end_d,
+    Start: Timestamp.fromDate(new Date(start_d)),
+    End: Timestamp.fromDate(new Date(end_d)),
   }).catch((err) => {
     //This function catches any error that occurs during the creation of the document
     console.log("Error: " + err.message);
