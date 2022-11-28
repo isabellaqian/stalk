@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import arrow from "../images/left_arrow.png";
 import { addFriend, firestore } from "../Firebase";
-import { collection, query, where, onSnapshot } from 'firebase/firestore'
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 
 import "./pages.css";
 
@@ -13,10 +13,7 @@ const AddFriends = () => {
 
   //Sets userArr to an array of all user emails (@emily)
   useEffect(() => {
-    const userEmails = collection(
-      firestore,
-      "userCollection/"
-    );    
+    const userEmails = collection(firestore, "userCollection/");
     const unsubscribe = onSnapshot(userEmails, (snapshot) => {
       const users = [];
       snapshot.forEach((doc) => {
@@ -29,8 +26,8 @@ const AddFriends = () => {
 
   //Returns true if potential friend email input by user is the email of a current user in userArr array (@emily)
   function checkValidUser(email) {
-    for( let i = 0; i < userArr.length; i++) {
-      if(email === userArr[i]) {
+    for (let i = 0; i < userArr.length; i++) {
+      if (email === userArr[i]) {
         return true;
       }
     }
@@ -43,26 +40,29 @@ const AddFriends = () => {
       console.log("email is valid");
       setEmails(e.target.value);
 
-      if(checkValidUser(emails)) {
+      if (checkValidUser(emails)) {
         console.log("user is valid");
         //taking in email input: friends email
-        addFriend(emails)
+        addFriend(emails);
         setError(null);
-        console.log("You added: ", emails)
+        console.log("You added: ", emails);
         return;
-      }
-      else {
+      } else {
         console.log("user is invalid");
         setError("Not a vaid user!");
       }
-    } else { console.log("email is invalid"); }
+    } else {
+      console.log("email is invalid");
+    }
   }
 
   function isValidEmail(email) {
-    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      email
+    );
   }
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     if (!isValidEmail(e.target.value)) {
       setError("Email is invalid");
     } else {
@@ -81,19 +81,23 @@ const AddFriends = () => {
         <div className="h3">Add friends</div>
       </div>
       <form onSubmit={handleSubmit}>
-        <input
+        <textarea
           className="addfriendsinput"
           type="text"
           id="emails"
           value={emails}
-          placeholder="Enter your friend's email (only one email at a time)"
+          placeholder="Enter one email at a time. Eg. eggert@tz.ucla.edu"
           onChange={handleChange}
         />
       </form>
-        {error && <h2 style={{color: 'red'}}>{error}</h2>}
-        <button className="button_accent" type="submit" onClick={handleSubmit}>
-          Add
-        </button>
+      {error && <h2 style={{ color: "red" }}>{error}</h2>}
+      <button
+        className="button_accent_small"
+        type="submit"
+        onClick={handleSubmit}
+      >
+        Add
+      </button>
     </div>
   );
 };

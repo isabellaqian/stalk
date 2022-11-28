@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { addEvent, firestore } from "../Firebase";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 import moment from "moment";
 
 import MyCalendar from "../components/MyCalendar";
@@ -33,16 +35,32 @@ export default function CreateEvent() {
 
   return (
     <div className="container">
-      <table id="create-event-table">
+      <form>
+        <TextField
+          // id="outlined-textarea"
+          label="Event Name"
+          placeholder="CS35L"
+          onChange={(e) => console.log(e)} //constantly updates the state
+        />
+        <br />
+        <TextField
+          // id="outlined-textarea"
+          label="Description"
+          placeholder="Plan: grind for 5 hours straight."
+          onChange={(e) => console.log(e)} //constantly updates the state
+        />
+      </form>
+
+      <table id="create-event-table" className="custom-centered">
         <thead>
           <tr>
-            <th colSpan={2}>Enter your calendar event below!</th>
+            <th colSpan={5}>Add an event to calendar</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th>Event Name:</th>
-            <td>
+            <th colSpan={2}>Event Name:</th>
+            <td colSpan={3}>
               <input
                 type="text"
                 required
@@ -52,8 +70,8 @@ export default function CreateEvent() {
             </td>
           </tr>
           <tr>
-            <th>Description:</th>
-            <td>
+            <th colSpan={2}>Description:</th>
+            <td colSpan={3}>
               <input
                 className="inputbox"
                 type="text"
@@ -64,8 +82,8 @@ export default function CreateEvent() {
             </td>
           </tr>
           <tr>
-            <th>Start:</th>
-            <td>
+            <th colSpan={2}>Start:</th>
+            <td colSpan={3}>
               <input
                 type="datetime-local"
                 id="start"
@@ -75,8 +93,8 @@ export default function CreateEvent() {
             </td>
           </tr>
           <tr>
-            <th>End:</th>
-            <td>
+            <th colSpan={2}>End:</th>
+            <td colSpan={3}>
               <input
                 type="datetime-local"
                 id="end"
@@ -84,14 +102,22 @@ export default function CreateEvent() {
                 onChange={(e) => setEnd(e.target.value)}
               />
             </td>
-            <td>
-              <button onClick={handleSubmit} disabled={isFormDisabled}>
-                Create event!
-              </button>
-              <button onClick={clear}>Clear</button>
-            </td>
           </tr>
         </tbody>
+        <tr>
+          <th colSpan={5}>
+            <button
+              className="button_accent_small"
+              onClick={handleSubmit}
+              disabled={isFormDisabled}
+            >
+              Create event!
+            </button>
+            <button className="button_white_small" onClick={clear}>
+              Clear input
+            </button>
+          </th>
+        </tr>
       </table>
       <div className="content">
         <MyCalendar />
