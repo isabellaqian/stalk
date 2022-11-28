@@ -20,10 +20,13 @@ export default function CreateEvent() {
   const [end, setEnd] = useState("");
 
   const { user } = UserAuth();
-  const uid = user.uid;
+
   useEffect(() => {
+    if (!user) {
+      return;
+    }
     const tempEvents = [];
-    const fbEvents = collection(db, "userCollection/" + uid + "/events");
+    const fbEvents = collection(db, "userCollection/" + user.email + "/events");
     const unsubscribe = onSnapshot(fbEvents, (querySnapshot) => {
       console.log(querySnapshot);
       querySnapshot.forEach((doc) => {

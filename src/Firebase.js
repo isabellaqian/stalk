@@ -40,7 +40,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 //creating a reference to getFirestore
-
+export const db = getFirestore();
 //adding a way to get the user.id @s-palakur
 var url;
 
@@ -104,7 +104,7 @@ export function writeUserDoc() {
 }
 
 export async function addFriend(friendID) {
-  const userCollection = doc(firestore, 'userCollection/' + getID())
+  const userCollection = doc(firestore, "userCollection/" + getID());
   //add new friend's email to const friendArray
   friendArray.push(friendID);
   //update "friends" field of docData to newFriendList (@emily-coding-kim)
