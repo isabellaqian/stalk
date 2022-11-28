@@ -12,13 +12,12 @@ import {
   doc,
   setDoc,
   Timestamp,
-  getDoc,
-  getDocs,
   collection,
   addDoc,
-  onSnapshot,
+  updateDoc,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import { get } from "lodash";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -41,14 +40,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 //creating a reference to getFirestore
-export const db = getFirestore();
-//reference to collection of events for current user
-// export const currUserEvents = collection(
-//   db,
-//   "userCollection/" + getAuth().currentUser.uid + "/events"
-// );
-// const provider = new GoogleAuthProvider();
-const database = getDatabase();
 
 //adding a way to get the user.id @s-palakur
 var url;
@@ -56,20 +47,25 @@ var url;
 // firestore to store user info into database when logging in (@amy-al)
 // TODO: using query to double check if user exists to update data etc.
 
+//function to see if the user is signed in so we can retrieve email id @s-palakur
 function getID() {
   const auth = getAuth();
   const user = auth.currentUser;
-  if (user !== null) {
-    // const uid = user.uid;
-    // console.log("Printing ID from Firebase" + user.uid);
-    return user.uid;
+  if (user != null) {
+    console.log(user.email);
+    return user.email;
   }
   return "no user";
 }
 
-export async function addEvent(title, summary, desc, start_d, end_d, personal) {
+//moved some constants outside functions for fun @s-palakur
+const friendArray = [];
+const firestore = getFirestore(); //basically db
+export const userCollection = doc(firestore, "userCollection/" + getID());
+
+export async function addEvent(title, summary, desc, start_d, end_d) {
   const eventsCollection = collection(
-    db,
+    firestore,
     "userCollection/" + getID() + "/events"
   );
   //Using the add() method to add random documents with the Title and Date stored
@@ -92,24 +88,30 @@ export async function addEvent(title, summary, desc, start_d, end_d, personal) {
 export function writeUserDoc() {
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
+    const userCollection = doc(firestore, "userCollection/" + user.email);
     if (user) {
-      const firestore = getFirestore();
-      const userCollection = doc(firestore, "userCollection/" + user.uid); // specifying the path insied firestore to store the doc and collection
-      url = user.uid;
-
       const docData = {
         // userid that's stored in user-doc
         user: user.uid,
         name: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
+        friends: friendArray,
       };
       setDoc(userCollection, docData);
     }
   });
 }
 
-//making a function to see if the user is signed in! @s-palakur
+export async function addFriend(friendID) {
+  //add new friend's email to const friendArray
+  friendArray.push(friendID);
+  //update "friends" field of docData to newFriendList (@emily-coding-kim)
+  updateDoc(userCollection, { friends: friendArray });
+}
+
+// const provider = new GoogleAuthProvider();
+const database = getDatabase();
 
 // export const logInWithGoogle = () => {
 //   signInWithPopup(auth, provider)

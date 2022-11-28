@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import { doc, collection, onSnapshot } from "firebase/firestore";
 import { addEvent, db } from "../Firebase";
@@ -46,9 +46,8 @@ export default function CreateEvent() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    //we may want to store more info than just title and start date in database (@alexavanh)
-    //adding new entries to store new incoming data @s-palakur
-    addEvent(eventTitle, summary, description, start, end, personalEvents);
+    //adding new entries to store new incoming data in firestore database @s-palakur
+    addEvent(eventTitle, summary, description, start, end);
     const myEvent = {
       title: eventTitle,
       start: Date.parse(start),
@@ -56,6 +55,17 @@ export default function CreateEvent() {
     };
     // setPersonalEvents(personalEvents.concat([myEvent]));
   }
+
+  //want event data to persist on calendar @alexavanh
+  // useEffect(() => {
+  //   addEvent(eventTitle, summary, description, start, end)
+  //   const myEvent = {
+  //     title: eventTitle,
+  //     start: Date.parse(start),
+  //     end: Date.parse(end)
+  //   };
+  //   setPersonalEvents(personalEvents.concat([ myEvent ]));
+  // }, [personalEvents])
 
   function clear() {
     setTitle("");
@@ -97,55 +107,77 @@ export default function CreateEvent() {
 
   return (
     <div>
-      <ul className="header">
-        <h2>Enter your calendar event below!</h2>
-        <form>
-          <label>Event name:</label>
-          <input
-            type="text"
-            required
-            value={eventTitle}
-            onChange={(e) => setTitle(e.target.value)} //constantly updates the state
-          />
-          <br />
-          <label htmlFor="summary">Summary:</label>
-          <input
-            type="text"
-            id="summary"
-            value={summary}
-            onChange={(e) => setSummary(e.target.value)}
-          />
-          <br />
-          <label htmlFor="description">Description:</label>
-          <input
-            className="inputbox"
-            type="text"
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <br />
-          <label htmlFor="start">Start date time:</label>
-          <input
-            type="datetime-local"
-            id="start"
-            value={start}
-            onChange={(e) => setStart(e.target.value)}
-          />
-          <br />
-          <label htmlFor="end">End date time:</label>
-          <input
-            type="datetime-local"
-            id="end"
-            value={end}
-            onChange={(e) => setEnd(e.target.value)}
-          />
-          <button onClick={handleSubmit} disabled={isFormDisabled}>
-            Create event!
-          </button>
-          <button onClick={clear}>Clear</button>
-        </form>
-      </ul>
+      <table id="create-event-table">
+        <thead>
+          <tr>
+            <th colSpan={2}>Enter your calendar event below!</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Event Name:</th>
+            <td>
+              <input
+                type="text"
+                required
+                value={eventTitle}
+                onChange={(e) => setTitle(e.target.value)} //constantly updates the state
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>Summary:</th>
+            <td>
+              <input
+                type="text"
+                id="summary"
+                value={summary}
+                onChange={(e) => setSummary(e.target.value)}
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>Description:</th>
+            <td>
+              <input
+                className="inputbox"
+                type="text"
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>Start:</th>
+            <td>
+              <input
+                type="datetime-local"
+                id="start"
+                value={start}
+                onChange={(e) => setStart(e.target.value)}
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>End:</th>
+            <td>
+              <input
+                type="datetime-local"
+                id="end"
+                value={end}
+                onChange={(e) => setEnd(e.target.value)}
+              />
+            </td>
+            <td>
+              <button onClick={handleSubmit} disabled={isFormDisabled}>
+                Create event!
+              </button>
+              <button onClick={clear}>Clear</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <div className="content">
         <Calendar
           localizer={localizer}

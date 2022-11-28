@@ -1,17 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import arrow from "../images/left_arrow.png";
 import Multiselect from "multiselect-react-dropdown";
+import { userCollection } from "../Firebase";
+import { onSnapshot } from "firebase/firestore";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 const localizer = momentLocalizer(moment);
 
 const Meet = () => {
-  //realisitcally, we need to get the user's friend list from the database (@alexavanh)
+  //realistically, we need to get the user's friend list from the database (@alexavanh)
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [begin, setBegin] = useState("");
   const [end, setEnd] = useState("");
-  const friendsList = ["Alexa", "Izzy", "Swetha", "Amy", "Emily"];
+  //added friend list with set function to update friends list from Firebase (@s-palakur)
+  const [friendArr, setFriendArr] = useState([]);
+
+  //getting friendsList from the database @s-palakur for async stuff
+  // var f = [];
+  // getFriendsList()
+  //   .then((val) => {
+  //     console.log("inside loop" + val);
+  //     f = val;
+  //     console.log("this is f" + f)
+
+  //   })
+  //   .catch((err =>
+  //     console.log(err)));
+
+  //the key was - to use useEffect!
+  // can successfully retrieve the friends list from firestore @s-palakur
+  useEffect(() => {
+    const friendsArrFirestore = [];
+    const unsub = onSnapshot(userCollection, (doc) => {
+      const tempArr = doc.data().friends;
+      for (let i = 0; i < tempArr.length; i++)
+        friendsArrFirestore.push(tempArr[i]);
+      //setting it with added helper function
+      setFriendArr(friendsArrFirestore);
+    });
+    return () => unsub();
+  }, []);
+
   const handleSelect = (selectedList, selectedItem) => {
     setSelectedFriends(selectedList);
   };
@@ -22,7 +52,8 @@ const Meet = () => {
     moment(end).isBefore(begin);
 
   function handleSubmit() {
-    //need to get friends' and user's calendars within the begin and end dates and compare them
+    //get friends' and user's calendars within the begin and end dates and compare them
+    //@s-palakur
   }
 
   function clear() {
@@ -48,51 +79,51 @@ const Meet = () => {
             console.log(event);
           }}
           onSelect={handleSelect}
-          options={friendsList}
-          selectedValues={selectedFriends}
+          options={friendArr}
+          selectedValues={selectedFriends} //values must be passed to get events
           placeholder="Select friends!"
         />
-        <div className="smallerh3 padding2">
-          <h1>Choose the date and time to meet</h1>
-        </div>
-        <div className="smallerh3 rangepickerpos">
-          <form>
-            <label htmlFor="start">Start date time:</label>
-            <input
-              type="datetime-local"
-              id="start"
-              value={begin}
-              onChange={(e) => setBegin(e.target.value)}
-            />
-            <br />
-            <label htmlFor="end">End date time:</label>
-            <input
-              type="datetime-local"
-              id="end"
-              value={end}
-              onChange={(e) => setEnd(e.target.value)}
-            />
-            <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={isFormDisabled}
-            >
-              Submit
-            </button>
-            <button type="button" onClick={clear}>
-              Clear
-            </button>
-          </form>
-        </div>
-        <div className="content calpos">
-          <Calendar
-            localizer={localizer}
-            // events={}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: 500 }}
+      </div>
+      <div className="smallerh3 padding2">
+        <h1>Choose the date and time range to meet</h1>
+      </div>
+      <div className="smallerh3 rangepickerpos">
+        <form>
+          <label htmlFor="start">Start date time:</label>
+          <input
+            type="datetime-local"
+            id="start"
+            value={begin}
+            onChange={(e) => setBegin(e.target.value)}
           />
-        </div>
+          <br />
+          <label htmlFor="end">End date time:</label>
+          <input
+            type="datetime-local"
+            id="end"
+            value={end}
+            onChange={(e) => setEnd(e.target.value)}
+          />
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={isFormDisabled}
+          >
+            Submit
+          </button>
+          <button type="button" onClick={clear}>
+            Clear
+          </button>
+        </form>
+      </div>
+      <div className="content calpos">
+        <Calendar
+          localizer={localizer}
+          // events={}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 500 }}
+        />
       </div>
     </div>
   );
