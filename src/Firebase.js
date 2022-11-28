@@ -9,6 +9,7 @@ import { getDatabase, ref, set } from "firebase/database";
 // imports for firestore
 import { getFirestore, doc, setDoc, Timestamp, collection, addDoc, updateDoc } from 'firebase/firestore'
 import { onAuthStateChanged } from "firebase/auth";
+import { get } from "lodash";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -38,20 +39,21 @@ var url;
 // firestore to store user info into database when logging in (@amy-al)
 // TODO: using query to double check if user exists to update data etc.
 
-//moved some constants outside functions for fun @s-palakur
-const friendArray = [];
-const firestore = getFirestore(); //basically db
-//userCollection - gets you the path of the current user's document
-export const userCollection = doc(firestore, 'userCollection/' + getID())
-
 //function to see if the user is signed in so we can retrieve email id @s-palakur
 function getID() {
   const auth = getAuth();
   const user = auth.currentUser;
   if (user != null) {
+    console.log(user.email)
     return user.email;
   }
 }
+
+//moved some constants outside functions for fun @s-palakur
+const friendArray = [];
+const firestore = getFirestore(); //basically db
+export const userCollection = doc(firestore, 'userCollection/' + getID())
+
 
 export async function addEvent(title, summary, desc, start_d, end_d) {
   const eventsCollection = collection(firestore, 'userCollection/' + getID() + '/events')
@@ -72,6 +74,7 @@ export async function addEvent(title, summary, desc, start_d, end_d) {
 export function writeUserDoc() {
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
+  const userCollection = doc(firestore, 'userCollection/' + user.email)
     if (user) {
       const docData = { // userid that's stored in user-doc
         user: user.uid,

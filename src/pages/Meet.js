@@ -35,7 +35,9 @@ const Meet = () => {
   useEffect(() => {
     const friendsArrFirestore = [];
     const unsub = onSnapshot(userCollection, (doc) => {
-        friendsArrFirestore.push(doc.data().friends); 
+      const tempArr = doc.data().friends;
+      for (let i = 0; i < tempArr.length; i++)
+        friendsArrFirestore.push(tempArr[i]); 
         //setting it with added helper function
         setFriendArr(friendsArrFirestore);
     }); 
