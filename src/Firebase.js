@@ -58,6 +58,8 @@ function getID() {
 //moved some constants outside functions for fun @s-palakur
 const friendArray = [];
 export const firestore = getFirestore(); //basically db
+
+// note: this is actually a doc, might have issues if user starts as null
 export const userCollection = doc(firestore, "userCollection/" + getID());
 
 export async function addEvent(title, desc, start_d, end_d) {
