@@ -39,13 +39,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-//creating a reference to getFirestore
 
 // firestore to store user info into database when logging in (@amy-al)
 // TODO: using query to double check if user exists to update data etc.
 
 //function to see if the user is signed in so we can retrieve email id @s-palakur
-function getID() {
+export function getID() {
   const auth = getAuth();
   const user = auth.currentUser;
   if (user != null) {
@@ -58,7 +57,6 @@ function getID() {
 //moved some constants outside functions for fun @s-palakur
 const friendArray = [];
 export const firestore = getFirestore(); //basically db
-export const userCollection = doc(firestore, "userCollection/" + getID());
 
 export async function addEvent(title, desc, start_d, end_d) {
   const eventsCollection = collection(
