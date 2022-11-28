@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import arrow from "../images/left_arrow.png";
 import Multiselect from "multiselect-react-dropdown";
-import { userCollection } from "../Firebase";
-import { onSnapshot } from "firebase/firestore";
+import { getID } from "../Firebase";
+import { onSnapshot, getFirestore, doc } from "firebase/firestore";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 const localizer = momentLocalizer(moment);
@@ -30,17 +30,22 @@ const Meet = () => {
 
   //the key was - to use useEffect!
   // can successfully retrieve the friends list from firestore @s-palakur
+  //fixed bug where userCollection was imported not redeclared as a DOC
   useEffect(() => {
     const friendsArrFirestore = [];
-    const unsub = onSnapshot(userCollection, (doc) => {
+    const db = getFirestore();
+    const unsub = onSnapshot(doc(db, 'userCollection/' + getID()), (doc) => {
       const tempArr = doc.data().friends;
       for (let i = 0; i < tempArr.length; i++)
+      {
         friendsArrFirestore.push(tempArr[i]);
-      //setting it with added helper function
+        //setting it with added helper function
+      }
       setFriendArr(friendsArrFirestore);
     });
-    return () => unsub();
+  return() => unsub();
   }, []);
+
 
   const handleSelect = (selectedList, selectedItem) => {
     setSelectedFriends(selectedList);

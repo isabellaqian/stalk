@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, Timestamp } from "firebase/firestore";
 import { addEvent, firestore } from "../Firebase";
 import moment from "moment";
 import { UserAuth } from "../components/AuthContext";
@@ -21,6 +21,16 @@ export default function CreateEvent() {
 
   const { user } = UserAuth();
 
+  function timestampToDate(timestamp) {
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    }).format(timestamp);
+  }
   useEffect(() => {
     if (!user) {
       return;
@@ -37,8 +47,8 @@ export default function CreateEvent() {
         const d = doc.data();
         tempEvents.push({
           title: d.Title,
-          start: d.Start,
-          end: d.End,
+          start: d.Start.toDate(),
+          end: d.End.toDate(),
         });
       });
       console.log("tempEvents ", tempEvents);
@@ -53,7 +63,7 @@ export default function CreateEvent() {
   function handleSubmit(e) {
     e.preventDefault();
     //adding new entries to store new incoming data in firestore database @s-palakur
-    addEvent(eventTitle, summary, description, start, end);
+    addEvent(eventTitle, description, start, end);
   }
 
   function clear() {
@@ -71,28 +81,6 @@ export default function CreateEvent() {
     end.trim().length === 0 ||
     moment(end).isBefore(start);
   const [test, setTest] = useState([]);
-
-  // const tempEvents = [];
-  // onSnapshot(eventsCollection, (snapshot) => {
-  //   snapshot.docs.forEach((doc) => {
-  //     const d = doc.data();
-  //     tempEvents.push({
-  //       title: d.Title,
-  //       start: Date.parse(d.Start),
-  //       end: Date.parse(d.End),
-  //     });
-  //   });
-  //   console.log("new snapshot: ", tempEvents);
-  //   setPersonalEvents(tempEvents);
-  //   console.log("updated personalEvents ", personalEvents);
-  // });
-  // getEvents()
-  //   .then((val) => {
-  //     setTest(val);
-  //     console.log("test ", test);
-  //   })
-  //   .catch((err) => console.log(err));
-  // console.log("test general ", test);
 
   return (
     <div>
