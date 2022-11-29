@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { addEvent, firestore } from "../Firebase";
 import moment from "moment";
-
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
 import MyCalendar from "../components/MyCalendar";
 
 export default function CreateEvent() {
@@ -33,39 +34,97 @@ export default function CreateEvent() {
 
   return (
     <div className="container">
-      <table id="create-event-table">
+      <div className="custom-centered" style={{ width: "50%" }}>
+        <Stack spacing={2}>
+          <h1 className="custom-centered">Add an event to calendar</h1>
+          <TextField
+            // id="outlined-textarea"
+            label="Event Name"
+            required
+            placeholder="CS35L Hack"
+            value={eventTitle}
+            // style={{ "padding-bottom": "10px" }}
+            onChange={(e) => setTitle(e.target.value)} //constantly updates the state
+          />
+
+          <TextField
+            // id="outlined-textarea"
+            label="Description (optional)"
+            placeholder="Plan: grind for 5 hours straight."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)} //constantly updates the state
+          />
+          <TextField
+            type="datetime-local"
+            id="start"
+            required
+            label="Start time"
+            value={start}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={(e) => setStart(e.target.value)}
+          />
+
+          <TextField
+            type="datetime-local"
+            id="end"
+            label="End time"
+            value={end}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={(e) => setEnd(e.target.value)}
+          />
+          <div>
+            <button
+              className="button_blue_small"
+              onClick={handleSubmit}
+              disabled={isFormDisabled}
+            >
+              Create event!
+            </button>
+            <button className="button_white_small" onClick={clear}>
+              Clear input
+            </button>
+          </div>
+        </Stack>
+      </div>
+      {/* <table id="create-event-table" className="custom-centered">
         <thead>
           <tr>
-            <th colSpan={2}>Enter your calendar event below!</th>
+            <th colSpan={5}>Add an event to calendar</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th>Event Name:</th>
-            <td>
+            <th colSpan={2}>Event Name:</th>
+            <td colSpan={3}>
               <input
                 type="text"
                 required
+                placeholder="35L"
                 value={eventTitle}
                 onChange={(e) => setTitle(e.target.value)} //constantly updates the state
               />
             </td>
           </tr>
           <tr>
-            <th>Description:</th>
-            <td>
+            <th colSpan={2}>Description:</th>
+            <td colSpan={3}>
               <input
                 className="inputbox"
                 type="text"
                 id="description"
+                placeholder="Plan: Grind like a hackathon"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </td>
           </tr>
           <tr>
-            <th>Start:</th>
-            <td>
+            <th colSpan={2}>Start:</th>
+            <td colSpan={3}>
               <input
                 type="datetime-local"
                 id="start"
@@ -75,8 +134,8 @@ export default function CreateEvent() {
             </td>
           </tr>
           <tr>
-            <th>End:</th>
-            <td>
+            <th colSpan={2}>End:</th>
+            <td colSpan={3}>
               <input
                 type="datetime-local"
                 id="end"
@@ -84,16 +143,24 @@ export default function CreateEvent() {
                 onChange={(e) => setEnd(e.target.value)}
               />
             </td>
-            <td>
-              <button onClick={handleSubmit} disabled={isFormDisabled}>
-                Create event!
-              </button>
-              <button onClick={clear}>Clear</button>
-            </td>
           </tr>
         </tbody>
-      </table>
-      <div className="content">
+        <tr>
+          <th colSpan={5}>
+            <button
+              className="button_accent_small"
+              onClick={handleSubmit}
+              disabled={isFormDisabled}
+            >
+              Create event!
+            </button>
+            <button className="button_white_small" onClick={clear}>
+              Clear input
+            </button>
+          </th>
+        </tr>
+      </table> */}
+      <div className="content" style={{ "padding-top": "20px" }}>
         <MyCalendar />
       </div>
     </div>

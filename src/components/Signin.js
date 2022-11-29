@@ -10,7 +10,7 @@ const Signin = () => {
   const handleSignInOrUp = async () => {
     try {
       await googleSignIn();
-    }catch (error) {
+    } catch (error) {
       console.log(error);
     }
   };
@@ -19,22 +19,24 @@ const Signin = () => {
   useEffect(() => {
     if (user != null) {
       navigate("/dashboard");
-      writeUserDoc()
+      writeUserDoc();
     }
   }, []);
 
   return (
-    <div>
-      
-      {/* Changing to only one button. (@emily)
-      <button className="button_accent float_right" onClick={handleSignUp}>
-        Sign up now
-      </button> */}
-      <button className="button_white float_right" onClick={handleSignInOrUp}>
-        Log in or Sign Up
-      </button>
-    </div>
+    <button
+      className="button_accent float_right"
+      style={{ width: "200px" }}
+      onClick={handleSignInOrUp}
+    >
+      Log in or Sign Up
+    </button>
   );
 };
 
 export default Signin;
+
+/* Changing to only one button. (@emily)
+  <button className="button_accent float_right" onClick={handleSignUp}>
+    Sign up now
+  </button> */
