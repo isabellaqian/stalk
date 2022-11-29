@@ -78,7 +78,7 @@ export default function CreateEvent() {
           />
           <div>
             <button
-              className="button_accent_small"
+              className="button_blue_small"
               onClick={handleSubmit}
               disabled={isFormDisabled}
             >

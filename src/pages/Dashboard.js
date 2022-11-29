@@ -17,7 +17,7 @@ export const Dashboard = () => {
           <button className="button_accent">Meet</button>
         </Link>
         <Link to="/addfriends">
-          <button className="button_white">Add friends</button>
+          <button className="button_white">Friends</button>
         </Link>
       </div>
       <div className="cal">

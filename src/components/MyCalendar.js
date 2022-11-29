@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
+import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import { collection, onSnapshot } from "firebase/firestore";
 import { firestore } from "../Firebase";
 import moment from "moment";
@@ -38,13 +38,21 @@ export default function MyCalendar() {
     //remember to unsubscribe from your realtime listener on unmount or you will create a memory leak
     return () => unsubscribe();
   }, []);
+
   return (
     <div>
       <Calendar
+        selectable
         localizer={localizer}
         events={personalEvents}
         startAccessor="start"
         endAccessor="end"
+        defaultView={Views.WEEK}
+        eventPropGetter={() => {
+          return {
+            style: { backgroundColor: "#626fa7", border: "none" },
+          };
+        }}
         style={{ height: 500 }}
       />
     </div>
