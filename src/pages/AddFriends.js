@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import arrow from "../images/left_arrow.png";
 import { addFriend, firestore } from "../Firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
+import Alert from "@mui/material/Alert";
 
 import "./pages.css";
 
@@ -90,7 +91,8 @@ const AddFriends = () => {
           onChange={handleChange}
         />
       </form>
-      {error && <h2 style={{ color: "red" }}>{error}</h2>}
+      {/* {error && <h2 style={{ color: "red" }}>{error}</h2>} */}
+      {error && <Alert severity="error">{error}</Alert>}
       <button
         className="button_accent_small"
         type="submit"

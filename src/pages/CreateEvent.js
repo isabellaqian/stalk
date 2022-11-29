@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { addEvent, firestore } from "../Firebase";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import moment from "moment";
-
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
 import MyCalendar from "../components/MyCalendar";
 
 export default function CreateEvent() {
@@ -35,23 +34,63 @@ export default function CreateEvent() {
 
   return (
     <div className="container">
-      <form>
-        <TextField
-          // id="outlined-textarea"
-          label="Event Name"
-          placeholder="CS35L"
-          onChange={(e) => console.log(e)} //constantly updates the state
-        />
-        <br />
-        <TextField
-          // id="outlined-textarea"
-          label="Description"
-          placeholder="Plan: grind for 5 hours straight."
-          onChange={(e) => console.log(e)} //constantly updates the state
-        />
-      </form>
+      <div className="custom-centered" style={{ width: "50%" }}>
+        <Stack spacing={2}>
+          <h1 className="custom-centered">Add an event to calendar</h1>
+          <TextField
+            // id="outlined-textarea"
+            label="Event Name"
+            required
+            placeholder="CS35L Hack"
+            value={eventTitle}
+            // style={{ "padding-bottom": "10px" }}
+            onChange={(e) => setTitle(e.target.value)} //constantly updates the state
+          />
 
-      <table id="create-event-table" className="custom-centered">
+          <TextField
+            // id="outlined-textarea"
+            label="Description (optional)"
+            placeholder="Plan: grind for 5 hours straight."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)} //constantly updates the state
+          />
+          <TextField
+            type="datetime-local"
+            id="start"
+            required
+            label="Start time"
+            value={start}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={(e) => setStart(e.target.value)}
+          />
+
+          <TextField
+            type="datetime-local"
+            id="end"
+            label="End time"
+            value={end}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={(e) => setEnd(e.target.value)}
+          />
+          <div>
+            <button
+              className="button_accent_small"
+              onClick={handleSubmit}
+              disabled={isFormDisabled}
+            >
+              Create event!
+            </button>
+            <button className="button_white_small" onClick={clear}>
+              Clear input
+            </button>
+          </div>
+        </Stack>
+      </div>
+      {/* <table id="create-event-table" className="custom-centered">
         <thead>
           <tr>
             <th colSpan={5}>Add an event to calendar</th>
@@ -64,6 +103,7 @@ export default function CreateEvent() {
               <input
                 type="text"
                 required
+                placeholder="35L"
                 value={eventTitle}
                 onChange={(e) => setTitle(e.target.value)} //constantly updates the state
               />
@@ -76,6 +116,7 @@ export default function CreateEvent() {
                 className="inputbox"
                 type="text"
                 id="description"
+                placeholder="Plan: Grind like a hackathon"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
@@ -118,8 +159,8 @@ export default function CreateEvent() {
             </button>
           </th>
         </tr>
-      </table>
-      <div className="content">
+      </table> */}
+      <div className="content" style={{ "padding-top": "20px" }}>
         <MyCalendar />
       </div>
     </div>
