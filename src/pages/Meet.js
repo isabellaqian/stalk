@@ -2,14 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import arrow from "../images/left_arrow.png";
 import Multiselect from "multiselect-react-dropdown";
-import { getID } from "../Firebase";
-import { onSnapshot, getFirestore, doc } from "firebase/firestore";
+import { getID, getFriendEvents } from "../Firebase";
+import { onSnapshot, getFirestore, doc, Timestamp } from "firebase/firestore";
 import MyCalendar from "../components/MyCalendar";
 import moment from "moment";
 
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
@@ -35,29 +32,19 @@ const Meet = () => {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
 
-  //added friend list with set function to update friends list from Firebase (@s-palakur)
   const [friendArr, setFriendArr] = useState([]);
 
-  const defaultDate = new Date(2020, 7, 15); //hardcoded start date for showing meeting times
+  //added friend list with set function to update friends list from Firebase (@s-palakur)
+  const [startArrayConst, setStartArr] = useState([]);
+  const [endArrayConst, setEndArr] = useState([]);
 
-  //getting friendsList from the database @s-palakur for async stuff
-  // var f = [];
-  // getFriendsList()
-  //   .then((val) => {
-  //     console.log("inside loop" + val);
-  //     f = val;
-  //     console.log("this is f" + f)
+  const defaultDate = new Date(2020, 7, 15);
 
-  //   })
-  //   .catch((err =>
-  //     console.log(err)));
-
-  //the key was - to use useEffect!
   // can successfully retrieve the friends list from firestore @s-palakur
   //fixed bug where userCollection was imported not redeclared as a DOC
+  const db = getFirestore();
   useEffect(() => {
     const friendsArrFirestore = [];
-    const db = getFirestore();
     const unsub = onSnapshot(doc(db, "userCollection/" + getID()), (doc) => {
       const tempArr = doc.data().friends;
       for (let i = 0; i < tempArr.length; i++) {
@@ -79,10 +66,42 @@ const Meet = () => {
     moment(end).isBefore(start);
 
   function handleSubmit() {
-    //get friends' and user's calendars within the begin and end dates and compare them
-    //@s-palakur
+    //empty temp arrays that will be added to
+    let startArr = [];
+    let endArr = [];
+    console.log(selectedFriends);
+    //local functions that will be updated with useState
+    const tempList = selectedFriends;
+    console.log("lsit of selected friends" + tempList);
+    tempList.push(getID());
+    console.log("List of friends and yourself: " + tempList);
+    //converting objects to Timestamp
+    const tsStart = Timestamp.fromDate(new Date(start));
+    const tsEnd = Timestamp.fromDate(new Date(end));
+    //probs dont need templist as map doesnt modify original array
+
+    const resultEvents = tempList.map((email) => {
+      //redefining these variables - if it doesn't work also make an array of
+      //const collections to iterate through (@s-palakur)
+
+      //ASYNC function that updates startArray and stop array, might have to add const (?)
+      //OR USE SET FUNCTION! to update the array
+      getFriendEvents(email, tsStart, tsEnd)
+        .then((returnObj) => {
+          startArr.push(...returnObj[0]);
+          endArr.push(...returnObj[1]);
+          setStartArr(startArr);
+          setEndArr(endArr);
+          return returnObj;
+        })
+        .catch((err) => console.log(err));
+    });
     // when sending start and end dates,  + "T00:00" for datetime format
   }
+
+  //THIS WORKS yay @s-palakur (works outside the array)
+  console.log("this is startarr", startArrayConst);
+  console.log("this is endArr", endArrayConst);
 
   function clear() {
     setTitle("");
@@ -169,7 +188,7 @@ const Meet = () => {
         </div>
       </Stack>
       <div className="content calpos set_mono">
-        <MyCalendar busyTimes={testTimes} defaultStart={defaultDate} />
+        <MyCalendar busyTimes={testTimes} defaultDate={defaultDate} />
       </div>
     </div>
   );
