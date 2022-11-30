@@ -12,14 +12,29 @@ export default function CreateEvent() {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
 
   function handleSubmit(e) {
+    if (eventTitle.trim().length === 0) {
+      setError("Missing title");
+      setSuccess(null);
+      return;
+    } else if (start.trim().length === 0 || end.trim().length === 0) {
+      setError("Missing date");
+      setSuccess(null);
+      return;
+    } else if (moment(end).isBefore(start)) {
+      setError("Invalid dates");
+      setSuccess(null);
+      return;
+    }
     e.preventDefault();
     //adding new entries to store new incoming data in firestore database @s-palakur
     console.log(start);
     console.log(end);
     addEvent(eventTitle, description, start, end);
     setSuccess("Event added");
+    setError(null);
   }
 
   function clear() {
@@ -27,14 +42,17 @@ export default function CreateEvent() {
     setDescription("");
     setStart("");
     setEnd("");
+    setSuccess(null);
+    setError(null);
   }
 
   //make sure the event title and start/end dates are inputted or else you can't create the event (@alexavanh)
-  const isFormDisabled =
-    eventTitle.trim().length === 0 ||
-    start.trim().length === 0 ||
-    end.trim().length === 0 ||
-    moment(end).isBefore(start);
+  // const isFormDisabled =
+  //   eventTitle.trim().length === 0 ||
+  //   start.trim().length === 0 ||
+  //   end.trim().length === 0 ||
+  //   moment(end).isBefore(start);
+
   const [test, setTest] = useState([]);
 
   return (
@@ -82,11 +100,12 @@ export default function CreateEvent() {
             onChange={(e) => setEnd(e.target.value)}
           />
           {success && <Alert severity="success">{success}</Alert>}
+          {error && <Alert severity="error">{error}</Alert>}
           <div>
             <button
               className="button_blue_small"
               onClick={handleSubmit}
-              disabled={isFormDisabled}
+              // disabled={isFormDisabled}
             >
               Create event!
             </button>

@@ -9,7 +9,7 @@ export const Dashboard = () => {
     display: "inline-block",
   };
   return (
-    //izzy TODO: make meet add friends button centered
+    //TODO: make meet add friends button centered
     <div className="container">
       <div className="h3">Welcome, {user?.displayName}</div>
       <div className="items">
@@ -20,7 +20,7 @@ export const Dashboard = () => {
           <button className="button_white">Friends</button>
         </Link>
       </div>
-      <div className="cal">
+      <div className="cal" style={{ paddingBottom: "10%" }}>
         <CreateEvent />
       </div>
     </div>

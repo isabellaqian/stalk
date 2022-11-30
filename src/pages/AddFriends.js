@@ -25,7 +25,7 @@ const AddFriends = () => {
     const userList = [];
     const unsubscribe = onSnapshot(userCollection, (snapshot) => {
       snapshot.forEach((doc) => {
-        console.log("user: ", doc.data().email);
+        // console.log("user: ", doc.data().email);
         userList.push(doc.data().email);
       });
       setUserArr(userList);
@@ -116,34 +116,31 @@ const AddFriends = () => {
         </Link>
         <div className="h3">Add friends</div>
       </div>
-      <form onSubmit={handleSubmit}>
+      <div
+        className="custom-centered"
+        style={{ width: "50%", paddingTop: "20px" }}
+      >
         <TextField
           id="emails"
           label="Enter one email at a time."
           value={emails}
           placeholder="keeperofthetime@g.ucla.edu"
           onChange={handleChange}
+          fullWidth
           style={{ width: "300px" }}
         />
-      </form>
-      {/* {error && <h2 style={{ color: "red" }}>{error}</h2>} */}
-      {error && (
-        <Alert key={error} severity="error">
-          {error}
-        </Alert>
-      )}
-      {success && (
-        <Alert key={success} severity="success">
-          {success}
-        </Alert>
-      )}
-      <button
-        className="button_accent_small"
-        type="submit"
-        onClick={handleSubmit}
-      >
-        Add
-      </button>
+
+        {/* {error && <h2 style={{ color: "red" }}>{error}</h2>} */}
+        {error && <Alert severity="error">{error}</Alert>}
+        {success && <Alert severity="success">{success}</Alert>}
+        <button
+          className="button_accent_small custom-centered"
+          type="submit"
+          onClick={handleSubmit}
+        >
+          Add
+        </button>
+      </div>
     </div>
   );
 };

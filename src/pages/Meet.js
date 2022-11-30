@@ -52,7 +52,6 @@ const Meet = () => {
 
   // can successfully retrieve the friends list from firestore @s-palakur
   //fixed bug where userCollection was imported not redeclared as a DOC
-  const db = getFirestore();
   useEffect(() => {
     //Get all users here (@emily)
     const friendCollection = collection(
@@ -89,13 +88,13 @@ const Meet = () => {
     console.log(selectedFriends);
     //local functions that will be updated with useState
     const tempList = selectedFriends;
-    console.log("lsit of selected friends" + tempList);
+    // console.log("lsit of selected friends" + tempList);
     //tempList.push(getID());
-    console.log("List of friends and yourself: " + tempList);
+    // console.log("List of friends and yourself: " + tempList);
     //converting objects to Timestamp
     const tsStart = Timestamp.fromDate(new Date(start + "T00:00"));
-    console.log("start", start);
     const tsEnd = Timestamp.fromDate(new Date(end + "T23:59"));
+    console.log("start", start);
     console.log("end", end);
     //probs dont need templist as map doesnt modify original array
 
@@ -151,7 +150,7 @@ const Meet = () => {
         <div className="h3">Find the best time to meet with your friends!</div>
       </div>
       <AddEventDialog open={openDialog} handleClose={handleCloseDialog} />
-      <Stack spacing={2}>
+      <Stack spacing={2} className="custom-centered" style={{ width: "60%" }}>
         <Multiselect
           className="set_roboto"
           isObject={false}
@@ -162,7 +161,11 @@ const Meet = () => {
           options={friendArr}
           selectedValues={selectedFriends} //values must be passed to get events
           placeholder="I want to meet with..."
-          style={{ height: "40px" }}
+          style={{
+            chips: {
+              background: "#e05927",
+            },
+          }}
         />
         <TextField
           type="date"

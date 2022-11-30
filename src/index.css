@@ -177,9 +177,10 @@ button_blue_small:active {
   width: 95%;
   left: 33px;
   top: 310px;
+  height:auto;
   font-family: Oxygen Mono;
   font-weight: Regular;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .calpos {
