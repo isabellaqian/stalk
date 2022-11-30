@@ -39,6 +39,9 @@ const Meet = () => {
   const [description, setDescription] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
+  const [busyArr, setBusyArr] = useState([]);
+  const [count, setCount] = useState(0);
+
 
   const [friendArr, setFriendArr] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
@@ -78,6 +81,7 @@ const Meet = () => {
     end.trim().length === 0 ||
     moment(end).isBefore(start);
 
+    
   function handleSubmit() {
     // set where the calendar view starts at and if you can select it to add events
     setDefaultDate(new Date(start + "T00:00"));
@@ -111,21 +115,27 @@ const Meet = () => {
           endArr.push(...returnObj[1]);
           setStartArr(startArr);
           setEndArr(endArr);
+          if(email === tempList[tempList.length-1])
+            setCount(count + 1);
           return returnObj;
         })
-        .catch((err) => console.log(err));
-    });
+        .catch((err)=>console.log(err));
+      })
   }
-
-  //THIS WORKS yay @s-palakur (works outside the array)
-  console.log("this is startarr", startArrayConst);
-  console.log("this is endArr", endArrayConst);
-
-  // useEffect(() => {
-  //   return(busyTimes) => {findBusyTimes(startArrayConst, endArrayConst);
-
-  //   };
-  // }, []);
+  
+    //THIS WORKS yay @s-palakur (works outside the array)
+    console.log("this is startarr", startArrayConst)
+    console.log("this is endArr", endArrayConst)
+  
+    useEffect(() => {
+      console.log(count);
+      console.log("this is startarr in func", startArrayConst)
+      console.log("this is endArr in func", endArrayConst)
+      const arr = findBusyTimes(startArrayConst, endArrayConst);
+      setBusyArr(arr);
+      console.log("This is the busy array" + busyArr);
+    }, [count]);
+  
   function clear() {
     setTitle("");
     setDescription("");
