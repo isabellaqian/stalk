@@ -2,8 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import arrow from "../images/left_arrow.png";
 import Multiselect from "multiselect-react-dropdown";
-import { getID, getFriendEvents } from "../Firebase";
-import { onSnapshot, getFirestore, doc, Timestamp } from "firebase/firestore";
+import { getID, getFriendEvents, firestore } from "../Firebase";
+import {
+  onSnapshot,
+  collection,
+  getFirestore,
+  doc,
+  Timestamp,
+} from "firebase/firestore";
 import MyCalendar from "../components/MyCalendar";
 import moment from "moment";
 
@@ -48,16 +54,19 @@ const Meet = () => {
   //fixed bug where userCollection was imported not redeclared as a DOC
   const db = getFirestore();
   useEffect(() => {
+    //Get all users here (@emily)
+    const friendCollection = collection(
+      firestore,
+      "userCollection/" + getID() + "/friends"
+    );
     const friendsArrFirestore = [];
-    const unsub = onSnapshot(doc(db, "userCollection/" + getID()), (doc) => {
-      const tempArr = doc.data().friends;
-      for (let i = 0; i < tempArr.length; i++) {
-        friendsArrFirestore.push(tempArr[i]);
-        //setting it with added helper function
-      }
+    const unsubscribe = onSnapshot(friendCollection, (snapshot) => {
+      snapshot.forEach((doc) => {
+        friendsArrFirestore.push(doc.data().emailID);
+      });
       setFriendArr(friendsArrFirestore);
     });
-    return () => unsub();
+    return () => unsubcribe();
   }, []);
 
   const handleSelect = (selectedList, selectedItem) => {
@@ -81,11 +90,13 @@ const Meet = () => {
     //local functions that will be updated with useState
     const tempList = selectedFriends;
     console.log("lsit of selected friends" + tempList);
-    // tempList.push(getID());
+    //tempList.push(getID());
     console.log("List of friends and yourself: " + tempList);
     //converting objects to Timestamp
     const tsStart = Timestamp.fromDate(new Date(start + "T00:00"));
-    const tsEnd = Timestamp.fromDate(new Date(end + "T00:00"));
+    console.log("start", start);
+    const tsEnd = Timestamp.fromDate(new Date(end + "T23:59"));
+    console.log("end", end);
     //probs dont need templist as map doesnt modify original array
 
     const resultEvents = tempList.map((email) => {
@@ -107,12 +118,14 @@ const Meet = () => {
   }
 
   //THIS WORKS yay @s-palakur (works outside the array)
-  //   console.log("this is startarr", startArrayConst);
-  //   console.log("this is endArr", endArrayConst);
+  console.log("this is startarr", startArrayConst);
+  console.log("this is endArr", endArrayConst);
 
-  //   const busyTimesArray = findBusyTimes(startArrayConst, endArrayConst);
-  //   console.log("busy times in meet ", busyTimesArray[0]);
+  // useEffect(() => {
+  //   return(busyTimes) => {findBusyTimes(startArrayConst, endArrayConst);
 
+  //   };
+  // }, []);
   function clear() {
     setTitle("");
     setDescription("");

@@ -3,20 +3,18 @@ export function mergeArrays(startArrays, endArrays) {
   let startTimes = [];
   let endTimes = [];
   const mergedArray = [];
-  for (let i = 0; i < startArrays.length; i++) {
-    startTimes = startTimes.concat(startArrays[i]);
-    endTimes = endTimes.concat(endArrays[i]);
-  }
-  for (let j = 0; j < startTimes.length; j++) {
-    mergedArray[j][0] = startTimes[j];
-    mergedArray[j][1] = endTimes[j];
+  for(let i = 0; i < startArrays.length; i++){
+    startTimes = startTimes.concat(startArrays[i])
+    endTimes = endTimes.concat(endArrays[i])
+  } 
+  for(let j = 0; j < startTimes.length; j++){
+    mergedArray[j][0] = startTimes[j]
+    mergedArray[j][1] = endTimes[j]
   }
   return mergedArray;
 }
 
-// takes in array that has all the events where eventsArray[0] is the start time and eventsArray[1] is the end time
-// returns an array of same format called busyEvents
-export function findBusyTimes(startArrays, endArrays) {
+export function findBusyTimes(startArrays, endArrays, startTimestamp, endTimestamp) {
   let eventsArray = mergeArrays(startArrays, endArrays);
 
   // change to sort using timestamp object compare function
@@ -37,10 +35,20 @@ export function findBusyTimes(startArrays, endArrays) {
       index++;
       eventsArray[index] = eventsArray[i];
     }
-  }
-  for (let i = 0; i < eventsArray.length; i++) {
-    eventsArray[i][0] = eventsArray[i][0].toDate();
-    eventsArray[i][1] = eventsArray[i][1].toDate();
-  }
-  return eventsArray;
+    
+    if(eventsArray.length > 0){
+      // check if the end time passes the given end timestamp for the period
+      if (eventsArray[0][0] < startTimestamp){ // assumes that can just compare with comparison operators
+        eventsArray[0][0] = startTimestamp;
+      }
+      // check if the end time passes the given end timestamp for the period
+      if (eventsArray[eventsArray.length-1][1] > endTimestamp){ // assumes that can just compare with comparison operators
+        eventsArray[eventsArray.length-1][1] = endTimestamp;
+      }
+    }
+    for (let i = 0; i < eventsArray.length; i++) {
+      eventsArray[i][0] = eventsArray[i][0].toDate();
+      eventsArray[i][1] = eventsArray[i][1].toDate();
+    }
+  return(eventsArray);
 }

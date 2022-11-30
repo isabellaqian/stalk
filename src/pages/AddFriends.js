@@ -19,39 +19,66 @@ const AddFriends = () => {
 
   const { user } = UserAuth();
 
-  //Sets userArr to an array of all user emails (@emily)
   useEffect(() => {
-    const userEmails = collection(firestore, "userCollection/");
-    const unsubscribe = onSnapshot(userEmails, (snapshot) => {
-      const users = [];
+    //Get all users here (@emily)
+    const userCollection = collection(firestore, "userCollection/");
+    const userList = [];
+    const unsubscribe = onSnapshot(userCollection, (snapshot) => {
       snapshot.forEach((doc) => {
-        users.push(doc.data().email);
+        console.log("user: ", doc.data().email);
+        userList.push(doc.data().email);
       });
-      setUserArr(users);
-      console.log("All users: ", users.join(", "));
+      setUserArr(userList);
+      console.log("All users in userList: ", userArr.join(", "));
     });
 
-    const friendsArrFirestore = [];
-    const unsub = onSnapshot(
-      doc(firestore, "userCollection/" + getID()),
-      (doc) => {
-        const tempArr = doc.data().friends;
-        for (let i = 0; i < tempArr.length; i++) {
-          friendsArrFirestore.push(tempArr[i]);
-          //setting it with added helper function
-        }
-        setFriendArr(friendsArrFirestore);
-      }
+    //Get a list of your friends (@emily)
+    const friendCollection = collection(
+      firestore,
+      "userCollection/" + getID() + "/friends"
     );
-    return () => unsubscribe(); //I detached the listener here, not sure if we need it @izzy
+    const friendList = [];
+    const unsub = onSnapshot(friendCollection, (snapshot) => {
+      snapshot.forEach((doc) => {
+        friendList.push(doc.data().emailID);
+      });
+      setFriendArr(friendList);
+    });
+    console.log("useEffect ran");
   }, []);
 
-  //Returns true if potential friend email input by user is the email of a current user in userArr array (@emily)
-  //Added returns false if email is your own
-  function checkValidUser(email) {
-    if (email == user.email) {
-      return false;
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    //Checks to see if provided email links to an existing user (@emily)
+    if (isValidEmail(emails)) {
+      setEmails(e.target.value);
+
+      if (checkValidUser(emails)) {
+        if (checkFriend(emails)) {
+          setError("You're already friends with " + emails + "!");
+          return;
+        }
+        //taking in email input: friends email
+        addFriend(emails);
+        setError(null);
+        setSuccess("You added: " + emails + "!");
+        console.log("You added: ", emails);
+        return;
+      } else {
+        setError("Not an existing user!");
+      }
     }
+  }
+
+  function isValidEmail(email) {
+    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      email
+    );
+  }
+
+  //Returns true if potential friend email input by user is the email of a current user in userArr array (@emily)
+  function checkValidUser(email) {
     for (let i = 0; i < userArr.length; i++) {
       if (email === userArr[i]) {
         return true;
@@ -63,45 +90,10 @@ const AddFriends = () => {
   function checkFriend(email) {
     for (let i = 0; i < friendArr.length; i++) {
       if (email === friendArr[i]) {
-        return false;
+        return true;
       }
     }
-    return true;
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (isValidEmail(emails)) {
-      console.log("email is valid");
-      setEmails(e.target.value);
-
-      const usercheck = checkValidUser(emails);
-      const friendcheck = checkFriend(emails);
-
-      if (usercheck && friendcheck) {
-        console.log("user is valid");
-        //taking in email input: friends email
-        addFriend(emails);
-        setError(null);
-        setSuccess("You added: " + emails + "!");
-        console.log("You added: ", emails);
-        return;
-      } else if (!usercheck) {
-        console.log("user is invalid");
-        setError("Not a valid user!");
-      } else {
-        console.log("This person is already your friend.");
-        setError("They're already your friend!");
-      }
-    } else {
-      console.log("email is invalid");
-    }
-  }
-
-  function isValidEmail(email) {
-    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-      email
-    );
+    return false;
   }
 
   const handleChange = (e) => {
