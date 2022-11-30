@@ -53,7 +53,7 @@ const AddFriends = () => {
       }
       else {
         console.log("user is invalid");
-        setError("Not a vaid user!");
+        setError("Not a valid user!");
       }
     } else { console.log("email is invalid"); }
   }
