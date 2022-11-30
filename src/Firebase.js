@@ -108,7 +108,7 @@ export async function addFriend(friendID) {
 //   });
 
 // }
-export async function getFriendEvents2(email, tsStart, tsEnd) {
+export async function getFriendEvents(email, tsStart, tsEnd) {
     const eventColl = collection(firestore, "userCollection/" + email+"/events")
     const q = query(eventColl, where("Start", ">=", tsStart), where("Start", "<=", tsEnd));
     let startArr = []
