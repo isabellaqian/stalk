@@ -88,7 +88,7 @@ const AddFriends = () => {
         return;
       } else if (!usercheck) {
         console.log("user is invalid");
-        setError("Not a vaid user!");
+        setError("Not a valid user!");
       } else {
         console.log("This person is already your friend.");
         setError("They're already your friend!");

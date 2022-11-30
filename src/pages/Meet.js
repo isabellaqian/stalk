@@ -13,6 +13,20 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
+//hard coding busy times
+const testTimes = [
+  {
+    start: new Date("2022-11-29T13:00"),
+    end: new Date("2022-11-29T15:00"),
+    title: "Busy",
+  },
+  {
+    start: new Date("2022-11-29T17:00"),
+    end: new Date("2022-11-29T18:00"),
+    title: "Busy",
+  },
+];
+
 const Meet = () => {
   //realistically, we need to get the user's friend list from the database (@alexavanh)
   const [selectedFriends, setSelectedFriends] = useState([]);
@@ -20,6 +34,9 @@ const Meet = () => {
   const [description, setDescription] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
+  const [displayStart, setDisplayStart] = useState("");
+  const [displayEnd, setDisplayEnd] = useState("");
+
   //added friend list with set function to update friends list from Firebase (@s-palakur)
   const [friendArr, setFriendArr] = useState([]);
 
@@ -67,10 +84,13 @@ const Meet = () => {
   }
 
   function clear() {
+    console.log("end is", end);
     setTitle("");
     setDescription("");
     setStart("");
     setEnd("");
+    setDisplayStart("");
+    setDisplayEnd("");
   }
 
   return (
@@ -112,26 +132,32 @@ const Meet = () => {
           onChange={(e) => setDescription(e.target.value)} //constantly updates the state
         />
         <TextField
-          type="datetime-local"
+          type="date"
           id="start"
           required
-          label="Look for a time from"
-          value={start}
+          label="Look for a date from"
+          value={displayStart}
           InputLabelProps={{
             shrink: true,
           }}
-          onChange={(e) => setStart(e.target.value)}
+          onChange={(e) => {
+            setStart(e.target.value + "T00:00");
+            setDisplayStart(e.target.value);
+          }}
         />
-
+        {/* <span>{start}</span> */}
         <TextField
-          type="datetime-local"
+          type="date"
           id="end"
           label="To"
-          value={end}
+          value={displayEnd}
           InputLabelProps={{
             shrink: true,
           }}
-          onChange={(e) => setEnd(e.target.value)}
+          onChange={(e) => {
+            setEnd(e.target.value + "T00:00");
+            setDisplayEnd(e.target.value);
+          }}
         />
         <div>
           <button
@@ -209,7 +235,7 @@ const Meet = () => {
         </tr>
       </table> */}
       <div className="content calpos">
-        <MyCalendar />
+        <MyCalendar busyTimes={testTimes} />
       </div>
     </div>
   );

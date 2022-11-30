@@ -5,6 +5,7 @@ import {
   signInWithPopup,
   signOut,
   onAuthStateChanged,
+  getAuth,
 } from "firebase/auth";
 
 const AuthContext = createContext();
@@ -32,10 +33,17 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    // const isThereCurrentUser = getAuth();
+    // if (isThereCurrentUser == null) {
+    //   setUser(null);
+    //   // console.log("User is now ", isThereCurrentUser.currentUser);
+    //   return;
+    // }
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       console.log("User is now ", currentUser);
     });
+
     return () => {
       unsubscribe();
     };
@@ -50,4 +58,4 @@ export const AuthContextProvider = ({ children }) => {
 
 export const UserAuth = () => {
   return useContext(AuthContext);
-}; 
+};

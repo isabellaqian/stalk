@@ -9,7 +9,7 @@ export const Dashboard = () => {
     display: "inline-block",
   };
   return (
-    //izzy TODO: make meet add friends button cenetered
+    //izzy TODO: make meet add friends button centered
     <div className="container">
       <div className="h3">Welcome, {user?.displayName}</div>
       <div className="items">

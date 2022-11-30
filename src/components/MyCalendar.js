@@ -7,7 +7,7 @@ import { UserAuth } from "./AuthContext";
 
 const localizer = momentLocalizer(moment);
 
-export default function MyCalendar() {
+export default function MyCalendar({ busyTimes = [] }) {
   const [personalEvents, setPersonalEvents] = useState([]);
   const { user } = UserAuth();
 
@@ -28,6 +28,7 @@ export default function MyCalendar() {
           title: d.Title,
           start: d.Start.toDate(),
           end: d.End.toDate(),
+          isMine: true,
         });
       });
       console.log("tempEvents ", tempEvents);
@@ -44,13 +45,14 @@ export default function MyCalendar() {
       <Calendar
         selectable
         localizer={localizer}
-        events={personalEvents}
+        events={personalEvents.concat(busyTimes)}
         startAccessor="start"
         endAccessor="end"
         defaultView={Views.WEEK}
-        eventPropGetter={() => {
+        eventPropGetter={(events) => {
+          const color = events.isMine ? "#626fa7" : "#b1b1b1";
           return {
-            style: { backgroundColor: "#626fa7", border: "none" },
+            style: { backgroundColor: color, border: "none" },
           };
         }}
         style={{ height: 500 }}

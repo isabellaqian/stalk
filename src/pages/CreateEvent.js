@@ -3,6 +3,7 @@ import { addEvent, firestore } from "../Firebase";
 import moment from "moment";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import Alert from "@mui/material/Alert";
 import MyCalendar from "../components/MyCalendar";
 
 export default function CreateEvent() {
@@ -10,11 +11,15 @@ export default function CreateEvent() {
   const [description, setDescription] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
+  const [success, setSuccess] = useState(null);
 
   function handleSubmit(e) {
     e.preventDefault();
     //adding new entries to store new incoming data in firestore database @s-palakur
+    console.log(start);
+    console.log(end);
     addEvent(eventTitle, description, start, end);
+    setSuccess("Event added");
   }
 
   function clear() {
@@ -76,6 +81,7 @@ export default function CreateEvent() {
             }}
             onChange={(e) => setEnd(e.target.value)}
           />
+          {success && <Alert severity="success">{success}</Alert>}
           <div>
             <button
               className="button_blue_small"
@@ -90,76 +96,6 @@ export default function CreateEvent() {
           </div>
         </Stack>
       </div>
-      {/* <table id="create-event-table" className="custom-centered">
-        <thead>
-          <tr>
-            <th colSpan={5}>Add an event to calendar</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th colSpan={2}>Event Name:</th>
-            <td colSpan={3}>
-              <input
-                type="text"
-                required
-                placeholder="35L"
-                value={eventTitle}
-                onChange={(e) => setTitle(e.target.value)} //constantly updates the state
-              />
-            </td>
-          </tr>
-          <tr>
-            <th colSpan={2}>Description:</th>
-            <td colSpan={3}>
-              <input
-                className="inputbox"
-                type="text"
-                id="description"
-                placeholder="Plan: Grind like a hackathon"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <th colSpan={2}>Start:</th>
-            <td colSpan={3}>
-              <input
-                type="datetime-local"
-                id="start"
-                value={start}
-                onChange={(e) => setStart(e.target.value)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <th colSpan={2}>End:</th>
-            <td colSpan={3}>
-              <input
-                type="datetime-local"
-                id="end"
-                value={end}
-                onChange={(e) => setEnd(e.target.value)}
-              />
-            </td>
-          </tr>
-        </tbody>
-        <tr>
-          <th colSpan={5}>
-            <button
-              className="button_accent_small"
-              onClick={handleSubmit}
-              disabled={isFormDisabled}
-            >
-              Create event!
-            </button>
-            <button className="button_white_small" onClick={clear}>
-              Clear input
-            </button>
-          </th>
-        </tr>
-      </table> */}
       <div className="content" style={{ "padding-top": "20px" }}>
         <MyCalendar />
       </div>
