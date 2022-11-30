@@ -94,6 +94,20 @@ export function writeUserDoc() {
   });
 }
 
+//Adds friends as documents under friends collection (@emily)
+export async function addFriend(friendID) {
+  const friendCollection = doc(firestore, 'userCollection/' + getID() + '/friends/' + friendID);
+
+  const docData = (friendCollection, {
+    emailID: friendID
+  })
+  setDoc(friendCollection, docData);
+  console.log("Document written with ID: ", docData.id);
+}
+
+// const provider = new GoogleAuthProvider();
+const database = getDatabase();
+
 // export async function getAllUsers() {
 //   console.log("run getAllUsers");
 //   const userCollection = collection(firestore, "userCollection/");
@@ -132,19 +146,6 @@ export function writeUserDoc() {
 //   return friendList;
 // }
 
-//Adds friends as documents under friends collection
-export async function addFriend(friendID) {
-  const friendCollection = doc(firestore, 'userCollection/' + getID() + '/friends/' + friendID);
-
-  const docData = (friendCollection, {
-    emailID: friendID
-  })
-  setDoc(friendCollection, docData);
-  console.log("Document written with ID: ", docData.id);
-}
-
-// const provider = new GoogleAuthProvider();
-const database = getDatabase();
 
 // export const logInWithGoogle = () => {
 //   signInWithPopup(auth, provider)
