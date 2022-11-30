@@ -12,10 +12,10 @@ import "./pages.css";
 
 const AddFriends = () => {
   const [emails, setEmails] = useState("");
-  const [error, setError] = useState(null);
   const [userArr, setUserArr] = useState([]);
   const [friendArr, setFriendArr] = useState([]);
   const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
 
   const { user } = UserAuth();
 
@@ -33,7 +33,10 @@ const AddFriends = () => {
     });
 
     //Get a list of your friends (@emily)
-    const friendCollection = collection(firestore, 'userCollection/' + getID() + '/friends');
+    const friendCollection = collection(
+      firestore,
+      "userCollection/" + getID() + "/friends"
+    );
     const friendList = [];
     const unsub = onSnapshot(friendCollection, (snapshot) => {
       snapshot.forEach((doc) => {
@@ -42,9 +45,7 @@ const AddFriends = () => {
       setFriendArr(friendList);
     });
     console.log("useEffect ran");
-
   }, []);
-
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -53,21 +54,22 @@ const AddFriends = () => {
     if (isValidEmail(emails)) {
       setEmails(e.target.value);
 
-      if(checkValidUser(emails)) {
-        if(checkFriend(emails)) {
+      if (checkValidUser(emails)) {
+        if (checkFriend(emails)) {
           setError("You're already friends with " + emails + "!");
+          setSuccess(null);
           return;
         }
-          //taking in email input: friends email
-          addFriend(emails)
-          setError(null);
-          setSuccess("You added: " + emails + "!");
-          console.log("You added: ", emails);
-          return;
+        //taking in email input: friends email
+        addFriend(emails);
+        setError(null);
+        setSuccess("You added: " + emails + "!");
+        return;
       } else {
-          setError("Not an existing user!"); 
+        setError("Not an existing user!");
+        setSuccess(null);
       }
-    } 
+    }
   }
 
   function isValidEmail(email) {
@@ -75,11 +77,11 @@ const AddFriends = () => {
       email
     );
   }
-    
+
   //Returns true if potential friend email input by user is the email of a current user in userArr array (@emily)
   function checkValidUser(email) {
-    for( let i = 0; i < userArr.length; i++) {
-      if(email === userArr[i]) {
+    for (let i = 0; i < userArr.length; i++) {
+      if (email === userArr[i]) {
         return true;
       }
     }
@@ -87,17 +89,18 @@ const AddFriends = () => {
   }
 
   function checkFriend(email) {
-    for( let i = 0; i < friendArr.length; i++) {
-      if(email === friendArr[i]) {
+    for (let i = 0; i < friendArr.length; i++) {
+      if (email === friendArr[i]) {
         return true;
       }
     }
     return false;
   }
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     if (!isValidEmail(e.target.value)) {
       setError("Email is invalid");
+      setSuccess(null);
     } else {
       setError(null);
     }
@@ -114,14 +117,6 @@ const AddFriends = () => {
         <div className="h3">Add friends</div>
       </div>
       <form onSubmit={handleSubmit}>
-        {/* <textarea
-          className="addfriendsinput"
-          type="text"
-          id="emails"
-          value={emails}
-          placeholder="Enter one email at a time. Eg. eggert@tz.ucla.edu"
-          onChange={handleChange}
-        /> */}
         <TextField
           id="emails"
           label="Enter one email at a time."
@@ -132,8 +127,16 @@ const AddFriends = () => {
         />
       </form>
       {/* {error && <h2 style={{ color: "red" }}>{error}</h2>} */}
-      {error && <Alert severity="error">{error}</Alert>}
-      {success && <Alert severity="success">{success}</Alert>}
+      {error && (
+        <Alert key={error} severity="error">
+          {error}
+        </Alert>
+      )}
+      {success && (
+        <Alert key={success} severity="success">
+          {success}
+        </Alert>
+      )}
       <button
         className="button_accent_small"
         type="submit"
@@ -143,7 +146,6 @@ const AddFriends = () => {
       </button>
     </div>
   );
-  
 };
 
 export default AddFriends;

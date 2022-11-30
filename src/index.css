@@ -7,7 +7,10 @@
     #f9c784 
     #485696
     #626fa7
+    #E7E7E7
+    #b1b1b1
 */
+
 .body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -54,6 +57,9 @@ body {
 }
 .set_oxygen {
   font-family: Oxygen;
+}
+.set_mono {
+  font-family: Oxygen Mono;
 }
 .set_roboto {
   font-family: Roboto;

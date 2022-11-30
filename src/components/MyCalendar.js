@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import { collection, onSnapshot } from "firebase/firestore";
 import { firestore } from "../Firebase";
@@ -7,7 +7,13 @@ import { UserAuth } from "./AuthContext";
 
 const localizer = momentLocalizer(moment);
 
-export default function MyCalendar() {
+export default function MyCalendar({
+  busyTimes = [],
+  showToolbar = true,
+  defaultDate = [],
+  selectable = false,
+  handleSelectSlot = [],
+}) {
   const [personalEvents, setPersonalEvents] = useState([]);
   const { user } = UserAuth();
 
@@ -28,6 +34,7 @@ export default function MyCalendar() {
           title: d.Title,
           start: d.Start.toDate(),
           end: d.End.toDate(),
+          isMine: true,
         });
       });
       console.log("tempEvents ", tempEvents);
@@ -39,21 +46,28 @@ export default function MyCalendar() {
     return () => unsubscribe();
   }, []);
 
+  const a = new Date("11/28/2022T00:00");
+  const b = new Date("11/30/2022T00:00");
+
   return (
     <div>
       <Calendar
-        selectable
+        selectable={selectable}
         localizer={localizer}
-        events={personalEvents}
+        events={personalEvents.concat(busyTimes)}
         startAccessor="start"
         endAccessor="end"
+        defaultDate={defaultDate}
         defaultView={Views.WEEK}
-        eventPropGetter={() => {
+        eventPropGetter={(events) => {
+          const color = events.isMine ? "#626fa7" : "#b1b1b1";
           return {
-            style: { backgroundColor: "#626fa7", border: "none" },
+            style: { backgroundColor: color, border: "none" },
           };
         }}
         style={{ height: 500 }}
+        toolbar={showToolbar}
+        onSelectSlot={handleSelectSlot}
       />
     </div>
   );

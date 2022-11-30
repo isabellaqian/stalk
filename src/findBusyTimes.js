@@ -1,19 +1,25 @@
 // for merging the start and end arrays into one 2D array
 export function mergeArrays(startArrays, endArrays) {
-  let startTimes = []
-  let endTimes = []
+  let startTimes = [];
+  let endTimes = [];
   const mergedArray = [];
-  for(let i = 0; i < startArrays.length; i++){
-    startTimes = startTimes.concat(startArrays[i])
-    endTimes = endTimes.concat(endArrays[i])
-  } 
-  for(let j = 0; j < startTimes.length; j++){
-    mergedArray[j][0] = startTimes[j]
-    mergedArray[j][1] = endTimes[j]
+  for (let i = 0; i < startArrays.length; i++) {
+    startTimes = startTimes.concat(startArrays[i]);
+    endTimes = endTimes.concat(endArrays[i]);
   }
-  return(mergedArray)
+  for (let j = 0; j < startTimes.length; j++) {
+    mergedArray[j][0] = startTimes[j];
+    mergedArray[j][1] = endTimes[j];
+  }
+  return mergedArray;
 }
 
+export function findBusyTimes(
+  startArrays,
+  endArrays,
+  startTimestamp,
+  endTimestamp
+) {
 export function findBusyTimes(startArrays, endArrays, startTimestamp, endTimestamp) {
    /*
   let eventsArray = mergeArrays(startArrays, endArrays);
@@ -26,31 +32,30 @@ export function findBusyTimes(startArrays, endArrays, startTimestamp, endTimesta
     });
 
   let index = 0;
-    for (let i = 1; i < eventsArray.length; i++) {
-      if (eventsArray[index][1] >= eventsArray[i][0]) {
-        // eventsArray[index][1] = Math.max(eventsArray[index][1], eventsArray[i][1]);
-        if (eventsArray[index][1] >= eventsArray[i][1]){ 
-          eventsArray[index][1] = eventsArray[index][1];
-        }
-        else{
-          eventsArray[index][1] = eventsArray[i][1];
-        }
+  for (let i = 1; i < eventsArray.length; i++) {
+    if (eventsArray[index][1] >= eventsArray[i][0]) {
+      // eventsArray[index][1] = Math.max(eventsArray[index][1], eventsArray[i][1]);
+      if (eventsArray[index][1] >= eventsArray[i][1]) {
+        eventsArray[index][1] = eventsArray[index][1];
+      } else {
+        eventsArray[index][1] = eventsArray[i][1];
       }
-      else {
-          index++;
-          eventsArray[index] = eventsArray[i];
-      }
+    } else {
+      index++;
+      eventsArray[index] = eventsArray[i];
     }
-    
-    if(eventsArray.length > 0){
-      // check if the end time passes the given end timestamp for the period
-      if (eventsArray[0][0] < startTimestamp){ // assumes that can just compare with comparison operators
-        eventsArray[0][0] = startTimestamp;
-      }
-      // check if the end time passes the given end timestamp for the period
-      if (eventsArray[eventsArray.length-1][1] > endTimestamp){ // assumes that can just compare with comparison operators
-        eventsArray[eventsArray.length-1][1] = endTimestamp;
-      }
+  }
+
+  if (eventsArray.length > 0) {
+    // check if the end time passes the given end timestamp for the period
+    if (eventsArray[0][0] < startTimestamp) {
+      // assumes that can just compare with comparison operators
+      eventsArray[0][0] = startTimestamp;
+    }
+    // check if the end time passes the given end timestamp for the period
+    if (eventsArray[eventsArray.length - 1][1] > endTimestamp) {
+      // assumes that can just compare with comparison operators
+      eventsArray[eventsArray.length - 1][1] = endTimestamp;
     }
     for (let i = 0; i < eventsArray.length; i++) {
       eventsArray[i][0] = eventsArray[i][0].toDate();
