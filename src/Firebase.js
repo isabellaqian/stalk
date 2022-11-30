@@ -15,6 +15,8 @@ import {
   collection,
   addDoc,
   updateDoc,
+  getDocs,
+  onSnapshot
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { get } from "lodash";
@@ -55,13 +57,12 @@ export function getID() {
 }
 
 //moved some constants outside functions for fun @s-palakur
-const friendArray = [];
 export const firestore = getFirestore(); //basically db
 
 export async function addEvent(title, desc, start_d, end_d) {
   const eventsCollection = collection(
     firestore,
-    "userCollection/" + getID() + "/events"
+    'userCollection/' + getID() + '/events'
   );
   //Using the add() method to add random documents with the Title and Date stored
   const docRef = addDoc(eventsCollection, {
@@ -79,27 +80,67 @@ export async function addEvent(title, desc, start_d, end_d) {
 export function writeUserDoc() {
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
-    const userCollection = doc(firestore, "userCollection/" + user.email);
+    const userCollection = doc(firestore, 'userCollection/' + user.email);
     if (user) {
       const docData = {
         // userid that's stored in user-doc
         user: user.uid,
         name: user.displayName,
         email: user.email,
-        photoURL: user.photoURL,
-        friends: friendArray,
+        photoURL: user.photoURL
       };
       setDoc(userCollection, docData);
     }
   });
 }
 
+// export async function getAllUsers() {
+//   console.log("run getAllUsers");
+//   const userCollection = collection(firestore, "userCollection/");
+//   const userList = [];
+//   const unsubscribe = onSnapshot(userCollection, (snapshot) => {
+//     snapshot.forEach((doc) => {
+//       console.log("user: ", doc.data().email);
+//       userList.push(doc.data().email);
+//     });
+//     console.log("All users: ", userList.join(", "));
+//     return userList;
+//   });
+// }
+
+// export async function friendsExist() {
+//   const friendCollection = collection(firestore, '/userCollection' + getID() + '/friends');
+//   const colSnapshot = await getDocs(friendCollection);
+
+//   if(colSnapshot.empty) {
+//     console.log("You have no friends!");
+//     return false;
+//   } else {
+//     console.log("Already has friends");
+//     return true;
+//   }
+// }
+
+// export async function getFriends() {
+//   const friendCollection = collection(firestore, '/userCollection' + getID() + '/friends');
+//   const friendList = [];
+//   const unsubscribe = onSnapshot(friendCollection, (snapshot) => {
+//     snapshot.forEach((doc) => {
+//       friendList.push(doc.data().emailID);
+//     });
+//   });
+//   return friendList;
+// }
+
+//Adds friends as documents under friends collection
 export async function addFriend(friendID) {
-  const userCollection = doc(firestore, "userCollection/" + getID());
-  //add new friend's email to const friendArray
-  friendArray.push(friendID);
-  //update "friends" field of docData to newFriendList (@emily-coding-kim)
-  updateDoc(userCollection, { friends: friendArray });
+  const friendCollection = doc(firestore, 'userCollection/' + getID() + '/friends/' + friendID);
+
+  const docData = (friendCollection, {
+    emailID: friendID
+  })
+  setDoc(friendCollection, docData);
+  console.log("Document written with ID: ", docData.id);
 }
 
 // const provider = new GoogleAuthProvider();

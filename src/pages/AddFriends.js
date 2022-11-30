@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import arrow from "../images/left_arrow.png";
-import { addFriend, firestore, getID } from "../Firebase";
+import { addFriend, getFriends, friendsExist, getAllUsers, firestore, getID } from "../Firebase";
 import { collection, onSnapshot, doc  } from 'firebase/firestore'
 
 import "./pages.css";
@@ -13,77 +13,72 @@ const AddFriends = () => {
   const [friendArr, setFriendArr] = useState([]);
 
 
-  //Sets userArr to an array of all user emails (@emily)
   useEffect(() => {
-    const userEmails = collection(
-      firestore,
-      "userCollection/"
-    );    
-    const unsubscribe = onSnapshot(userEmails, (snapshot) => {
-      const users = [];
-      snapshot.forEach((doc) => {
-        users.push(doc.data().email);
-      });
-      setUserArr(users);
-      console.log("All users: ", users.join(", "));
-    });
+    // console.log("useEffect AddFriends");
+    // //Sets userArr to an array of all user emails (@emily)
+    // const users = getAllUsers();
+    // const tempUsers = [];
+    // for( let i = 0; i < users.length; i++) {
+    //   tempUsers.push(users[i]);
+    // }
+    // setUserArr(tempUsers);
+    //  console.log("All users in AddFriends.js: ", tempUsers.join(", "));
 
-    const friendsArrFirestore = [];
-    const unsub = onSnapshot(doc(firestore, 'userCollection/' + getID()), (doc) => {
-      const tempArr = doc.data().friends;
-      for (let i = 0; i < tempArr.length; i++)
-      {
-        friendsArrFirestore.push(tempArr[i]);
-        //setting it with added helper function
-      }
-      setFriendArr(friendsArrFirestore);
-    });
+    // //Sets friendArr to an arry of all user's friends' emails (@emily)
+    // const friendIDs = getFriends();
+    // const tempFriends = [];
+    // for( let i = 0; i < friendIDs.length; i++) {
+    //   tempFriends.push(friendIDs[i]);
+    // }
+    // setFriendArr(tempFriends);
+    // console.log("All Friends: ", tempFriends.join(", "));
+
   }, []);
 
-  //Returns true if potential friend email input by user is the email of a current user in userArr array (@emily)
-  function checkValidUser(email) {
-    for( let i = 0; i < userArr.length; i++) {
-      if(email === userArr[i]) {
-        return true;
-      }
-    }
-    return false;
-  }
+  // //Returns true if potential friend email input by user is the email of a current user in userArr array (@emily)
+  // function checkValidUser(email) {
+  //   for( let i = 0; i < userArr.length; i++) {
+  //     if(email === userArr[i]) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
-  function checkFriend(email) {
-    for( let i = 0; i < friendArr.length; i++) {
-      if(email === friendArr[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
+  // function checkFriend(email) {
+  //   for( let i = 0; i < friendArr.length; i++) {
+  //     if(email === friendArr[i]) {
+  //       return false;
+  //     }
+  //   }
+  //   return true;
+  // }
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (isValidEmail(emails)) {
-      console.log("email is valid");
-      setEmails(e.target.value);
+    // if (isValidEmail(emails)) {
+    //   console.log("email is valid");
+    //   setEmails(e.target.value);
 
-      const usercheck = checkValidUser(emails);
-      const friendcheck = checkFriend(emails);
+    //   const usercheck = checkValidUser(emails);
+    //   const friendcheck = checkFriend(emails);
 
-      if(usercheck && friendcheck) {
+      //if(usercheck && friendcheck) {
         console.log("user is valid");
         //taking in email input: friends email
         addFriend(emails)
         setError(null);
         console.log("You added: ", emails)
         return;
-      }
-      else if(!usercheck) {
-        console.log("user is invalid");
-        setError("Not a vaid user!");
-      }else {
-        console.log("This person is already your friend.");
-        setError("They're already your friend!");
-      }
-    } else { console.log("email is invalid"); }
+    //   }
+    //   else if(!usercheck) {
+    //     console.log("user is invalid");
+    //     setError("Not a vaid user!");
+    //   }else {
+    //     console.log("This person is already your friend.");
+    //     setError("They're already your friend!");
+    //   }
+    // } else { console.log("email is invalid"); }
   }
 
   function isValidEmail(email) {
