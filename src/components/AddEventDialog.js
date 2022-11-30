@@ -15,13 +15,9 @@ export default function AddEventDialog({ open, handleClose }) {
   function handleClick() {
     //slotTimes will hold the times of the slot now @alexavanh
     //selectedFriends will hold the friends that were selected in Meet page @alexavanh
-    console.log(selectedFriends);
     const start = slotTimes[0];
-    console.log("check start: " + start);
     const end = slotTimes[1];
-    console.log("check end: " + end);
     selectedFriends.forEach(friend => {
-      console.log("friend: " + friend);
       addEventToFriends(friend, eventTitle, description, start, end);
     })
   }
