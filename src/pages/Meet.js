@@ -66,7 +66,7 @@ const Meet = () => {
       });
       setFriendArr(friendsArrFirestore);
     });
-    return () => unsubcribe();
+    return () => unsubscribe();
   }, []);
 
   const handleSelect = (selectedList, selectedItem) => {
