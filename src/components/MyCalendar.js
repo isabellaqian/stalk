@@ -34,12 +34,10 @@ export default function MyCalendar({
           title: d.Title,
           start: d.Start.toDate(),
           end: d.End.toDate(),
-          isMine: true,
+          type: d.Type,
         });
       });
-      console.log("tempEvents ", tempEvents);
       setPersonalEvents(Array.from(tempEvents));
-      console.log("updated personalEvents ", personalEvents);
     });
 
     //remember to unsubscribe from your realtime listener on unmount or you will create a memory leak
@@ -60,7 +58,10 @@ export default function MyCalendar({
         defaultDate={defaultDate}
         defaultView={Views.WEEK}
         eventPropGetter={(events) => {
-          const color = events.isMine ? "#626fa7" : "#b1b1b1";
+          let color;
+          if (events.type == "personal") color = "#626fa7";
+          else if (events.type == "group") color = "#e05927";
+          else color = "#b1b1b1";
           return {
             style: { backgroundColor: color, border: "none" },
           };
