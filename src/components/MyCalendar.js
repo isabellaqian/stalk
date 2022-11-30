@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import { collection, onSnapshot } from "firebase/firestore";
 import { firestore } from "../Firebase";
@@ -11,6 +11,8 @@ export default function MyCalendar({
   busyTimes = [],
   showToolbar = true,
   defaultDate = [],
+  selectable = false,
+  handleSelectSlot = [],
 }) {
   const [personalEvents, setPersonalEvents] = useState([]);
   const { user } = UserAuth();
@@ -50,7 +52,7 @@ export default function MyCalendar({
   return (
     <div>
       <Calendar
-        selectable
+        selectable={selectable}
         localizer={localizer}
         events={personalEvents.concat(busyTimes)}
         startAccessor="start"
@@ -65,6 +67,7 @@ export default function MyCalendar({
         }}
         style={{ height: 500 }}
         toolbar={showToolbar}
+        onSelectSlot={handleSelectSlot}
       />
     </div>
   );

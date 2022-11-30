@@ -43,7 +43,7 @@ const AddFriends = () => {
         setFriendArr(friendsArrFirestore);
       }
     );
-    return () => unsub(); //I detached the listener here, not sure if we need it @izzy
+    return () => unsubscribe(); //I detached the listener here, not sure if we need it @izzy
   }, []);
 
   //Returns true if potential friend email input by user is the email of a current user in userArr array (@emily)

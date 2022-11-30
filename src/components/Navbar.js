@@ -32,9 +32,15 @@ const Navbar = () => {
 
   return (
     <div className="nav_bar">
-      <Link to="/">
-        <img src={logo} className="logo" />
-      </Link>
+      {user ? (
+        <Link to="/dashboard">
+          <img src={logo} className="logo" />
+        </Link>
+      ) : (
+        <Link to="/">
+          <img src={logo} className="logo" />
+        </Link>
+      )}
       {user?.displayName ? (
         <Link to="/">
           <button className="button_white float_right" onClick={handleSignOut}>

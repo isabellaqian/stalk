@@ -9,6 +9,8 @@ import moment from "moment";
 
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import { findBusyTimes } from "../findBusyTimes";
+import AddEventDialog from "../components/AddEventDialog";
 
 //hard coding busy times
 const testTimes = [
@@ -33,12 +35,14 @@ const Meet = () => {
   const [end, setEnd] = useState("");
 
   const [friendArr, setFriendArr] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
 
   //added friend list with set function to update friends list from Firebase (@s-palakur)
   const [startArrayConst, setStartArr] = useState([]);
   const [endArrayConst, setEndArr] = useState([]);
-
-  const defaultDate = new Date(2020, 7, 15);
+  const [defaultDate, setDefaultDate] = useState("");
+  const [canSelectCal, setCanSelectCal] = useState(false);
+  //   const defaultDate = new Date(2020, 7, 15);
 
   // can successfully retrieve the friends list from firestore @s-palakur
   //fixed bug where userCollection was imported not redeclared as a DOC
@@ -66,6 +70,10 @@ const Meet = () => {
     moment(end).isBefore(start);
 
   function handleSubmit() {
+    // set where the calendar view starts at and if you can select it to add events
+    setDefaultDate(new Date(start + "T00:00"));
+    setCanSelectCal(true);
+
     //empty temp arrays that will be added to
     let startArr = [];
     let endArr = [];
@@ -73,11 +81,11 @@ const Meet = () => {
     //local functions that will be updated with useState
     const tempList = selectedFriends;
     console.log("lsit of selected friends" + tempList);
-    tempList.push(getID());
+    // tempList.push(getID());
     console.log("List of friends and yourself: " + tempList);
     //converting objects to Timestamp
-    const tsStart = Timestamp.fromDate(new Date(start));
-    const tsEnd = Timestamp.fromDate(new Date(end));
+    const tsStart = Timestamp.fromDate(new Date(start + "T00:00"));
+    const tsEnd = Timestamp.fromDate(new Date(end + "T00:00"));
     //probs dont need templist as map doesnt modify original array
 
     const resultEvents = tempList.map((email) => {
@@ -96,20 +104,31 @@ const Meet = () => {
         })
         .catch((err) => console.log(err));
     });
-    // when sending start and end dates,  + "T00:00" for datetime format
   }
 
   //THIS WORKS yay @s-palakur (works outside the array)
-  console.log("this is startarr", startArrayConst);
-  console.log("this is endArr", endArrayConst);
+  //   console.log("this is startarr", startArrayConst);
+  //   console.log("this is endArr", endArrayConst);
+
+  //   const busyTimesArray = findBusyTimes(startArrayConst, endArrayConst);
+  //   console.log("busy times in meet ", busyTimesArray[0]);
 
   function clear() {
     setTitle("");
     setDescription("");
     setStart("");
     setEnd("");
+    setDefaultDate("");
   }
 
+  const handleSelectSlot = ({ start, end }) => {
+    setOpenDialog(true);
+    console.log(start, " ", end);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
   return (
     <div className="container">
       <div style={{ display: "flex" }}>
@@ -118,6 +137,7 @@ const Meet = () => {
         </Link>
         <div className="h3">Find the best time to meet with your friends!</div>
       </div>
+      <AddEventDialog open={openDialog} handleClose={handleCloseDialog} />
       <Stack spacing={2}>
         <Multiselect
           className="set_roboto"
@@ -132,23 +152,6 @@ const Meet = () => {
           style={{ height: "40px" }}
         />
         <TextField
-          // id="outlined-textarea"
-          label="We are meeting for..."
-          required
-          placeholder="CS35L Hack"
-          value={eventTitle}
-          // style={{ "padding-bottom": "10px" }}
-          onChange={(e) => setTitle(e.target.value)} //constantly updates the state
-        />
-
-        <TextField
-          // id="outlined-textarea"
-          label="Description (optional)"
-          placeholder="Plan: grind for 5 hours straight."
-          value={description}
-          onChange={(e) => setDescription(e.target.value)} //constantly updates the state
-        />
-        <TextField
           type="date"
           id="start"
           required
@@ -161,7 +164,6 @@ const Meet = () => {
             setStart(e.target.value);
           }}
         />
-        {/* <span>{start}</span> */}
         <TextField
           type="date"
           id="end"
@@ -187,8 +189,14 @@ const Meet = () => {
           </button>
         </div>
       </Stack>
-      <div className="content calpos set_mono">
-        <MyCalendar busyTimes={testTimes} defaultDate={defaultDate} />
+      <div className="content calpos cal">
+        <MyCalendar
+          key={canSelectCal}
+          busyTimes={testTimes}
+          selectable={canSelectCal}
+          handleSelectSlot={handleSelectSlot}
+          defaultDate={defaultDate}
+        />
       </div>
     </div>
   );

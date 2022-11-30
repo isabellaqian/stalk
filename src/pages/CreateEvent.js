@@ -96,7 +96,7 @@ export default function CreateEvent() {
           </div>
         </Stack>
       </div>
-      <div className="content" style={{ "padding-top": "20px" }}>
+      <div className="content" style={{ paddingTop: "25px" }}>
         <MyCalendar />
       </div>
     </div>
