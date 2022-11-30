@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import arrow from "../images/left_arrow.png";
 import Multiselect from "multiselect-react-dropdown";
-import { getID, getFriendEvents, firestore } from "../Firebase";
+import { getID, getFriendEvents, firestore, holdSlotTimes, holdSelectedFriends } from "../Firebase";
 import {
   onSnapshot,
   collection,
@@ -134,14 +134,17 @@ const Meet = () => {
     setDefaultDate("");
   }
 
-  const handleSelectSlot = ({ start, end }) => {
+  const handleSelectSlot = ({ start, end }) => {  //start and end here are the start and end timestamps of your selected slot
     setOpenDialog(true);
     console.log(start, " ", end);
+    holdSlotTimes(start, end);
+    holdSelectedFriends(selectedFriends);
   };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
+  
   return (
     <div className="container">
       <div style={{ display: "flex" }}>
