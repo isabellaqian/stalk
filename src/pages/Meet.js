@@ -50,43 +50,49 @@ const Meet = () => {
     end.trim().length === 0 ||
     moment(end).isBefore(start);
 
-function handleSubmit() {
-    //empty temp arrays that will be added to
-    let startArr = [];
-    let endArr = [];
-    console.log(selectedFriends);
-    //local functions that will be updated with useState  
-    const tempList = selectedFriends;
-    console.log("lsit of selected friends" + tempList);
-    tempList.push(getID());
-    console.log("List of friends and yourself: " + tempList);
-    //converting objects to Timestamp
-    const tsStart = Timestamp.fromDate(new Date(start));
-    const tsEnd = Timestamp.fromDate(new Date(end));
-    //probs dont need templist as map doesnt modify original array
-
-    const resultEvents = tempList.map((email) => {
-    //redefining these variables - if it doesn't work also make an array of 
-    //const collections to iterate through (@s-palakur)
-
-    //ASYNC function that updates startArray and stop array, might have to add const (?)
-    //OR USE SET FUNCTION! to update the array 
-      getFriendEvents(email, tsStart, tsEnd).then((returnObj) => {
-        startArr.push(...returnObj[0])
-        endArr.push(...returnObj[1])
-        setStartArr(startArr);
-        setEndArr(endArr);
-        return returnObj;
+    function handleSubmit() {
+      //empty temp arrays that will be added to
+      let startArr = [];
+      let endArr = [];
+      console.log(selectedFriends);
+      //local functions that will be updated with useState  
+      const tempList = selectedFriends;
+      console.log("lsit of selected friends" + tempList);
+      //tempList.push(getID());
+      console.log("List of friends and yourself: " + tempList);
+      //converting objects to Timestamp
+      const tsStart = Timestamp.fromDate(new Date(start + "T00:00"));
+      console.log("start", start)
+      const tsEnd = Timestamp.fromDate(new Date(end + "T23:59"));
+      console.log("end", end)
+      //probs dont need templist as map doesnt modify original array
+  
+      const resultEvents = tempList.map((email) => {
+      //redefining these variables - if it doesn't work also make an array of 
+      //const collections to iterate through (@s-palakur)
+  
+      //ASYNC function that updates startArray and stop array, might have to add const (?)
+      //OR USE SET FUNCTION! to update the array 
+        getFriendEvents(email, tsStart, tsEnd).then((returnObj) => {
+          startArr.push(...returnObj[0])
+          endArr.push(...returnObj[1])
+          setStartArr(startArr);
+          setEndArr(endArr);
+          return returnObj;
+        })
+        .catch((err)=>console.log(err));
       })
-      .catch((err)=>console.log(err));
-    })
-  }
-
-  //THIS WORKS yay @s-palakur (works outside the array)
-  console.log("this is startarr", startArrayConst)
-  console.log("this is endArr", endArrayConst)
-
-  const busyTimesArray = findBusyTimes(startArrayConst, endArrayConst)
+    }
+  
+    //THIS WORKS yay @s-palakur (works outside the array)
+    console.log("this is startarr", startArrayConst)
+    console.log("this is endArr", endArrayConst)
+  
+    // useEffect(() => {
+    //   return(busyTimes) => {findBusyTimes(startArrayConst, endArrayConst);
+  
+    //   };
+    // }, []);
   
   function clear() {
     setTitle("");
