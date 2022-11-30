@@ -8,14 +8,8 @@ import { getDatabase, ref, set } from "firebase/database";
 
 // imports for firestore
 import {
-  getFirestore,
-  doc,
-  setDoc,
-  Timestamp,
-  collection,
-  addDoc,
-  updateDoc,
-  getDocs,
+  getFirestore, doc, setDoc, Timestamp, collection, addDoc, updateDoc,
+  query, where, getDocs,
   onSnapshot
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
@@ -50,7 +44,7 @@ export function getID() {
   const auth = getAuth();
   const user = auth.currentUser;
   if (user != null) {
-    console.log(user.email);
+    // console.log(user.email);
     return user.email;
   }
   return "no user";
@@ -105,8 +99,35 @@ export async function addFriend(friendID) {
   console.log("Document written with ID: ", docData.id);
 }
 
-// const provider = new GoogleAuthProvider();
-const database = getDatabase();
+// export async function getFriendEvents(eventColl, startArr, endArr, tsStart, tsEnd) {
+//   const q = query(eventColl, where("Start", ">=", tsStart), where("Start", "<=", tsEnd));
+
+//   const querySnapshot = await getDocs(q);
+//   querySnapshot.forEach((doc) => {
+//     startArr.push(doc.data().Start);
+//     endArr.push(doc.data().End);
+//     // doc.data() is never undefined for query doc snapshots
+//     console.log(doc.id, " => ", doc.data());
+//   });
+
+// }
+export async function getFriendEvents(email, tsStart, tsEnd) {
+    const eventColl = collection(firestore, "userCollection/" + email+"/events")
+    const q = query(eventColl, where("Start", ">=", tsStart), where("Start", "<=", tsEnd));
+    let startArr = []
+    let endArr = []
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const d = doc.data();
+      startArr.push(doc.data().Start);
+      endArr.push(doc.data().End);
+      console.log("in firebase ",doc.id, " => ", doc.data());
+    });
+    console.log("in firebase ",[startArr, endArr]);
+    return [startArr, endArr];
+  
+  }
+
 
 // export async function getAllUsers() {
 //   console.log("run getAllUsers");

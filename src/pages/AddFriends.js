@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { UserAuth } from "../components/AuthContext";
+
 import { Link } from "react-router-dom";
 import arrow from "../images/left_arrow.png";
+import Alert from "@mui/material/Alert";
+import TextField from "@mui/material/TextField";
 import { addFriend, firestore, getID } from "../Firebase";
-import { collection, onSnapshot, doc  } from 'firebase/firestore'
+import { collection, onSnapshot, doc } from "firebase/firestore";
 
 import "./pages.css";
 
@@ -10,7 +14,10 @@ const AddFriends = () => {
   const [emails, setEmails] = useState("");
   const [error, setError] = useState(null);
   const [userArr, setUserArr] = useState([]);
+  const [friendArr, setFriendArr] = useState([]);
+  const [success, setSuccess] = useState(null);
 
+  const { user } = UserAuth();
 
   useEffect(() => {
     //Get all users here (@emily)
@@ -47,7 +54,9 @@ const AddFriends = () => {
   }
 
   function isValidEmail(email) {
-    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      email
+    );
   }
     
   //Returns true if potential friend email input by user is the email of a current user in userArr array (@emily)
@@ -79,19 +88,33 @@ const AddFriends = () => {
         <div className="h3">Add friends</div>
       </div>
       <form onSubmit={handleSubmit}>
-        <input
+        {/* <textarea
           className="addfriendsinput"
           type="text"
           id="emails"
           value={emails}
-          placeholder="Enter your friend's email (only one email at a time)"
+          placeholder="Enter one email at a time. Eg. eggert@tz.ucla.edu"
           onChange={handleChange}
+        /> */}
+        <TextField
+          id="emails"
+          label="Enter one email at a time."
+          value={emails}
+          placeholder="keeperofthetime@g.ucla.edu"
+          onChange={handleChange}
+          style={{ width: "300px" }}
         />
       </form>
-        {error && <h2 style={{color: 'red'}}>{error}</h2>}
-        <button className="button_accent" type="submit" onClick={handleSubmit}>
-          Add
-        </button>
+      {/* {error && <h2 style={{ color: "red" }}>{error}</h2>} */}
+      {error && <Alert severity="error">{error}</Alert>}
+      {success && <Alert severity="success">{success}</Alert>}
+      <button
+        className="button_accent_small"
+        type="submit"
+        onClick={handleSubmit}
+      >
+        Add
+      </button>
     </div>
   );
   

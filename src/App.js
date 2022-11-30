@@ -9,6 +9,7 @@ import AddFriends from "./pages/AddFriends";
 
 import { AuthContextProvider } from "./components/AuthContext";
 import { Route, Routes } from "react-router-dom";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
 function App() {
   //creating objects with state to represent event info
@@ -16,6 +17,7 @@ function App() {
   return (
     <div>
       <AuthContextProvider>
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}> */}
         <Navbar />
         <Routes>
           <Route path="/" element={<Landing />} />
@@ -24,6 +26,7 @@ function App() {
           <Route path="/meet" element={<Meet />} />
           <Route path="/addfriends" element={<AddFriends />} />
         </Routes>
+        {/* </LocalizationProvider> */}
       </AuthContextProvider>
     </div>
   );
