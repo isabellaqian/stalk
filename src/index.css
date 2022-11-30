@@ -58,6 +58,9 @@ body {
 .set_oxygen {
   font-family: Oxygen;
 }
+.set_mono {
+  font-family: Oxygen Mono;
+}
 .set_roboto {
   font-family: Roboto;
 }

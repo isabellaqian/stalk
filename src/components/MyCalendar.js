@@ -7,7 +7,11 @@ import { UserAuth } from "./AuthContext";
 
 const localizer = momentLocalizer(moment);
 
-export default function MyCalendar({ busyTimes = [] }) {
+export default function MyCalendar({
+  busyTimes = [],
+  showToolbar = true,
+  defaultDate = [],
+}) {
   const [personalEvents, setPersonalEvents] = useState([]);
   const { user } = UserAuth();
 
@@ -40,6 +44,9 @@ export default function MyCalendar({ busyTimes = [] }) {
     return () => unsubscribe();
   }, []);
 
+  const a = new Date("11/28/2022T00:00");
+  const b = new Date("11/30/2022T00:00");
+
   return (
     <div>
       <Calendar
@@ -48,6 +55,7 @@ export default function MyCalendar({ busyTimes = [] }) {
         events={personalEvents.concat(busyTimes)}
         startAccessor="start"
         endAccessor="end"
+        defaultDate={defaultDate}
         defaultView={Views.WEEK}
         eventPropGetter={(events) => {
           const color = events.isMine ? "#626fa7" : "#b1b1b1";
@@ -56,6 +64,7 @@ export default function MyCalendar({ busyTimes = [] }) {
           };
         }}
         style={{ height: 500 }}
+        toolbar={showToolbar}
       />
     </div>
   );

@@ -34,11 +34,11 @@ const Meet = () => {
   const [description, setDescription] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
-  const [displayStart, setDisplayStart] = useState("");
-  const [displayEnd, setDisplayEnd] = useState("");
 
   //added friend list with set function to update friends list from Firebase (@s-palakur)
   const [friendArr, setFriendArr] = useState([]);
+
+  const defaultDate = new Date(2020, 7, 15); //hardcoded start date for showing meeting times
 
   //getting friendsList from the database @s-palakur for async stuff
   // var f = [];
@@ -81,16 +81,14 @@ const Meet = () => {
   function handleSubmit() {
     //get friends' and user's calendars within the begin and end dates and compare them
     //@s-palakur
+    // when sending start and end dates,  + "T00:00" for datetime format
   }
 
   function clear() {
-    console.log("end is", end);
     setTitle("");
     setDescription("");
     setStart("");
     setEnd("");
-    setDisplayStart("");
-    setDisplayEnd("");
   }
 
   return (
@@ -136,13 +134,12 @@ const Meet = () => {
           id="start"
           required
           label="Look for a date from"
-          value={displayStart}
+          value={start}
           InputLabelProps={{
             shrink: true,
           }}
           onChange={(e) => {
-            setStart(e.target.value + "T00:00");
-            setDisplayStart(e.target.value);
+            setStart(e.target.value);
           }}
         />
         {/* <span>{start}</span> */}
@@ -150,13 +147,12 @@ const Meet = () => {
           type="date"
           id="end"
           label="To"
-          value={displayEnd}
+          value={end}
           InputLabelProps={{
             shrink: true,
           }}
           onChange={(e) => {
-            setEnd(e.target.value + "T00:00");
-            setDisplayEnd(e.target.value);
+            setEnd(e.target.value);
           }}
         />
         <div>
@@ -172,70 +168,8 @@ const Meet = () => {
           </button>
         </div>
       </Stack>
-      {/* <div className="smallerh3 padding">
-        <h1>I want to meet with...</h1>
-      </div>
-      <div className="multiselect">
-        <Multiselect
-          isObject={false}
-          onRemove={(event) => {
-            console.log(event);
-          }}
-          onSelect={handleSelect}
-          options={friendArr}
-          selectedValues={selectedFriends} //values must be passed to get events
-          placeholder="Select friends"
-        />
-      </div>
-
-      <table id="create-event-table" style={{ "padding-top": "20px" }}>
-        <thead>
-          <tr>
-            <th colSpan={5}>When do you want to meet?</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th colSpan={2}>Between</th>
-            <td colSpan={3}>
-              <input
-                type="date"
-                id="start"
-                value={start}
-                onChange={(e) => setStart(e.target.value)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <th colSpan={2}>and</th>
-            <td colSpan={3}>
-              <input
-                type="date"
-                id="end"
-                value={end}
-                onChange={(e) => setEnd(e.target.value)}
-              />
-            </td>
-          </tr>
-        </tbody>
-
-        <tr>
-          <th colSpan={5}>
-            <button
-              className="button_accent_small"
-              onClick={handleSubmit}
-              disabled={isFormDisabled}
-            >
-              Find times!
-            </button>
-            <button className="button_white_small" onClick={clear}>
-              Clear input
-            </button>
-          </th>
-        </tr>
-      </table> */}
-      <div className="content calpos">
-        <MyCalendar busyTimes={testTimes} />
+      <div className="content calpos set_mono">
+        <MyCalendar busyTimes={testTimes} defaultStart={defaultDate} />
       </div>
     </div>
   );
