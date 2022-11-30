@@ -14,12 +14,7 @@ export function mergeArrays(startArrays, endArrays) {
   return mergedArray;
 }
 
-export function findBusyTimes(
-  startArrays,
-  endArrays,
-  startTimestamp,
-  endTimestamp
-) {
+
 export function findBusyTimes(startArrays, endArrays, startTimestamp, endTimestamp) {
    /*
   let eventsArray = mergeArrays(startArrays, endArrays);

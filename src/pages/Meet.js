@@ -81,25 +81,7 @@ const Meet = () => {
     end.trim().length === 0 ||
     moment(end).isBefore(start);
 
-    function handleSubmit() {
-      //empty temp arrays that will be added to
-      let startArr = [];
-      let endArr = [];
-      console.log(selectedFriends);
-      //local functions that will be updated with useState  
-      const tempList = selectedFriends;
-      console.log("lsit of selected friends" + tempList);
-      //tempList.push(getID());
-      console.log("List of friends and yourself: " + tempList);
-      //converting objects to Timestamp
-      const tsStart = Timestamp.fromDate(new Date(start));
-      console.log("start", start)
-      const tsEnd = Timestamp.fromDate(new Date(end));
-      console.log("end", end)
-      //probs dont need templist as map doesnt modify original array
-  
-      const resultEvents = tempList.map((email) => {
-      //redefining these variables - if it doesn't work also make an array of 
+    
   function handleSubmit() {
     // set where the calendar view starts at and if you can select it to add events
     setDefaultDate(new Date(start + "T00:00"));
@@ -139,7 +121,7 @@ const Meet = () => {
         })
         .catch((err)=>console.log(err));
       })
-    }
+  }
   
     //THIS WORKS yay @s-palakur (works outside the array)
     console.log("this is startarr", startArrayConst)
