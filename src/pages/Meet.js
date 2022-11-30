@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import arrow from "../images/left_arrow.png";
 import Multiselect from "multiselect-react-dropdown";
-import { getID, getFriendEvents, firestore } from "../Firebase";
+import { getID, getFriendEvents, firestore, holdSlotTimes, holdSelectedFriends } from "../Firebase";
 import {
   onSnapshot,
   collection,
@@ -39,6 +39,9 @@ const Meet = () => {
   const [description, setDescription] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
+  const [busyArr, setBusyArr] = useState([]);
+  const [count, setCount] = useState(0);
+
 
   const [friendArr, setFriendArr] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
@@ -77,6 +80,7 @@ const Meet = () => {
     end.trim().length === 0 ||
     moment(end).isBefore(start);
 
+    
   function handleSubmit() {
     // set where the calendar view starts at and if you can select it to add events
     setDefaultDate(new Date(start + "T00:00"));
@@ -110,21 +114,27 @@ const Meet = () => {
           endArr.push(...returnObj[1]);
           setStartArr(startArr);
           setEndArr(endArr);
+          if(email === tempList[tempList.length-1])
+            setCount(count + 1);
           return returnObj;
         })
-        .catch((err) => console.log(err));
-    });
+        .catch((err)=>console.log(err));
+      })
   }
-
-  //THIS WORKS yay @s-palakur (works outside the array)
-  console.log("this is startarr", startArrayConst);
-  console.log("this is endArr", endArrayConst);
-
-  // useEffect(() => {
-  //   return(busyTimes) => {findBusyTimes(startArrayConst, endArrayConst);
-
-  //   };
-  // }, []);
+  
+    //THIS WORKS yay @s-palakur (works outside the array)
+    console.log("this is startarr", startArrayConst)
+    console.log("this is endArr", endArrayConst)
+  
+    useEffect(() => {
+      console.log(count);
+      console.log("this is startarr in func", startArrayConst)
+      console.log("this is endArr in func", endArrayConst)
+      const arr = findBusyTimes(startArrayConst, endArrayConst);
+      setBusyArr(arr);
+      console.log("This is the busy array" + busyArr);
+    }, [count]);
+  
   function clear() {
     setTitle("");
     setDescription("");
@@ -133,14 +143,17 @@ const Meet = () => {
     setDefaultDate("");
   }
 
-  const handleSelectSlot = ({ start, end }) => {
+  const handleSelectSlot = ({ start, end }) => {  //start and end here are the start and end timestamps of your selected slot
     setOpenDialog(true);
     console.log(start, " ", end);
+    holdSlotTimes(start, end);
+    holdSelectedFriends(selectedFriends);
   };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
+  
   return (
     <div className="container">
       <div style={{ display: "flex" }}>

@@ -53,6 +53,12 @@ export function getID() {
 //moved some constants outside functions for fun @s-palakur
 export const firestore = getFirestore(); //basically db
 
+//holds slotTimes, used only in AddEventDialog.js
+export var slotTimes = [];
+
+//holds selectedFriends from Meet.js, used only in AddEventDialog.js
+export var selectedFriends = [];
+
 export async function addEvent(title, desc, start_d, end_d) {
   const eventsCollection = collection(
     firestore,
@@ -69,6 +75,24 @@ export async function addEvent(title, desc, start_d, end_d) {
     console.log("Error: " + err.message);
   });
   console.log("Document written with ID: ", docRef.id);
+}
+
+export async function addEventToFriends(friendID, title, desc, start_d, end_d) {
+  const eventsCollection = collection(
+    firestore,
+    'userCollection/' + friendID + '/events'
+  );
+  //Using the add() method to add random documents with the Title and Date stored
+  const docRef = addDoc(eventsCollection, {
+    Title: title,
+    Description: desc,
+    Start: Timestamp.fromDate(new Date(start_d)),
+    End: Timestamp.fromDate(new Date(end_d)),
+  }).catch((err) => {
+    //This function catches any error that occurs during the creation of the document
+    console.log("Error: " + err.message);
+  });
+  console.log("Successfully added to " + friendID + "'s events collection");
 }
 
 export function writeUserDoc() {
@@ -127,6 +151,34 @@ export async function getFriendEvents(email, tsStart, tsEnd) {
     return [startArr, endArr];
   
   }
+
+//used to store the slot times the user created in the Meet page @alexavanh
+export async function holdSlotTimes(start, end) {
+  if (slotTimes.length == 0) {
+    slotTimes.push(start);
+    slotTimes.push(end);
+  }
+  else {
+    slotTimes = [];
+    slotTimes.push(start);
+    slotTimes.push(end);
+  }
+}
+
+//used to store the selected friends from the Meet page @alexavanh
+export async function holdSelectedFriends(friendList) {
+  if (selectedFriends.length == 0) {
+    friendList.forEach(friend => {
+      selectedFriends.push(friend);
+    })
+  }
+  else {
+    selectedFriends = [];
+    friendList.forEach(friend => {
+      selectedFriends.push(friend);
+    })
+  }
+}
 
 
 // export async function getAllUsers() {

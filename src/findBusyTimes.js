@@ -14,18 +14,17 @@ export function mergeArrays(startArrays, endArrays) {
   return mergedArray;
 }
 
-export function findBusyTimes(
-  startArrays,
-  endArrays,
-  startTimestamp,
-  endTimestamp
-) {
+
+export function findBusyTimes(startArrays, endArrays, startTimestamp, endTimestamp) {
+   /*
   let eventsArray = mergeArrays(startArrays, endArrays);
 
   // change to sort using timestamp object compare function
   eventsArray = eventsArray.sort((a, b) => {
-    return a._comparedTo(b);
-  });
+    //temporary, code works without
+   
+    return(a._comparedTo(b))
+    });
 
   let index = 0;
   for (let i = 1; i < eventsArray.length; i++) {
@@ -53,10 +52,11 @@ export function findBusyTimes(
       // assumes that can just compare with comparison operators
       eventsArray[eventsArray.length - 1][1] = endTimestamp;
     }
-  }
-  for (let i = 0; i < eventsArray.length; i++) {
-    eventsArray[i][0] = eventsArray[i][0].toDate();
-    eventsArray[i][1] = eventsArray[i][1].toDate();
-  }
-  return eventsArray;
+    for (let i = 0; i < eventsArray.length; i++) {
+      eventsArray[i][0] = eventsArray[i][0].toDate();
+      eventsArray[i][1] = eventsArray[i][1].toDate();
+    }
+  return(eventsArray);
+  */
+ return ["Hi, this is temporary, sorry Amy."];
 }
