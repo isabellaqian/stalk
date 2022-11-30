@@ -7,11 +7,9 @@ import { onSnapshot, getFirestore, doc, Timestamp } from "firebase/firestore";
 import MyCalendar from "../components/MyCalendar";
 import moment from "moment";
 
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import { findBusyTimes } from "../findBusyTimes";
 
 const Meet = () => {
   //realistically, we need to get the user's friend list from the database (@alexavanh)
@@ -90,6 +88,7 @@ function handleSubmit() {
   console.log("this is startarr", startArrayConst)
   console.log("this is endArr", endArrayConst)
 
+  const busyTimesArray = findBusyTimes(startArrayConst, endArrayConst)
   
   function clear() {
     setTitle("");
