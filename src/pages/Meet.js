@@ -18,6 +18,9 @@ const Meet = () => {
   const [description, setDescription] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
+  const [busyArr, setBusyArr] = useState([]);
+  const [count, setCount] = useState(0);
+
 
   const [friendArr, setFriendArr] = useState([]);
   
@@ -61,9 +64,9 @@ const Meet = () => {
       //tempList.push(getID());
       console.log("List of friends and yourself: " + tempList);
       //converting objects to Timestamp
-      const tsStart = Timestamp.fromDate(new Date(start + "T00:00"));
+      const tsStart = Timestamp.fromDate(new Date(start));
       console.log("start", start)
-      const tsEnd = Timestamp.fromDate(new Date(end + "T23:59"));
+      const tsEnd = Timestamp.fromDate(new Date(end));
       console.log("end", end)
       //probs dont need templist as map doesnt modify original array
   
@@ -78,6 +81,8 @@ const Meet = () => {
           endArr.push(...returnObj[1])
           setStartArr(startArr);
           setEndArr(endArr);
+          if(email === tempList[tempList.length-1])
+            setCount(count + 1);
           return returnObj;
         })
         .catch((err)=>console.log(err));
@@ -88,11 +93,14 @@ const Meet = () => {
     console.log("this is startarr", startArrayConst)
     console.log("this is endArr", endArrayConst)
   
-    // useEffect(() => {
-    //   return(busyTimes) => {findBusyTimes(startArrayConst, endArrayConst);
-  
-    //   };
-    // }, []);
+    useEffect(() => {
+      console.log(count);
+      console.log("this is startarr in func", startArrayConst)
+      console.log("this is endArr in func", endArrayConst)
+      const arr = findBusyTimes(startArrayConst, endArrayConst);
+      setBusyArr(arr);
+      console.log("This is the busy array" + busyArr);
+    }, [count]);
   
   function clear() {
     setTitle("");
