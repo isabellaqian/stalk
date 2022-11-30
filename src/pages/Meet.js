@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import arrow from "../images/left_arrow.png";
 import Multiselect from "multiselect-react-dropdown";
-import { getID } from "../Firebase";
-import { onSnapshot, getFirestore, doc } from "firebase/firestore";
+import { getID, firestore } from "../Firebase";
+import { onSnapshot, collection, getFirestore, doc } from "firebase/firestore";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 const localizer = momentLocalizer(moment);
@@ -32,18 +32,15 @@ const Meet = () => {
   // can successfully retrieve the friends list from firestore @s-palakur
   //fixed bug where userCollection was imported not redeclared as a DOC
   useEffect(() => {
+    //Get all users here (@emily)
+    const friendCollection = collection(firestore, 'userCollection/' + getID() + '/friends');
     const friendsArrFirestore = [];
-    const db = getFirestore();
-    const unsub = onSnapshot(doc(db, 'userCollection/' + getID()), (doc) => {
-      const tempArr = doc.data().friends;
-      for (let i = 0; i < tempArr.length; i++)
-      {
-        friendsArrFirestore.push(tempArr[i]);
-        //setting it with added helper function
-      }
+    const unsubscribe = onSnapshot(friendCollection, (snapshot) => {
+      snapshot.forEach((doc) => {
+      friendsArrFirestore.push(doc.data().emailID);
+      });
       setFriendArr(friendsArrFirestore);
     });
-  return() => unsub();
   }, []);
 
 
