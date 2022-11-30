@@ -1,38 +1,42 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { UserAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
-
-import { writeUserDoc } from "../Firebase"
+import { writeUserDoc } from "../Firebase";
 
 const Signin = () => {
   const { googleSignIn, user } = UserAuth();
   const navigate = useNavigate();
 
-  const handleSignIn = async () => {
+  const handleSignInOrUp = async () => {
     try {
       await googleSignIn();
     } catch (error) {
       console.log(error);
     }
   };
+
   // show dashboard if the user is logged in
   useEffect(() => {
     if (user != null) {
       navigate("/dashboard");
-      writeUserDoc()
+      writeUserDoc();
     }
   }, []);
 
   return (
-    <div>
-      <button className="button_accent float_right" onClick={handleSignIn}>
-        Sign up now
-      </button>
-      <button className="button_white float_right" onClick={handleSignIn}>
-        Log in
-      </button>
-    </div>
+    <button
+      className="button_accent float_right"
+      style={{ width: "200px" }}
+      onClick={handleSignInOrUp}
+    >
+      Log in or Sign Up
+    </button>
   );
 };
 
 export default Signin;
+
+/* Changing to only one button. (@emily)
+  <button className="button_accent float_right" onClick={handleSignUp}>
+    Sign up now
+  </button> */

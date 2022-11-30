@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Oxygen+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Oxygen&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+/* @import 'react-big-calendar/lib/sass/styles'; */
+/* colors: 
+    #e05927
+    #f9c784 
+    #485696
+    #626fa7
+*/
 .body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -25,7 +32,7 @@ body {
   padding-left:10%;
   padding-right: 10%;
   align-items: center;
-  display:block
+  display:block;
 }
 .items {
   padding-top: 5%;
@@ -44,6 +51,12 @@ body {
   font-family: Oxygen Mono;
   font-weight: Regular;
   font-size: 32px;
+}
+.set_oxygen {
+  font-family: Oxygen;
+}
+.set_roboto {
+  font-family: Roboto;
 }
 .nav_bar {
   padding: 10px 30px 30px 10px;
@@ -74,6 +87,43 @@ float: right;
   background: rgb(207, 83, 38);
   border: 2px solid rgb(207, 83, 38);
 }
+.button_accent_small {
+  margin: 10px;
+
+  color: rgb(255, 255, 255);
+  font-family: Oxygen;
+  font-weight: Regular;
+  font-size: 15px;
+  text-align: relative;
+  border: none;
+  border-radius: 18px;
+  background: rgb(232, 138, 104);
+  width: 120px;
+  height: 40px;
+  cursor: pointer;
+}
+.button_accent_small:hover, button_accent_small:active {
+  background: rgb(207, 83, 38);
+  /* border: 2px solid rgb(207, 83, 38); */
+}
+.button_blue_small {
+  margin: 10px;
+  color: rgb(255, 255, 255);
+  font-family: Oxygen;
+  font-weight: Regular;
+  font-size: 15px;
+  text-align: relative;
+  border: none;
+  border-radius: 18px;
+  background: #626fa7;
+  width: 120px;
+  height: 40px;
+  cursor: pointer;
+}
+.button_blue_small:hover,
+button_blue_small:active {
+  background: #43508a;
+}
 .button_white {
   cursor: pointer;
   margin: 10px;
@@ -87,10 +137,25 @@ float: right;
   /* border: 2px solid rgba(224, 89, 39, 1); */
   border-radius: 23px;
   background:rgba(255,255,255,1);
-  /* width: 100px; */
-  /* height: 50px; */
+  width: 150px;
+  height: 50px;
 }
+.button_white_small {
+  cursor: pointer;
+  margin: 10px;
 
+  color: rgba(49, 54, 86, 1);
+  font-family: Oxygen;
+  font-weight: Regular;
+  font-size: 15px;
+  text-align: relative;
+  border: none;
+  border-radius: 23px;
+  background: rgba(255, 255, 255, 1);
+  width: 120px;
+  height: 40px;
+  box-shadow:2px 2px 4px rgb(215, 215, 215) inset; 
+}
 /*for set your personal calendar*/
 .setcal {
   position: absolute;
@@ -119,10 +184,13 @@ float: right;
 .inputbox {
   width: 70%;
 }
+input {
+  font-family: Oxygen;
+}
 
 .smallerh3 {
   color: rgba(0,0,0,1);
-  font-family: Oxygen Mono;
+  font-family: Oxygen;
   font-weight: Regular;
   font-size: 10px;
 }
@@ -149,15 +217,21 @@ float: right;
 
 .addfriendsinput {
   width: 35%;
+  height: 10%;
 }
 
 #create-event-table {
-  width: 500px;
+  table-layout: fixed;
+  width: 50%;
+  font-family: Oxygen;
+  /* makes the columns not stick out */
   font-size: 14px;
+  align-items: center;
 }
 
 #create-event-table > thead > tr > th {
   font-size: 18px;
+  font-family: Oxygen;
   text-align: center;
 }
 
@@ -167,4 +241,17 @@ float: right;
 
 #create-event-table input {
   width: 100%;
+  border-radius: 10px;
+  padding: 8px;
+  border: 1px solid rgb(156, 156, 156);
+}
+
+.custom-centered {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+form {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }

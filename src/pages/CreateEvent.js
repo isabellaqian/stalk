@@ -1,64 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import { collection, onSnapshot, Timestamp } from "firebase/firestore";
 import { addEvent, firestore } from "../Firebase";
 import moment from "moment";
-import { UserAuth } from "../components/AuthContext";
-
-const localizer = momentLocalizer(moment);
-
-// so for front end I think it would be great if you guys could make the data persist by always reading
-// from Fire store. so you could just get the current users email and there’s a URL routing that
-// I have in my code so you can just follow that convention.
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import MyCalendar from "../components/MyCalendar";
 
 export default function CreateEvent() {
-  const [personalEvents, setPersonalEvents] = useState([]);
   const [eventTitle, setTitle] = useState("");
-  const [summary, setSummary] = useState("");
   const [description, setDescription] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
-
-  const { user } = UserAuth();
-
-  function timestampToDate(timestamp) {
-    return new Intl.DateTimeFormat("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    }).format(timestamp);
-  }
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-    // const tempEvents = [];
-    const fbEvents = collection(
-      firestore,
-      "userCollection/" + user.email + "/events"
-    );
-    const unsubscribe = onSnapshot(fbEvents, (snap) => {
-      // console.log(snap);
-      const tempEvents = [];
-      snap.forEach((doc) => {
-        const d = doc.data();
-        tempEvents.push({
-          title: d.Title,
-          start: d.Start.toDate(),
-          end: d.End.toDate(),
-        });
-      });
-      console.log("tempEvents ", tempEvents);
-      setPersonalEvents(Array.from(tempEvents));
-      console.log("updated personalEvents ", personalEvents);
-    });
-
-    //remember to unsubscribe from your realtime listener on unmount or you will create a memory leak
-    return () => unsubscribe();
-  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -68,7 +19,6 @@ export default function CreateEvent() {
 
   function clear() {
     setTitle("");
-    setSummary("");
     setDescription("");
     setStart("");
     setEnd("");
@@ -83,51 +33,98 @@ export default function CreateEvent() {
   const [test, setTest] = useState([]);
 
   return (
-    <div>
-      <table id="create-event-table">
+    <div className="container">
+      <div className="custom-centered" style={{ width: "50%" }}>
+        <Stack spacing={2}>
+          <h1 className="custom-centered">Add an event to calendar</h1>
+          <TextField
+            // id="outlined-textarea"
+            label="Event Name"
+            required
+            placeholder="CS35L Hack"
+            value={eventTitle}
+            // style={{ "padding-bottom": "10px" }}
+            onChange={(e) => setTitle(e.target.value)} //constantly updates the state
+          />
+
+          <TextField
+            // id="outlined-textarea"
+            label="Description (optional)"
+            placeholder="Plan: grind for 5 hours straight."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)} //constantly updates the state
+          />
+          <TextField
+            type="datetime-local"
+            id="start"
+            required
+            label="Start time"
+            value={start}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={(e) => setStart(e.target.value)}
+          />
+
+          <TextField
+            type="datetime-local"
+            id="end"
+            label="End time"
+            value={end}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={(e) => setEnd(e.target.value)}
+          />
+          <div>
+            <button
+              className="button_blue_small"
+              onClick={handleSubmit}
+              disabled={isFormDisabled}
+            >
+              Create event!
+            </button>
+            <button className="button_white_small" onClick={clear}>
+              Clear input
+            </button>
+          </div>
+        </Stack>
+      </div>
+      {/* <table id="create-event-table" className="custom-centered">
         <thead>
           <tr>
-            <th colSpan={2}>Enter your calendar event below!</th>
+            <th colSpan={5}>Add an event to calendar</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th>Event Name:</th>
-            <td>
+            <th colSpan={2}>Event Name:</th>
+            <td colSpan={3}>
               <input
                 type="text"
                 required
+                placeholder="35L"
                 value={eventTitle}
                 onChange={(e) => setTitle(e.target.value)} //constantly updates the state
               />
             </td>
           </tr>
           <tr>
-            <th>Summary:</th>
-            <td>
-              <input
-                type="text"
-                id="summary"
-                value={summary}
-                onChange={(e) => setSummary(e.target.value)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <th>Description:</th>
-            <td>
+            <th colSpan={2}>Description:</th>
+            <td colSpan={3}>
               <input
                 className="inputbox"
                 type="text"
                 id="description"
+                placeholder="Plan: Grind like a hackathon"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </td>
           </tr>
           <tr>
-            <th>Start:</th>
-            <td>
+            <th colSpan={2}>Start:</th>
+            <td colSpan={3}>
               <input
                 type="datetime-local"
                 id="start"
@@ -137,8 +134,8 @@ export default function CreateEvent() {
             </td>
           </tr>
           <tr>
-            <th>End:</th>
-            <td>
+            <th colSpan={2}>End:</th>
+            <td colSpan={3}>
               <input
                 type="datetime-local"
                 id="end"
@@ -146,23 +143,25 @@ export default function CreateEvent() {
                 onChange={(e) => setEnd(e.target.value)}
               />
             </td>
-            <td>
-              <button onClick={handleSubmit} disabled={isFormDisabled}>
-                Create event!
-              </button>
-              <button onClick={clear}>Clear</button>
-            </td>
           </tr>
         </tbody>
-      </table>
-      <div className="content">
-        <Calendar
-          localizer={localizer}
-          events={personalEvents}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 500 }}
-        />
+        <tr>
+          <th colSpan={5}>
+            <button
+              className="button_accent_small"
+              onClick={handleSubmit}
+              disabled={isFormDisabled}
+            >
+              Create event!
+            </button>
+            <button className="button_white_small" onClick={clear}>
+              Clear input
+            </button>
+          </th>
+        </tr>
+      </table> */}
+      <div className="content" style={{ "padding-top": "20px" }}>
+        <MyCalendar />
       </div>
     </div>
   );

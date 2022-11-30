@@ -10,29 +10,19 @@ export const Dashboard = () => {
   };
   return (
     //izzy TODO: make meet add friends button cenetered
-    <div>
     <div className="container">
       <div className="h3">Welcome, {user?.displayName}</div>
       <div className="items">
         <Link to="/meet">
-          <button className="button_accent" style={style}>
-            Meet
-          </button>
+          <button className="button_accent">Meet</button>
         </Link>
         <Link to="/addfriends">
-          <button className="button_white">Add friends</button>
+          <button className="button_white">Friends</button>
         </Link>
       </div>
-    </div>
-
-    <div>
-      <div className="setcal"> 
-        <h1>Set your personal calendar below!</h1>
-      </div>
       <div className="cal">
-        <CreateEvent/>
+        <CreateEvent />
       </div>
-    </div>
     </div>
   );
 };
