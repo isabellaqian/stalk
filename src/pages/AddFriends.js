@@ -31,6 +31,18 @@ const AddFriends = () => {
       setUserArr(userList);
       console.log("All users in userList: ", userArr.join(", "));
     });
+
+    //Get a list of your friends (@emily)
+    const friendCollection = collection(firestore, 'userCollection/' + getID() + '/friends');
+    const friendList = [];
+    const unsub = onSnapshot(friendCollection, (snapshot) => {
+      snapshot.forEach((doc) => {
+        friendList.push(doc.data().emailID);
+      });
+      setFriendArr(friendList);
+    });
+    console.log("useEffect ran");
+
   }, []);
 
 
@@ -42,10 +54,15 @@ const AddFriends = () => {
       setEmails(e.target.value);
 
       if(checkValidUser(emails)) {
+        if(checkFriend(emails)) {
+          setError("You're already friends with " + emails + "!");
+          return;
+        }
           //taking in email input: friends email
           addFriend(emails)
           setError(null);
-          console.log("You added: ", emails)
+          setSuccess("You added: " + emails + "!");
+          console.log("You added: ", emails);
           return;
       } else {
           setError("Not an existing user!"); 
@@ -63,6 +80,15 @@ const AddFriends = () => {
   function checkValidUser(email) {
     for( let i = 0; i < userArr.length; i++) {
       if(email === userArr[i]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function checkFriend(email) {
+    for( let i = 0; i < friendArr.length; i++) {
+      if(email === friendArr[i]) {
         return true;
       }
     }
