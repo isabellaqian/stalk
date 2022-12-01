@@ -9,14 +9,13 @@ import { addFriend, firestore, getID } from "../Firebase";
 import { collection, onSnapshot, doc } from "firebase/firestore";
 
 import "./pages.css";
-import FriendList from "../components/FriendList";
 
 const AddFriends = () => {
   const [emails, setEmails] = useState("");
+  const [error, setError] = useState(null);
   const [userArr, setUserArr] = useState([]);
   const [friendArr, setFriendArr] = useState([]);
   const [success, setSuccess] = useState(null);
-  const [error, setError] = useState(null);
 
   const { user } = UserAuth();
 
@@ -26,7 +25,7 @@ const AddFriends = () => {
     const userList = [];
     const unsubscribe = onSnapshot(userCollection, (snapshot) => {
       snapshot.forEach((doc) => {
-        // console.log("user: ", doc.data().email);
+        console.log("user: ", doc.data().email);
         userList.push(doc.data().email);
       });
       setUserArr(userList);
@@ -34,10 +33,7 @@ const AddFriends = () => {
     });
 
     //Get a list of your friends (@emily)
-    const friendCollection = collection(
-      firestore,
-      "userCollection/" + getID() + "/friends"
-    );
+    const friendCollection = collection(firestore, 'userCollection/' + getID() + '/friends');
     const friendList = [];
     const unsub = onSnapshot(friendCollection, (snapshot) => {
       snapshot.forEach((doc) => {
@@ -45,8 +41,9 @@ const AddFriends = () => {
       });
       setFriendArr(friendList);
     });
-    console.log("useEffect ran");
+
   }, []);
+
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -61,16 +58,17 @@ const AddFriends = () => {
           setSuccess(null);
           return;
         }
-        //taking in email input: friends email
-        addFriend(emails);
-        setError(null);
-        setSuccess("You added: " + emails + "!");
-        return;
+          //taking in email input: friends email
+          addFriend(emails);
+          setError(null);
+          setSuccess("You added: " + emails + "!");
+          console.log("You added: ", emails);
+          return;
       } else {
-        setError("Not an existing user!");
-        setSuccess(null);
+          setError("Not an existing user!"); 
+          setSuccess(null);
       }
-    }
+    } 
   }
 
   function isValidEmail(email) {
@@ -78,7 +76,7 @@ const AddFriends = () => {
       email
     );
   }
-
+    
   //Returns true if potential friend email input by user is the email of a current user in userArr array (@emily)
   function checkValidUser(email) {
     for (let i = 0; i < userArr.length; i++) {
@@ -131,22 +129,23 @@ const AddFriends = () => {
           style={{ width: "300px" }}
         />
 
-        {/* {error && <h2 style={{ color: "red" }}>{error}</h2>} */}
-        {error && <Alert severity="error">{error}</Alert>}
-        {success && <Alert severity="success">{success}</Alert>}
-        <button
+      {/* {error && <h2 style={{ color: "red" }}>{error}</h2>} */}
+      {error && <Alert severity="error">{error}</Alert>}
+      {success && <Alert severity="success">{success}</Alert>}
+      <button
           className="button_accent_small custom-centered"
           type="submit"
-          onClick={handleSubmit}
-        >
-          Add
-        </button>
-      </div>
-      <div>
+        onClick={handleSubmit}
+      >
+        Add
+      </button>
+    </div>
+    <div>
         <FriendList/>
       </div>
     </div>
   );
+  
 };
 
 export default AddFriends;
