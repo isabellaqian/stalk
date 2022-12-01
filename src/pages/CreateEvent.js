@@ -13,6 +13,7 @@ export default function CreateEvent() {
   const [description, setDescription] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
+  const [location, setLocation] = useState("");
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
 
@@ -36,7 +37,7 @@ export default function CreateEvent() {
     //adding new entries to store new incoming data in firestore database @s-palakur
     console.log(start);
     console.log(end);
-    addEvent(eventTitle, description, start, end);
+    addEvent(eventTitle, description, start, end, location);
     setSuccess("Event added");
     setError(null);
   }
@@ -115,6 +116,13 @@ export default function CreateEvent() {
               shrink: true,
             }}
             onChange={(e) => setEnd(e.target.value)}
+          />
+          
+          <TextField
+            label="Location (optional)"
+            placeholder="Ur mom's house."
+            value={location}
+            onChange={(e) => setLocation(e.target.value)} 
           />
           {success && <Alert severity="success">{success}</Alert>}
           {error && <Alert severity="error">{error}</Alert>}

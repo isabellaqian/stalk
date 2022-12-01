@@ -15,6 +15,7 @@ export default function PersonalEventDialog({ open, handleClose }) {
   //const [open, setOpen] = useState(false);
   const [eventTitle, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -40,7 +41,7 @@ export default function PersonalEventDialog({ open, handleClose }) {
       return;
     }
     setSuccess("Event added");
-    addEvent(eventTitle, description, start, end);
+    addEvent(eventTitle, description, start, end, location);
 
     handleClose();
   }
@@ -67,6 +68,12 @@ export default function PersonalEventDialog({ open, handleClose }) {
               placeholder="Plan: grind for 5 hours straight."
               value={description}
               onChange={(e) => setDescription(e.target.value)} //constantly updates the state
+            />
+            <TextField
+              label="Location (optional)"
+              placeholder="Ur mom's house."
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
             />
             {/* <TextField
               type="datetime-local"

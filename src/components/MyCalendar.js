@@ -41,6 +41,7 @@ export default function MyCalendar({
           description: d.Description,
           author: d.Author,
           id: doc.id,
+          loca: d.Location,
         });
       });
       setPersonalEvents(Array.from(tempEvents));

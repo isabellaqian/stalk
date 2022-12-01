@@ -33,8 +33,10 @@ export default function AddEventPopUp({ open, handleClose, event }) {
           <DialogContent>
             Description: {event.description} <br />
             <br />
+            Location: {event.loca}
+            <br /> <br />
             Author: {event.author}
-            <br />
+            <br /><br />
             id:{event.id}
           </DialogContent>
           <DialogActions>

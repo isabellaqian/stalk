@@ -20,6 +20,7 @@ export default function AddEventDialog({ open, handleClose }) {
   //const [open, setOpen] = useState(false);
   const [eventTitle, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
 
   function handleClick() {
     //slotTimes will hold the times of the slot now @alexavanh
@@ -29,7 +30,7 @@ export default function AddEventDialog({ open, handleClose }) {
 
     //this function adds an event for yourself too
     selectedFriends.forEach((friend) => {
-      addEventToFriends(friend, eventTitle, description, start, end);
+      addEventToFriends(friend, eventTitle, description, start, end, location);
     });
 
     handleClose();
@@ -58,6 +59,13 @@ export default function AddEventDialog({ open, handleClose }) {
               placeholder="Plan: grind for 5 hours straight."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              fullWidth
+            />
+            <TextField
+              label="Location (optional)"
+              placeholder="Ur mom's house."
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
               fullWidth
             />
           </Stack>

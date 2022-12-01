@@ -67,7 +67,7 @@ export var slotTimes = [];
 //holds selectedFriends from Meet.js, used only in AddEventDialog.js
 export var selectedFriends = [];
 
-export async function addEvent(title, desc, start_d, end_d) {
+export async function addEvent(title, desc, start_d, end_d, loca) {
   const eventsCollection = collection(
     firestore,
     "userCollection/" + getID() + "/events"
@@ -80,6 +80,7 @@ export async function addEvent(title, desc, start_d, end_d) {
     End: Timestamp.fromDate(new Date(end_d)),
     Type: "personal",
     Author: getID(),
+    Location: loca,
   }).catch((err) => {
     //This function catches any error that occurs during the creation of the document
     console.log("Error: " + err.message);
@@ -87,7 +88,7 @@ export async function addEvent(title, desc, start_d, end_d) {
   console.log("Document written with ID: ", docRef.id);
 }
 
-export async function addEventToFriends(friendID, title, desc, start_d, end_d) {
+export async function addEventToFriends(friendID, title, desc, start_d, end_d, loca) {
   const eventsCollection = collection(
     firestore,
     "userCollection/" + friendID + "/events"
@@ -100,6 +101,7 @@ export async function addEventToFriends(friendID, title, desc, start_d, end_d) {
     End: Timestamp.fromDate(new Date(end_d)),
     Type: "group",
     Author: getID(),
+    Location: loca,
   }).catch((err) => {
     //This function catches any error that occurs during the creation of the document
     console.log("Error: " + err.message);
