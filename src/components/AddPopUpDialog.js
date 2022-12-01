@@ -13,7 +13,6 @@ import {
   slotTimes,
 } from "../Firebase";
 
-
 export default function AddEventPopUp({ open, handleClose, event }) {
   //const [open, setOpen] = useState(false);
   const [eventTitle, setTitle] = useState("");
@@ -23,28 +22,26 @@ export default function AddEventPopUp({ open, handleClose, event }) {
     handleClose();
   }
 
-  if(event !== null){
+  if (event !== null) {
     return (
       <div>
         <Dialog open={open} onClose={handleClose}>
-
           <DialogActions>
             <button onClick={handleClick}>x</button>
           </DialogActions>
-          <DialogTitle className="popUpTitle"> 
-            {event.title}              
-          </DialogTitle>
+          <DialogTitle className="popUpTitle">{event.title}</DialogTitle>
           <DialogContent>
-            Description: {event.description} <br/>
-            <br/>
+            Description: {event.description} <br />
+            <br />
             Author: {event.author}
+            <br />
+            id:{event.id}
           </DialogContent>
           <DialogActions>
             <button className="button_red_small" onClick={handleClick}>
               Delete Event
             </button>
-            
-        </DialogActions>
+          </DialogActions>
         </Dialog>
       </div>
     );

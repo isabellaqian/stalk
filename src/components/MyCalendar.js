@@ -40,6 +40,7 @@ export default function MyCalendar({
           type: d.Type,
           description: d.Description,
           author: d.Author,
+          id: doc.id,
         });
       });
       setPersonalEvents(Array.from(tempEvents));
@@ -57,17 +58,18 @@ export default function MyCalendar({
   };
 
   //When event seleted, open AddPopUpDialog dialog (@emily)
-  const handleSelectEvent = useCallback(
-    (event) => {
-      setCurEvent(event);
-      setOpenDialog(true); 
-    },
-    []
-  )
+  const handleSelectEvent = useCallback((event) => {
+    setCurEvent(event);
+    setOpenDialog(true);
+  }, []);
 
   return (
     <div>
-      <AddPopUpDialog open={openDialog} handleClose={handleCloseDialog} event={curEvent} />
+      <AddPopUpDialog
+        open={openDialog}
+        handleClose={handleCloseDialog}
+        event={curEvent}
+      />
       <Calendar
         selectable={selectable}
         localizer={localizer}
