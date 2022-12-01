@@ -5,7 +5,13 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { addEvent, addEventToFriends, getSlotTimes, selectedFriends, slotTimes } from "../Firebase";
+import {
+  addEvent,
+  addEventToFriends,
+  getSlotTimes,
+  selectedFriends,
+  slotTimes,
+} from "../Firebase";
 
 export default function AddEventDialog({ open, handleClose }) {
   //const [open, setOpen] = useState(false);
@@ -17,9 +23,13 @@ export default function AddEventDialog({ open, handleClose }) {
     //selectedFriends will hold the friends that were selected in Meet page @alexavanh
     const start = slotTimes[0];
     const end = slotTimes[1];
-    selectedFriends.forEach(friend => {
+
+    //this function adds an event for yourself too
+    selectedFriends.forEach((friend) => {
       addEventToFriends(friend, eventTitle, description, start, end);
-    })
+    });
+
+    handleClose();
   }
 
   return (

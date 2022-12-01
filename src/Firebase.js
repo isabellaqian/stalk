@@ -8,9 +8,17 @@ import { getDatabase, ref, set } from "firebase/database";
 
 // imports for firestore
 import {
-  getFirestore, doc, setDoc, Timestamp, collection, addDoc, updateDoc,
-  query, where, getDocs,
-  onSnapshot
+  getFirestore,
+  doc,
+  setDoc,
+  Timestamp,
+  collection,
+  addDoc,
+  updateDoc,
+  query,
+  where,
+  getDocs,
+  onSnapshot,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { get } from "lodash";
@@ -62,7 +70,7 @@ export var selectedFriends = [];
 export async function addEvent(title, desc, start_d, end_d) {
   const eventsCollection = collection(
     firestore,
-    'userCollection/' + getID() + '/events'
+    "userCollection/" + getID() + "/events"
   );
   //Using the add() method to add random documents with the Title and Date stored
   const docRef = addDoc(eventsCollection, {
@@ -70,6 +78,8 @@ export async function addEvent(title, desc, start_d, end_d) {
     Description: desc,
     Start: Timestamp.fromDate(new Date(start_d)),
     End: Timestamp.fromDate(new Date(end_d)),
+    Type: "personal",
+    Author: getID(),
   }).catch((err) => {
     //This function catches any error that occurs during the creation of the document
     console.log("Error: " + err.message);
@@ -80,7 +90,7 @@ export async function addEvent(title, desc, start_d, end_d) {
 export async function addEventToFriends(friendID, title, desc, start_d, end_d) {
   const eventsCollection = collection(
     firestore,
-    'userCollection/' + friendID + '/events'
+    "userCollection/" + friendID + "/events"
   );
   //Using the add() method to add random documents with the Title and Date stored
   const docRef = addDoc(eventsCollection, {
@@ -88,6 +98,8 @@ export async function addEventToFriends(friendID, title, desc, start_d, end_d) {
     Description: desc,
     Start: Timestamp.fromDate(new Date(start_d)),
     End: Timestamp.fromDate(new Date(end_d)),
+    Type: "group",
+    Author: getID(),
   }).catch((err) => {
     //This function catches any error that occurs during the creation of the document
     console.log("Error: " + err.message);
@@ -98,14 +110,14 @@ export async function addEventToFriends(friendID, title, desc, start_d, end_d) {
 export function writeUserDoc() {
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
-    const userCollection = doc(firestore, 'userCollection/' + user.email);
+    const userCollection = doc(firestore, "userCollection/" + user.email);
     if (user) {
       const docData = {
         // userid that's stored in user-doc
         user: user.uid,
         name: user.displayName,
         email: user.email,
-        photoURL: user.photoURL
+        photoURL: user.photoURL,
       };
       setDoc(userCollection, docData);
     }
@@ -114,11 +126,16 @@ export function writeUserDoc() {
 
 //Adds friends as documents under friends collection (@emily)
 export async function addFriend(friendID) {
-  const friendCollection = doc(firestore, 'userCollection/' + getID() + '/friends/' + friendID);
+  const friendCollection = doc(
+    firestore,
+    "userCollection/" + getID() + "/friends/" + friendID
+  );
 
-  const docData = (friendCollection, {
-    emailID: friendID
-  })
+  const docData =
+    (friendCollection,
+    {
+      emailID: friendID,
+    });
   setDoc(friendCollection, docData);
   console.log("Document written with ID: ", docData.id);
 }
@@ -136,29 +153,34 @@ export async function addFriend(friendID) {
 
 // }
 export async function getFriendEvents(email, tsStart, tsEnd) {
-    const eventColl = collection(firestore, "userCollection/" + email+"/events")
-    const q = query(eventColl, where("Start", ">=", tsStart), where("Start", "<=", tsEnd));
-    let startArr = []
-    let endArr = []
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      const d = doc.data();
-      startArr.push(doc.data().Start);
-      endArr.push(doc.data().End);
-      console.log("in firebase ",doc.id, " => ", doc.data());
-    });
-    console.log("in firebase ",[startArr, endArr]);
-    return [startArr, endArr];
-  
-  }
+  const eventColl = collection(
+    firestore,
+    "userCollection/" + email + "/events"
+  );
+  const q = query(
+    eventColl,
+    where("Start", ">=", tsStart),
+    where("Start", "<=", tsEnd)
+  );
+  let startArr = [];
+  let endArr = [];
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    const d = doc.data();
+    startArr.push(doc.data().Start);
+    endArr.push(doc.data().End);
+    console.log("in firebase ", doc.id, " => ", doc.data());
+  });
+  console.log("in firebase ", [startArr, endArr]);
+  return [startArr, endArr];
+}
 
 //used to store the slot times the user created in the Meet page @alexavanh
 export async function holdSlotTimes(start, end) {
-  if (slotTimes.length == 0) {
+  if (slotTimes.length === 0) {
     slotTimes.push(start);
     slotTimes.push(end);
-  }
-  else {
+  } else {
     slotTimes = [];
     slotTimes.push(start);
     slotTimes.push(end);
@@ -167,19 +189,18 @@ export async function holdSlotTimes(start, end) {
 
 //used to store the selected friends from the Meet page @alexavanh
 export async function holdSelectedFriends(friendList) {
-  if (selectedFriends.length == 0) {
-    friendList.forEach(friend => {
+  if (selectedFriends.length === 0) {
+    selectedFriends.push(getID());
+    friendList.forEach((friend) => {
       selectedFriends.push(friend);
-    })
-  }
-  else {
-    selectedFriends = [];
-    friendList.forEach(friend => {
+    });
+  } else {
+    selectedFriends = [getID()];
+    friendList.forEach((friend) => {
       selectedFriends.push(friend);
-    })
+    });
   }
 }
-
 
 // export async function getAllUsers() {
 //   console.log("run getAllUsers");
@@ -218,7 +239,6 @@ export async function holdSelectedFriends(friendList) {
 //   });
 //   return friendList;
 // }
-
 
 // export const logInWithGoogle = () => {
 //   signInWithPopup(auth, provider)
