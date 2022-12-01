@@ -26,12 +26,16 @@ export default function PersonalEventDialog({ open, handleClose }) {
   const displayEnd = slotTimes[3];
 
   function handleCancel() {
+    clear();
     handleClose();
   }
 
   function clear() {
     setTitle("");
     setDescription("");
+    setLocation("");
+    setError(null);
+    setSuccess(null);
   }
 
   function handleSubmit() {
@@ -43,6 +47,7 @@ export default function PersonalEventDialog({ open, handleClose }) {
     setSuccess("Event added");
     addEvent(eventTitle, description, start, end, location);
 
+    clear();
     handleClose();
   }
 

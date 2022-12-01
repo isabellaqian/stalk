@@ -21,8 +21,15 @@ export default function AddEventDialog({ open, handleClose }) {
   const [eventTitle, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   function handleClick() {
+    if (eventTitle.trim().length === 0) {
+      setError("Missing title");
+      setSuccess(null);
+      return;
+    }
     //slotTimes will hold the times of the slot now @alexavanh
     //selectedFriends will hold the friends that were selected in Meet page @alexavanh
     const start = slotTimes[0];
@@ -32,11 +39,22 @@ export default function AddEventDialog({ open, handleClose }) {
     selectedFriends.forEach((friend) => {
       addEventToFriends(friend, eventTitle, description, start, end, location);
     });
-
+    setSuccess("Event added");
+    
+    clear();
     handleClose();
   }
 
+  function clear() {
+    setTitle("");
+    setDescription("");
+    setLocation("");
+    setError(null);
+    setSuccess(null);
+  }
+
   function handleCancel() {
+    clear();
     handleClose();
   }
 
@@ -71,8 +89,9 @@ export default function AddEventDialog({ open, handleClose }) {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCancel}>Cancel</Button>
-          <Button onClick={handleClick}>Send invite to friends!</Button>
+          <button className="button_blue_small" onClick={handleClick}>Invite friends!</button>
+          <button className="button_white_small" onClick={handleCancel}>Cancel</button>
+          <button className="button_white_small" onClick={clear}> Clear input </button>
         </DialogActions>
       </Dialog>
     </div>
