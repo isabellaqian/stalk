@@ -27,6 +27,9 @@ code {
 body {
   font-size: 14px;
 }
+p {
+  font-size:15px;
+}
 
 .bg {
   color: #fff;

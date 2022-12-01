@@ -174,15 +174,26 @@ export async function getFriendEvents(email, tsStart, tsEnd) {
 }
 
 //used to store the slot times the user created in the Meet page @alexavanh
+//slotTimes[0] and [1] are start/end timestamp objects
+//slotTimes[2] and [3] are start/end isostrings that datetime pickers take
 export async function holdSlotTimes(start, end) {
   if (slotTimes.length == 0) {
     slotTimes.push(start);
     slotTimes.push(end);
+    slotTimes.push(start.toISOString().split(".")[0]);
+    slotTimes.push(end.toISOString().split(".")[0]);
   } else {
     slotTimes = [];
     slotTimes.push(start);
     slotTimes.push(end);
+    slotTimes.push(start.toISOString().split(".")[0]);
+    slotTimes.push(end.toISOString().split(".")[0]);
   }
+  // console.log(start);
+  // console.log(start.toISOString());
+  // console.log(start.toJSON());
+
+  // console.log(slotTimes[2]);
 }
 
 //used to store the selected friends from the Meet page @alexavanh
