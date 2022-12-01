@@ -295,3 +295,7 @@ form {
   position: relative;
   right: -15px;
 }
+.friend-list {
+  position: relative;
+  top: 15px;
+}
