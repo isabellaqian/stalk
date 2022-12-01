@@ -38,6 +38,7 @@ const testTimes = [
   },
 ];
 
+
 const Meet = () => {
   //realistically, we need to get the user's friend list from the database (@alexavanh)
   const [selectedFriends, setSelectedFriends] = useState([]);
@@ -226,7 +227,7 @@ const Meet = () => {
       <div className="content calpos cal">
         <MyCalendar
           key={canSelectCal}
-          busyTimes={testTimes}
+          busyTimes={busyArr}
           selectable={canSelectCal}
           handleSelectSlot={handleSelectSlot}
           defaultDate={defaultDate}
