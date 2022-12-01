@@ -1,5 +1,8 @@
 // for merging the start and end arrays into one 2D array
 export function mergeArrays(startArrays, endArrays) {
+  console.log("startArrays", startArrays);
+  console.log("endArrays", endArrays);
+  
   let startTimes = [];
   let endTimes = [];
   const mergedArray = [];
@@ -7,18 +10,20 @@ export function mergeArrays(startArrays, endArrays) {
     startTimes = startTimes.concat(startArrays[i]);
     endTimes = endTimes.concat(endArrays[i]);
   }
+  console.log("startTimes merged into one array", startTimes);
+  console.log("endTimes merged into one array", endTimes);
   for (let j = 0; j < startTimes.length; j++) {
-    mergedArray[j][0] = startTimes[j];
-    mergedArray[j][1] = endTimes[j];
+    mergedArray[j] = [startTimes[j],endTimes[j]];
   }
+  console.log("merged 2D array with start and end times at [0] and [1]", mergedArray);
   return mergedArray;
 }
 
 
 export function findBusyTimes(startArrays, endArrays, startTimestamp, endTimestamp) {
-   /*
+   
   let eventsArray = mergeArrays(startArrays, endArrays);
-
+  /*
   // change to sort using timestamp object compare function
   eventsArray = eventsArray.sort((a, b) => {
     //temporary, code works without
@@ -52,11 +57,16 @@ export function findBusyTimes(startArrays, endArrays, startTimestamp, endTimesta
       // assumes that can just compare with comparison operators
       eventsArray[eventsArray.length - 1][1] = endTimestamp;
     }
+    */
+
+    let busyEvents = []
     for (let i = 0; i < eventsArray.length; i++) {
-      eventsArray[i][0] = eventsArray[i][0].toDate();
-      eventsArray[i][1] = eventsArray[i][1].toDate();
+      busyEvents[i] = {
+        start: eventsArray[i][0].toDate(),
+        end: eventsArray[i][1].toDate(),
+        title: "Busy",
+      }
     }
-  return(eventsArray);
-  */
- return ["Hi, this is temporary, sorry Amy."];
+  console.log(busyEvents)
+  return(busyEvents);
 }

@@ -79,6 +79,7 @@ export async function addEvent(title, desc, start_d, end_d) {
     Start: Timestamp.fromDate(new Date(start_d)),
     End: Timestamp.fromDate(new Date(end_d)),
     Type: "personal",
+    Author: getID(),
   }).catch((err) => {
     //This function catches any error that occurs during the creation of the document
     console.log("Error: " + err.message);
@@ -98,6 +99,7 @@ export async function addEventToFriends(friendID, title, desc, start_d, end_d) {
     Start: Timestamp.fromDate(new Date(start_d)),
     End: Timestamp.fromDate(new Date(end_d)),
     Type: "group",
+    Author: getID(),
   }).catch((err) => {
     //This function catches any error that occurs during the creation of the document
     console.log("Error: " + err.message);
@@ -177,7 +179,7 @@ export async function getFriendEvents(email, tsStart, tsEnd) {
 //slotTimes[0] and [1] are start/end timestamp objects
 //slotTimes[2] and [3] are start/end isostrings that datetime pickers take
 export async function holdSlotTimes(start, end) {
-  if (slotTimes.length == 0) {
+  if (slotTimes.length === 0) {
     slotTimes.push(start);
     slotTimes.push(end);
     slotTimes.push(start.toISOString().split(".")[0]);
@@ -198,7 +200,7 @@ export async function holdSlotTimes(start, end) {
 
 //used to store the selected friends from the Meet page @alexavanh
 export async function holdSelectedFriends(friendList) {
-  if (selectedFriends.length == 0) {
+  if (selectedFriends.length === 0) {
     selectedFriends.push(getID());
     friendList.forEach((friend) => {
       selectedFriends.push(friend);
