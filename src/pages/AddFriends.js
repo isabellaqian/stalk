@@ -7,6 +7,7 @@ import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 import { addFriend, firestore, getID } from "../Firebase";
 import { collection, onSnapshot, doc } from "firebase/firestore";
+import FriendList from "../components/FriendList";
 
 import "./pages.css";
 
