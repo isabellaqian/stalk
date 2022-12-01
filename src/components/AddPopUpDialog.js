@@ -24,19 +24,27 @@ export default function AddEventPopUp({ open, handleClose, event }) {
   }
 
   if(event !== null){
-    console.log("in AddPopUpDialog: ", event.author);
     return (
       <div>
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle> {event.title} </DialogTitle>
+
+          <DialogActions>
+            <button onClick={handleClick}>x</button>
+          </DialogActions>
+          <DialogTitle className="popUpTitle"> 
+            {event.title}              
+          </DialogTitle>
           <DialogContent>
             Description: {event.description} <br/>
             <br/>
             Author: {event.author}
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClick}>Close</Button>
-          </DialogActions>
+            <button className="button_red_small" onClick={handleClick}>
+              Delete Event
+            </button>
+            
+        </DialogActions>
         </Dialog>
       </div>
     );

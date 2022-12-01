@@ -133,6 +133,26 @@ float: right;
 button_blue_small:active {
   background: #43508a;
 }
+
+.button_red_small {
+  margin: 10px;
+  color: rgb(255, 255, 255);
+  font-family: Oxygen;
+  font-weight: Regular;
+  font-size: 15px;
+  text-align: relative;
+  border: none;
+  border-radius: 18px;
+  background: #d01b1b;
+  width: 120px;
+  height: 40px;
+  cursor: pointer;
+}
+.button_red_small:hover,
+button_blue_small:active {
+  background: #982121;
+}
+
 .button_white {
   cursor: pointer;
   margin: 10px;
@@ -266,6 +286,15 @@ form {
   margin-bottom: 5px;
 }
 
+.popUpTitle {
+  position: relative;
+  margin-top: 0px;
+}
+
+.popUpExit {
+  position: relative;
+  right: -15px;
+}
 .friend-list {
   position: relative;
   top: 15px;
