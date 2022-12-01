@@ -4,6 +4,7 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { firestore } from "../Firebase";
 import moment from "moment";
 import { UserAuth } from "./AuthContext";
+import AddPopUpDialog from "../components/AddPopUpDialog";
 
 const localizer = momentLocalizer(moment);
 
@@ -15,6 +16,8 @@ export default function MyCalendar({
   handleSelectSlot = [],
 }) {
   const [personalEvents, setPersonalEvents] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [curEvent, setCurEvent] = useState(null);
   const { user } = UserAuth();
 
   useEffect(() => {
@@ -35,6 +38,8 @@ export default function MyCalendar({
           start: d.Start.toDate(),
           end: d.End.toDate(),
           type: d.Type,
+          description: d.Description,
+          author: d.Author,
         });
       });
       setPersonalEvents(Array.from(tempEvents));
@@ -47,8 +52,22 @@ export default function MyCalendar({
   const a = new Date("11/28/2022T00:00");
   const b = new Date("11/30/2022T00:00");
 
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  //When event seleted, open AddPopUpDialog dialog (@emily)
+  const handleSelectEvent = useCallback(
+    (event) => {
+      setCurEvent(event);
+      setOpenDialog(true); 
+    },
+    []
+  )
+
   return (
     <div>
+      <AddPopUpDialog open={openDialog} handleClose={handleCloseDialog} event={curEvent} />
       <Calendar
         selectable={selectable}
         localizer={localizer}
@@ -69,6 +88,7 @@ export default function MyCalendar({
         style={{ height: 500 }}
         toolbar={showToolbar}
         onSelectSlot={handleSelectSlot}
+        onSelectEvent={handleSelectEvent}
       />
     </div>
   );

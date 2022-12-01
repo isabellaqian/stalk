@@ -5,6 +5,9 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+
+import Stack from "@mui/material/Stack";
+
 import {
   addEvent,
   addEventToFriends,
@@ -32,28 +35,35 @@ export default function AddEventDialog({ open, handleClose }) {
     handleClose();
   }
 
+  function handleCancel() {
+    handleClose();
+  }
+
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Create an event</DialogTitle>
         <DialogContent>
-          <TextField
-            label="We are meeting for..."
-            required
-            placeholder="CS35L Hack"
-            value={eventTitle}
-            onChange={(e) => setTitle(e.target.value)}
-            fullWidth
-          />
-          <TextField
-            label="Description (optional)"
-            placeholder="Plan: grind for 5 hours straight."
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            fullWidth
-          />
+          <Stack spacing={2} style={{ paddingTop: "5px" }}>
+            <TextField
+              label="We are meeting for..."
+              required
+              placeholder="CS35L Hack"
+              value={eventTitle}
+              onChange={(e) => setTitle(e.target.value)}
+              fullWidth
+            />
+            <TextField
+              label="Description (optional)"
+              placeholder="Plan: grind for 5 hours straight."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              fullWidth
+            />
+          </Stack>
         </DialogContent>
         <DialogActions>
+          <Button onClick={handleCancel}>Cancel</Button>
           <Button onClick={handleClick}>Send invite to friends!</Button>
         </DialogActions>
       </Dialog>

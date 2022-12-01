@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { addEvent, firestore } from "../Firebase";
+import React, { useCallback, useEffect, useState } from "react";
+import { addEvent, firestore, holdSlotTimes } from "../Firebase";
+import { Timestamp } from "firebase/firestore";
 import moment from "moment";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import MyCalendar from "../components/MyCalendar";
+import PersonalEventDialog from "../components/PersonalEventDialog";
 
 export default function CreateEvent() {
   const [eventTitle, setTitle] = useState("");
@@ -13,6 +15,8 @@ export default function CreateEvent() {
   const [end, setEnd] = useState("");
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
+
+  const [openDialog, setOpenDialog] = useState(false);
 
   function handleSubmit(e) {
     if (eventTitle.trim().length === 0) {
@@ -53,13 +57,26 @@ export default function CreateEvent() {
   //   end.trim().length === 0 ||
   //   moment(end).isBefore(start);
 
-  const [test, setTest] = useState([]);
+  const handleSelectSlot = ({ start, end }) => {
+    //start and end here are the start and end timestamps of your selected slot
+    holdSlotTimes(start, end);
+    setOpenDialog(true);
+  };
+
+  function handleCloseDialog() {
+    setOpenDialog(false);
+  }
 
   return (
     <div className="container">
+      <PersonalEventDialog open={openDialog} handleClose={handleCloseDialog} />
+      <div className="content" style={{ paddingTop: "25px" }}>
+        <MyCalendar selectable={true} handleSelectSlot={handleSelectSlot} />
+      </div>
       <div className="custom-centered" style={{ width: "50%" }}>
         <Stack spacing={2}>
-          <h1 className="custom-centered">Add an event to calendar</h1>
+          <h1 className="custom-centered">Add an event</h1>
+          <p>Pro tip: you can also add an event by dragging on the calendar!</p>
           <TextField
             // id="outlined-textarea"
             label="Event Name"
@@ -114,9 +131,6 @@ export default function CreateEvent() {
             </button>
           </div>
         </Stack>
-      </div>
-      <div className="content" style={{ paddingTop: "25px" }}>
-        <MyCalendar />
       </div>
     </div>
   );
