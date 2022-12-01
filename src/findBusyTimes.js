@@ -23,12 +23,18 @@ export function mergeArrays(startArrays, endArrays) {
 export function findBusyTimes(startArrays, endArrays, startTimestamp, endTimestamp) {
    
   let eventsArray = mergeArrays(startArrays, endArrays);
-  /*
+  
   // change to sort using timestamp object compare function
   eventsArray = eventsArray.sort((a, b) => {
-    //temporary, code works without
-   
-    return(a._comparedTo(b))
+    if(a[0] < b[0]){
+      return(-1)
+    }
+    else if(a[0] > b[0]){
+      return(1)
+    }
+    else {
+      return(0)
+    }
     });
 
   let index = 0;
@@ -46,27 +52,28 @@ export function findBusyTimes(startArrays, endArrays, startTimestamp, endTimesta
     }
   }
 
-  if (eventsArray.length > 0) {
+  
+  let busyEvents = []
+  if (index > 0) {
     // check if the end time passes the given end timestamp for the period
     if (eventsArray[0][0] < startTimestamp) {
       // assumes that can just compare with comparison operators
       eventsArray[0][0] = startTimestamp;
     }
     // check if the end time passes the given end timestamp for the period
-    if (eventsArray[eventsArray.length - 1][1] > endTimestamp) {
+    if (eventsArray[index][1] > endTimestamp) {
       // assumes that can just compare with comparison operators
-      eventsArray[eventsArray.length - 1][1] = endTimestamp;
+      eventsArray[index][1] = endTimestamp;
     }
-    */
-
-    let busyEvents = []
-    for (let i = 0; i < eventsArray.length; i++) {
+    
+    for (let i = 0; i < index; i++) {
       busyEvents[i] = {
         start: eventsArray[i][0].toDate(),
         end: eventsArray[i][1].toDate(),
         title: "Busy",
       }
     }
+  }
   console.log(busyEvents)
   return(busyEvents);
 }

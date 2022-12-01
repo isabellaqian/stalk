@@ -9,8 +9,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import FolderIcon from '@mui/icons-material/Folder';
-import DeleteIcon from '@mui/icons-material/Delete';
+// import FolderIcon from '@mui/icons-material/Folder';
+// import DeleteIcon from '@mui/icons-material/Delete';
 import { collection } from "firebase/firestore";
 import { getID, firestore } from "../Firebase";
 
