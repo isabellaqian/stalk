@@ -9,6 +9,7 @@ import { addFriend, firestore, getID } from "../Firebase";
 import { collection, onSnapshot, doc } from "firebase/firestore";
 
 import "./pages.css";
+import FriendList from "../components/FriendList";
 
 const AddFriends = () => {
   const [emails, setEmails] = useState("");
@@ -140,6 +141,9 @@ const AddFriends = () => {
         >
           Add
         </button>
+      </div>
+      <div>
+        <FriendList/>
       </div>
     </div>
   );
