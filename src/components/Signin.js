@@ -24,7 +24,7 @@ const Signin = () => {
     else {
       navigate("/");
     }
-  }, [googleSignIn]);
+  }, [user]);
 
   return (
     <button
