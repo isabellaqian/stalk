@@ -20,6 +20,7 @@ export default function CreateEvent() {
   const [openDialog, setOpenDialog] = useState(false);
 
   function handleSubmit(e) {
+    clearSuccess();
     if (eventTitle.trim().length === 0) {
       setError("Missing title");
       setSuccess(null);
@@ -38,15 +39,20 @@ export default function CreateEvent() {
     console.log(start);
     console.log(end);
     addEvent(eventTitle, description, start, end, location);
-    setSuccess("Event added");
+    setSuccess("Event added!");
     setError(null);
+    clear();
   }
 
   function clear() {
     setTitle("");
     setDescription("");
+    setLocation("");
     setStart("");
     setEnd("");
+  }
+
+  function clearSuccess() {
     setSuccess(null);
     setError(null);
   }
