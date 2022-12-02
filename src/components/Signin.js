@@ -21,7 +21,10 @@ const Signin = () => {
       navigate("/dashboard");
       writeUserDoc();
     }
-  }, []);
+    else {
+      navigate("/");
+    }
+  }, [googleSignIn]);
 
   return (
     <button

@@ -26,6 +26,7 @@ const Navbar = () => {
     //   return;
     // }
     if (user != null && !isEmpty(user)) {
+      console.log("navigating to dashboard in navbar")
       navigate("/dashboard");
     }
   }, [user]);
