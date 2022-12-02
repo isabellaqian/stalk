@@ -236,12 +236,10 @@ export async function holdSelectedFriends(friendList) {
   }
 }
 
-/*
-export async function deleteEvent(event_id) {
-  const doc = doc(firestore, "userCollection/" + getID() + "/events/" + event_id);
-  await deleteDoc(doc);
+export async function deleteEvent(id) {
+  await deleteDoc(doc(firestore, 'userCollection/' + getID() + '/events/', id));
 }
-*/
+
 
 // export async function getAllUsers() {
 //   console.log("run getAllUsers");

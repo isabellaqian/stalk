@@ -61,8 +61,10 @@ export default function MyCalendar({
 
   //When event seleted, open AddPopUpDialog dialog (@emily)
   const handleSelectEvent = useCallback((event) => {
+    console.log("this is handle select event");
     setCurEvent(event);
     setOpenDialog(true);
+    console.log(openDialog);
   }, []);
 
   return (
