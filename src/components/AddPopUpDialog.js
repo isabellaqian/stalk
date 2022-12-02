@@ -19,7 +19,7 @@ export default function AddEventPopUp({ open, handleClose, event }) {
   }
 
   async function handleDelete(id) {
-    await deleteDoc(doc(db, "cities", "DC"));
+    //await deleteDoc(doc(db, "cities", "DC"));
 
   }
 

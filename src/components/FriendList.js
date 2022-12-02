@@ -30,7 +30,7 @@ const FriendList = () => {
       setFriendArr(friendsArrFirestore);
     });
     return () => unsubscribe();
-  }, []);
+  }, [friendArr]);
 
   //generates the number of friends to list out
   function generate(element) {
