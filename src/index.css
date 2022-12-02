@@ -106,7 +106,7 @@ float: right;
   text-align: relative;
   border: none;
   border-radius: 18px;
-  background: rgb(232, 138, 104);
+  background: #e05927;
   width: 120px;
   height: 40px;
   cursor: pointer;
@@ -115,6 +115,7 @@ float: right;
   background: rgb(207, 83, 38);
   /* border: 2px solid rgb(207, 83, 38); */
 }
+
 .button_blue_small {
   margin: 10px;
   color: rgb(255, 255, 255);
