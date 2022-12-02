@@ -41,7 +41,7 @@ const FriendList = () => {
 
   return (
     <div className="friend-list">
-      <Typography variant="h4">Friend List</Typography>
+      <Typography variant="h4">My friends:</Typography>
       <List dense={dense}>
         {generate(
           <ListItem>

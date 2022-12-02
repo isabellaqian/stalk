@@ -130,7 +130,7 @@ const AddFriends = () => {
           placeholder="keeperofthetime@g.ucla.edu"
           onChange={handleChange}
           fullWidth
-          style={{ width: "300px" }}
+          style={{ width: "300px", paddingBottom: "10px" }}
         />
 
         {/* {error && <h2 style={{ color: "red" }}>{error}</h2>} */}
@@ -143,7 +143,7 @@ const AddFriends = () => {
         >
           Add
         </button>
-        <FriendList key={friendArr} />
+        <FriendList />
       </Stack>
     </div>
   );

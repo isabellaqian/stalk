@@ -38,10 +38,10 @@ const testTimes = [
   },
 ];
 
-
 const Meet = () => {
   //realistically, we need to get the user's friend list from the database (@alexavanh)
   const [selectedFriends, setSelectedFriends] = useState([]);
+  const [placeHolder, setPlaceHolder] = useState("");
   const [eventTitle, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [start, setStart] = useState("");
