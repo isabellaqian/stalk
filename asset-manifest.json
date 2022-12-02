@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/stalk/static/css/main.f4c6a6a8.css",
+    "main.js": "/stalk/static/js/main.cbc45061.js",
+    "static/media/calendar_screenshot.png": "/stalk/static/media/calendar_screenshot.2b9afc365bb3000e2d05.png",
+    "index.html": "/stalk/index.html",
+    "main.f4c6a6a8.css.map": "/stalk/static/css/main.f4c6a6a8.css.map",
+    "main.cbc45061.js.map": "/stalk/static/js/main.cbc45061.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f4c6a6a8.css",
+    "static/js/main.cbc45061.js"
+  ]
+}
