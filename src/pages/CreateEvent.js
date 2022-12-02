@@ -110,7 +110,10 @@ export default function CreateEvent() {
             InputLabelProps={{
               shrink: true,
             }}
-            onChange={(e) => setStart(e.target.value)}
+            onChange={(e) => {
+              setStart(e.target.value);
+              setEnd(e.target.value);
+            }}
           />
 
           <TextField
@@ -123,12 +126,12 @@ export default function CreateEvent() {
             }}
             onChange={(e) => setEnd(e.target.value)}
           />
-          
+
           <TextField
             label="Location (optional)"
             placeholder="Ur mom's house."
             value={location}
-            onChange={(e) => setLocation(e.target.value)} 
+            onChange={(e) => setLocation(e.target.value)}
           />
           {success && <Alert severity="success">{success}</Alert>}
           {error && <Alert severity="error">{error}</Alert>}
