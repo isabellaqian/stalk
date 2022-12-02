@@ -6,6 +6,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
+import { deleteDoc, doc} from  "firebase/firestore";
+import { firestore } from "../Firebase";
+
 
 export default function AddEventPopUp({ open, handleClose, event }) {
   //const [open, setOpen] = useState(false);
@@ -13,6 +16,11 @@ export default function AddEventPopUp({ open, handleClose, event }) {
   function handleClick() {
     console.log(event);
     handleClose();
+  }
+
+  async function handleDelete(id) {
+    await deleteDoc(doc(db, "cities", "DC"));
+
   }
 
   if (event !== null) {
@@ -39,7 +47,7 @@ export default function AddEventPopUp({ open, handleClose, event }) {
             </Typography>
           </DialogContent>
           <DialogActions>
-            <button className="button_red_small" onClick={handleClick}>
+            <button className="button_red_small" onClick={handleDelete(event.id)}>
               Delete Event
             </button>
           </DialogActions>

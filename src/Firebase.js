@@ -19,6 +19,7 @@ import {
   where,
   getDocs,
   onSnapshot,
+  deleteDoc,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { get } from "lodash";
@@ -183,7 +184,17 @@ export async function getFriendEvents(email, tsStart, tsEnd) {
     endArr.push(doc.data().End);
     console.log("in firebase ", doc.id, " => ", doc.data());
   });
-  console.log("in firebase ", [startArr, endArr]);
+   //second query added @s-palakur
+   const q2 = query(eventColl, where("End", ">=", tsStart), where("End", "<=", tsEnd));
+   const querySnapshot2 = await getDocs(q2);
+   querySnapshot2.forEach((doc) => {
+     if (!(startArr.includes(doc.data().Start) && endArr.includes(doc.data().End))) {
+       startArr.push(doc.data().Start);
+       endArr.push(doc.data().End);
+     }
+     console.log("in firebase ", doc.id, " => ", doc.data());
+   });
+
   return [startArr, endArr];
 }
 
@@ -224,6 +235,13 @@ export async function holdSelectedFriends(friendList) {
     });
   }
 }
+
+/*
+export async function deleteEvent(event_id) {
+  const doc = doc(firestore, "userCollection/" + getID() + "/events/" + event_id);
+  await deleteDoc(doc);
+}
+*/
 
 // export async function getAllUsers() {
 //   console.log("run getAllUsers");
