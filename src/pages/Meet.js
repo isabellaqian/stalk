@@ -183,10 +183,6 @@ const Meet = () => {
             chips: {
               background: "#e05927",
             },
-            option: {
-              // To change css for dropdown options
-              background: "#ECAD96",
-            },
           }}
         />
         <TextField

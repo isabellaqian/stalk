@@ -5,11 +5,11 @@ import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import Button from "@mui/material/Button";
 
-// import FolderIcon from '@mui/icons-material/Folder';
-// import DeleteIcon from '@mui/icons-material/Delete';
 import { collection } from "firebase/firestore";
 import { getID, firestore } from "../Firebase";
+import { deleteDoc, doc } from "firebase/firestore";
 
 const FriendList = () => {
   const [friendArr, setFriendArr] = useState([]);
@@ -32,10 +32,22 @@ const FriendList = () => {
     return () => unsubscribe();
   }, [friendArr]);
 
+  async function handleClick(friend) {
+    console.log("deleting friend");
+    await deleteDoc(
+      doc(firestore, "userCollection/" + getID() + "/friends/", friend)
+    );
+  }
+
   //generates the number of friends to list out
   function generate(element) {
     return friendArr.map((friend) =>
-      React.cloneElement(<ListItemText primary={friend}></ListItemText>)
+      React.cloneElement(
+        <div style={{ display: "flex" }}>
+          <Button onClick={() => handleClick(friend)}>x</Button>
+          <ListItemText primary={friend} />
+        </div>
+      )
     );
   }
 

@@ -6,7 +6,7 @@ import arrow from "../images/left_arrow.png";
 import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 import { addFriend, firestore, getID } from "../Firebase";
-import { collection, onSnapshot, doc } from "firebase/firestore";
+import { collection, onSnapshot, doc, deleteDoc } from "firebase/firestore";
 import Stack from "@mui/material/Stack";
 import FriendList from "../components/FriendList";
 

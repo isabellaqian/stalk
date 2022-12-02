@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
-import { deleteDoc, doc} from  "firebase/firestore";
-import { firestore, getID, deleteEvent} from "../Firebase";
-
+import { firestore, getID, deleteEvent } from "../Firebase";
 
 export default function AddEventPopUp({ open, handleClose, event }) {
   //const [localId, setId] = useState(0);
-
 
   function handleClick() {
     console.log(event);
@@ -48,7 +44,10 @@ export default function AddEventPopUp({ open, handleClose, event }) {
             </Typography>
           </DialogContent>
           <DialogActions>
-            <button className="button_red_small" onClick={() => handleDelete(event.id)}>
+            <button
+              className="button_red_small"
+              onClick={() => handleDelete(event.id)}
+            >
               Delete Event
             </button>
           </DialogActions>
