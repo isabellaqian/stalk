@@ -5,39 +5,38 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import {
-  addEvent,
-  addEventToFriends,
-  getSlotTimes,
-  selectedFriends,
-  slotTimes,
-} from "../Firebase";
+import Typography from "@mui/material/Typography";
 
 export default function AddEventPopUp({ open, handleClose, event }) {
   //const [open, setOpen] = useState(false);
-  const [eventTitle, setTitle] = useState("");
-  const [description, setDescription] = useState("");
 
   function handleClick() {
+    console.log(event);
     handleClose();
   }
 
   if (event !== null) {
     return (
       <div>
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={handleClose} fullWidth={"xs"}>
           <DialogActions>
-            <button onClick={handleClick}>x</button>
+            <Button onClick={handleClick}>x</Button>
           </DialogActions>
           <DialogTitle className="popUpTitle">{event.title}</DialogTitle>
           <DialogContent>
-            Description: {event.description} <br />
-            <br />
-            Location: {event.loca}
-            <br /> <br />
-            Author: {event.author}
-            <br /><br />
-            id:{event.id}
+            <Typography>
+              <strong>Description: </strong>
+              {event.description}
+              <br />
+              <strong>Location: </strong>
+              {event.loca ? event.loca : !event.type ? "" : "N/A"}
+              <br />
+              <strong>Author: </strong>
+              {event.author}
+              <br />
+              <strong>People: </strong>
+              {event.friends ? event.friends : !event.type ? "" : "Just you"}
+            </Typography>
           </DialogContent>
           <DialogActions>
             <button className="button_red_small" onClick={handleClick}>

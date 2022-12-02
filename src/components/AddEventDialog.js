@@ -37,10 +37,18 @@ export default function AddEventDialog({ open, handleClose }) {
 
     //this function adds an event for yourself too
     selectedFriends.forEach((friend) => {
-      addEventToFriends(friend, eventTitle, description, start, end, location);
+      addEventToFriends(
+        friend,
+        eventTitle,
+        description,
+        start,
+        end,
+        location,
+        selectedFriends
+      );
     });
     setSuccess("Event added");
-    
+
     clear();
     handleClose();
   }
@@ -89,9 +97,16 @@ export default function AddEventDialog({ open, handleClose }) {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <button className="button_blue_small" onClick={handleClick}>Invite friends!</button>
-          <button className="button_white_small" onClick={handleCancel}>Cancel</button>
-          <button className="button_white_small" onClick={clear}> Clear input </button>
+          <button className="button_blue_small" onClick={handleClick}>
+            Invite friends!
+          </button>
+          <button className="button_white_small" onClick={handleCancel}>
+            Cancel
+          </button>
+          <button className="button_white_small" onClick={clear}>
+            {" "}
+            Clear input{" "}
+          </button>
         </DialogActions>
       </Dialog>
     </div>

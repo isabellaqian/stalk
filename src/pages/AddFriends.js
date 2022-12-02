@@ -7,6 +7,7 @@ import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 import { addFriend, firestore, getID } from "../Firebase";
 import { collection, onSnapshot, doc } from "firebase/firestore";
+import Stack from "@mui/material/Stack";
 import FriendList from "../components/FriendList";
 
 import "./pages.css";
@@ -34,17 +35,19 @@ const AddFriends = () => {
     });
 
     //Get a list of your friends (@emily)
-    const friendCollection = collection(firestore, 'userCollection/' + getID() + '/friends');
+    const friendCollection = collection(
+      firestore,
+      "userCollection/" + getID() + "/friends"
+    );
     const friendList = [];
     const unsub = onSnapshot(friendCollection, (snapshot) => {
       snapshot.forEach((doc) => {
         friendList.push(doc.data().emailID);
       });
-      setFriendArr(friendList);
     });
-
+    setFriendArr(friendList);
+    return () => unsub();
   }, []);
-
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -59,17 +62,17 @@ const AddFriends = () => {
           setSuccess(null);
           return;
         }
-          //taking in email input: friends email
-          addFriend(emails);
-          setError(null);
-          setSuccess("You added: " + emails + "!");
-          console.log("You added: ", emails);
-          return;
+        //taking in email input: friends email
+        addFriend(emails);
+        setError(null);
+        setSuccess("You added: " + emails + "!");
+        console.log("You added: ", emails);
+        return;
       } else {
-          setError("Not an existing user!"); 
-          setSuccess(null);
+        setError("Not an existing user!");
+        setSuccess(null);
       }
-    } 
+    }
   }
 
   function isValidEmail(email) {
@@ -77,7 +80,7 @@ const AddFriends = () => {
       email
     );
   }
-    
+
   //Returns true if potential friend email input by user is the email of a current user in userArr array (@emily)
   function checkValidUser(email) {
     for (let i = 0; i < userArr.length; i++) {
@@ -116,7 +119,7 @@ const AddFriends = () => {
         </Link>
         <div className="h3">Add friends</div>
       </div>
-      <div
+      <Stack
         className="custom-centered"
         style={{ width: "50%", paddingTop: "20px" }}
       >
@@ -130,23 +133,20 @@ const AddFriends = () => {
           style={{ width: "300px" }}
         />
 
-      {/* {error && <h2 style={{ color: "red" }}>{error}</h2>} */}
-      {error && <Alert severity="error">{error}</Alert>}
-      {success && <Alert severity="success">{success}</Alert>}
-      <button
-          className="button_accent_small custom-centered"
+        {/* {error && <h2 style={{ color: "red" }}>{error}</h2>} */}
+        {error && <Alert severity="error">{error}</Alert>}
+        {success && <Alert severity="success">{success}</Alert>}
+        <button
+          className="button_accent_small"
           type="submit"
-        onClick={handleSubmit}
-      >
-        Add
-      </button>
-    </div>
-    <div>
-        <FriendList/>
-      </div>
+          onClick={handleSubmit}
+        >
+          Add
+        </button>
+        <FriendList key={friendArr} />
+      </Stack>
     </div>
   );
-  
 };
 
 export default AddFriends;

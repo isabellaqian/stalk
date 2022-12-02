@@ -88,11 +88,20 @@ export async function addEvent(title, desc, start_d, end_d, loca) {
   console.log("Document written with ID: ", docRef.id);
 }
 
-export async function addEventToFriends(friendID, title, desc, start_d, end_d, loca) {
+export async function addEventToFriends(
+  friendID,
+  title,
+  desc,
+  start_d,
+  end_d,
+  loca,
+  selectedFriends
+) {
   const eventsCollection = collection(
     firestore,
     "userCollection/" + friendID + "/events"
   );
+  const friends = selectedFriends.join(", ");
   //Using the add() method to add random documents with the Title and Date stored
   const docRef = addDoc(eventsCollection, {
     Title: title,
@@ -102,6 +111,7 @@ export async function addEventToFriends(friendID, title, desc, start_d, end_d, l
     Type: "group",
     Author: getID(),
     Location: loca,
+    Friends: friends,
   }).catch((err) => {
     //This function catches any error that occurs during the creation of the document
     console.log("Error: " + err.message);
