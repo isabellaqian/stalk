@@ -126,7 +126,7 @@ const Meet = () => {
     });
   }
 
-  //THIS WORKS yay @s-palakur (works outside the array)
+  //THIS WORKS yay @s-palakur
   console.log("this is startarr", startArrayConst);
   console.log("this is endArr", endArrayConst);
 
@@ -134,7 +134,11 @@ const Meet = () => {
     console.log(count);
     console.log("this is startarr in func", startArrayConst);
     console.log("this is endArr in func", endArrayConst);
-    const arr = findBusyTimes(startArrayConst, endArrayConst);
+
+    const tsStart = Timestamp.fromDate(new Date(start + "T00:00"));
+    const tsEnd = Timestamp.fromDate(new Date(end + "T23:59"));
+
+    const arr = findBusyTimes(startArrayConst, endArrayConst, tsStart, tsEnd);
     setBusyArr(arr);
     console.log("This is the busy array" + busyArr);
   }, [count]);
