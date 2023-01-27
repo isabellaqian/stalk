@@ -1,5 +1,7 @@
 # Getting Started with Stalk!
 
+deployed website: https://stalk-6c0fe.web.app/dashboard
+
 Easy calendar scheduling with your friends!
 
 - Create personalized events on your own calendar.
