@@ -21,13 +21,7 @@ export default function MyCalendar({
   const { user } = UserAuth();
 
   useEffect(() => {
-    if (!user) {
-      return;
-    }
-    const fbEvents = collection(
-      firestore,
-      "userCollection/" + user.email + "/events"
-    );
+
     const unsubscribe = onSnapshot(fbEvents, (snap) => {
       // console.log(snap);
       const tempEvents = [];

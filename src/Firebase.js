@@ -60,6 +60,7 @@ export function getID() {
 }
 
 //moved some constants outside functions for fun @s-palakur
+
 export const firestore = getFirestore(); //basically db
 
 //holds slotTimes, used only in AddEventDialog.js
